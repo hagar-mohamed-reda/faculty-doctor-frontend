@@ -6,11 +6,11 @@ import { GlobalService } from 'src/app/shared/services/global.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-student-index',
-  templateUrl: './student-index.component.html',
-  styleUrls: ['./student-index.component.scss']
+  selector: 'app-course-index',
+  templateUrl: './course-index.component.html',
+  styleUrls: ['./course-index.component.scss']
 })
-export class StudentIndexComponent implements OnInit {
+export class CourseIndexComponent implements OnInit {
 
   /**
    * init jquery
@@ -40,7 +40,7 @@ export class StudentIndexComponent implements OnInit {
    * filter inputs
    *
    */
-  public students: any = [];
+  public courses: any = [];
 
   /**
    * filter inputs
@@ -61,7 +61,7 @@ export class StudentIndexComponent implements OnInit {
   public levels: any = [];
 
   /**
-   * types of student
+   * types of course
    *
    */
   public types: any = [];
@@ -73,22 +73,18 @@ export class StudentIndexComponent implements OnInit {
   public departments: any = [];
 
   /**
-   * fields of student table
+   * fields of course table
    *
    */
   public fields: any = [
     'name',
-    'username',
     'level_id',
-    'department_id',
-    'division_id',
     'faculty_id',
     'code',
-    'phone',
-    'email',
-    'national_id',
+    'credit_hour',
+    'description',
+    'final_degree',
     'active',
-    'type',
     'created_at',
     'updated_at'
   ];
@@ -97,19 +93,19 @@ export class StudentIndexComponent implements OnInit {
    * url of import from excel api
    *
    */
-  public importApi = "students/import";
+  public importApi = "courses/import";
 
   /**
    * url of excel template file
    *
    */
-  public importTemplateUrl = environment.apiUrl + "/students/import-file?api_token="+Auth.getApiToken();
+  public importTemplateUrl = environment.apiUrl + "/courses/import-file?api_token="+Auth.getApiToken();
 
   /**
    * url of export api
    *
    */
-  public exportApi = "students/export";
+  public exportApi = "courses/export";
 
   /**
    * url of export api
@@ -140,21 +136,21 @@ export class StudentIndexComponent implements OnInit {
    */
   initBreadcrumbData() {
     this.breadcrumbData = [
-      {name: 'student page', url: '#'}
+      {name: 'course page', url: '#'}
     ];
   }
 
   /**
-   * load all student data
+   * load all course data
    *
    */
   get(data=null) {
     let params = (data)? data: this.filter;
     this.reload = true;
     this.archiveLoad = false;
-    this.globalService.get("students", params).subscribe((res) => {
+    this.globalService.get("courses", params).subscribe((res) => {
       this.response = res;
-      this.students = this.response.data;
+      this.courses = this.response.data;
       this.reload = false;
       //
       this.prePagniation();
@@ -162,37 +158,37 @@ export class StudentIndexComponent implements OnInit {
   }
 
   /**
-   * get all deleted students
+   * get all deleted courses
    *
    */
   getArchive() {
     this.reload = true;
     this.archiveLoad = true;
-    this.globalService.get("students/archive").subscribe((res) => {
-      this.students = res;
+    this.globalService.get("courses/archive").subscribe((res) => {
+      this.courses = res;
       this.reload = false;
     });
   }
 
   /**
-   * show add student modal
+   * show add course modal
    *
    */
   create() {
-    this.$('#studentAddModal').modal('show');
+    this.$('#courseAddModal').modal('show');
   }
 
   /**
-   * show add student modal
+   * show add course modal
    *
    */
   edit(item) {
     this.resource = item;
-    this.$('#studentEditModal').modal('show');
+    this.$('#courseEditModal').modal('show');
   }
 
   /**
-   * show import students from excel file
+   * show import courses from excel file
    *
    */
   import() {
@@ -200,7 +196,7 @@ export class StudentIndexComponent implements OnInit {
   }
 
   /**
-   * show export students from excel file
+   * show export courses from excel file
    *
    */
   export() {
@@ -208,13 +204,13 @@ export class StudentIndexComponent implements OnInit {
   }
 
   /**
-   * show export students from excel file
+   * show export courses from excel file
    *
    */
   archive(item) {
     let _this = this;
     Message.confirm(Helper.trans("are you sure to arhive this item"), ()=>{
-      _this.globalService.destroy("students/delete", item.id).subscribe((r: any)=>{
+      _this.globalService.destroy("courses/delete", item.id).subscribe((r: any)=>{
         if (r.status == 1) {
           Message.success(r.message);
           this.get();
@@ -232,7 +228,7 @@ export class StudentIndexComponent implements OnInit {
   restore(item) {
     let _this = this;
     Message.confirm(Helper.trans("are to restore item from archive"), ()=>{
-      _this.globalService.destroy("students/restore", item.id).subscribe((r: any)=>{
+      _this.globalService.destroy("courses/restore", item.id).subscribe((r: any)=>{
         if (r.status == 1) {
           Message.success(r.message);
           _this.getArchive();
@@ -284,5 +280,4 @@ export class StudentIndexComponent implements OnInit {
       _this.setDataContainerStyle();
     }, 500);
   }
-
 }

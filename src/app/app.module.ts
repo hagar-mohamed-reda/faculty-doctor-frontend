@@ -23,9 +23,10 @@ import {MatButtonModule} from '@angular/material/button';
 import { DataTablesModule } from '../../node_modules/angular-datatables';
 import { UserService } from './user/services/user.service';
 import { RoleService } from './user/services/role.service';
-import { StudentIndexComponent } from './components/student/student-index/student-index.component';
-import { StudentFormComponent } from './components/student/student-form/student-form.component';
 import { MatSliderModule, MatSlideToggleModule } from '@angular/material';
+import { CourseIndexComponent } from './components/course/course-index/course-index.component';
+import { LectureIndexComponent } from './components/lecture-index/lecture-index.component';
+import { LectureFormComponent } from './components/lecture-form/lecture-form.component';
 
 @NgModule({
   declarations: [
@@ -34,8 +35,9 @@ import { MatSliderModule, MatSlideToggleModule } from '@angular/material';
     AppComponent,
     PageNotFoundComponent,
     UserProfileComponent,
-    StudentIndexComponent,
-    StudentFormComponent,
+    CourseIndexComponent,
+    LectureIndexComponent,
+    LectureFormComponent,
   ],
   imports: [
     BrowserModule,
