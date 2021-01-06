@@ -1,0 +1,42 @@
+<div class="row">
+
+  <div class="col-md-3">
+
+    <!-- navbar list -->
+    <div class="box box-primary material-shadow">
+      <div class="box-body box-profile">
+        <img class="profile-user-img img-responsive img-circle" style="width: 60%!important" src="/assets/img/application.gif" alt="User profile picture">
+
+        <h3 class="profile-username text-center">{{ "users" | trans }}</h3>
+
+
+        <ul class="list-group list-group-unbordered">
+          <li class="list-group-item" permission="user_read" >
+            <a href="#" routerLink='/users/u' >
+                <b>{{ "users" | trans }}</b>
+                <a href="#"  class="pull-left">
+                  <i class="fa fa-users" ></i>
+                </a>
+            </a>
+          </li>
+          <li class="list-group-item" permission="role_read" >
+            <a href="#" routerLink='/users/role' >
+                <b>{{ "roles" | trans }}</b>
+                <a href="#"  class="pull-left">
+                  <i class="fa fa-th-list" ></i>
+                </a>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+
+  </div>
+  <!-- /.col -->
+  <div class="col-md-9">
+      <router-outlet></router-outlet>
+  </div>
+  <!-- /.col -->
+</div>

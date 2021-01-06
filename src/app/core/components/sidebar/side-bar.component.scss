@@ -1,0 +1,29 @@
+.app-sidebar {
+  width: 100px;
+  background-color: #303146;
+  position: fixed;
+  right: 0px;
+  top: 0px;
+  height: 100%;
+  padding-top: 50px;
+  z-index: 10;
+}
+
+
+.app-sidebar .w3-ul {
+  text-align: center;
+}
+
+.app-sidebar .w3-ul li {
+  color: white;
+  cursor: pointer;
+  text-align: center;
+  border-bottom: none!important;
+  padding-bottom: 10px!important;
+  padding-top: 10px!important;
+}
+
+.app-sidebar .w3-ul li:hover {
+  background-color: white;
+  color: #303146;
+}

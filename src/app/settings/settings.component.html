@@ -1,0 +1,179 @@
+<!--    <aside class="main-sidebar">-->
+<!--      &lt;!&ndash; sidebar: style can be found in sidebar.less &ndash;&gt;-->
+<!--      <section class="sidebar">-->
+<!--        &lt;!&ndash; Sidebar user panel &ndash;&gt;-->
+<!--        <div class="user-panel">-->
+<!--          <div class="pull-left image">-->
+<!--            <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">-->
+<!--          </div>-->
+<!--          <div class="pull-left info">-->
+<!--            <p>Alexander Pierce</p>-->
+<!--            <a href="#"><i class="fa fa-circle text-success"></i> Online</a>-->
+<!--          </div>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; sidebar menu: : style can be found in sidebar.less &ndash;&gt;-->
+<!--        <ul class="sidebar-menu tree" data-widget="tree">-->
+<!--          <li class="header">الاعدادات الرئيسية</li>-->
+<!--          <li><a routerLink="/settings/country"><i class="fa fa-circle-o"></i> الدول </a></li>-->
+<!--          <li><a routerLink="/settings/city"><i class="fa fa-circle-o"></i> المدن </a></li>-->
+<!--        </ul>-->
+<!--      </section>-->
+<!--      &lt;!&ndash; /.sidebar &ndash;&gt;-->
+<!--    </aside>-->
+<div class="content">
+  <div class="row">
+    <div class="col-md-2">
+
+      <!-- Profile Image -->
+      <div class="box box-primary">
+        <div class="box-body box-profile">
+          <h3 class="profile-username text-center">الاعدادات الرئيسية</h3>
+          <ul class="list-group list-group-unbordered">
+
+            <li class="list-group-item" *ngIf="auth.canOr(['division', 'department', 'level'])" >
+              <a class="active" routerLink="/settings/division"><i class="fa fa-circle-o"></i>
+                {{ "divisions & departments & levels" | trans  }}
+              </a>
+            </li>
+
+            <li class="list-group-item" *ngIf="auth.can(['academic_year'])" >
+              <a class="active" routerLink="/settings/academic-year"><i class="fa fa-circle-o"></i>
+                {{ "academic_years" | trans }}
+              </a>
+            </li>
+
+            <li class="list-group-item" *ngIf="auth.can(['degree'])" >
+              <a class="active" routerLink="/settings/doctor-degree"><i class="fa fa-circle-o"></i>
+                {{ "degree" | trans }}
+              </a>
+            </li>
+
+            <li class="list-group-item" *ngIf="auth.can(['degree_map'])" >
+              <a class="active" routerLink="/settings/degree-map"><i class="fa fa-circle-o"></i>
+                {{ "degree map" | trans }}
+              </a>
+            </li>
+
+            <li class="list-group-item" *ngIf="auth.can(['research_degree_map'])" >
+              <a class="active" routerLink="/settings/research-degree-map"><i class="fa fa-circle-o"></i>
+                {{ "research degree map" | trans }}
+              </a>
+            </li>
+
+            <li class="list-group-item" *ngIf="auth.can(['special'])" >
+              <a class="active" routerLink="/settings/special"><i class="fa fa-circle-o"></i>
+                {{ "special" | trans }}
+              </a>
+            </li>
+
+            <li class="list-group-item" *ngIf="auth.can(['faculty'])" >
+              <a class="active" routerLink="/settings/faculty"><i class="fa fa-circle-o"></i>
+                {{ "faculty" | trans }}
+              </a>
+            </li>
+
+            <li class="list-group-item" *ngIf="auth.can(['permission'])">
+              <a class="active" routerLink="/settings/permissions"><i class="fa fa-circle-o"></i>
+                {{ "permissions" | trans }}
+              </a>
+            </li>
+
+            <li class="list-group-item" *ngIf="auth.can(['translation'])">
+              <a class="active" routerLink="/settings/translations"><i class="fa fa-circle-o"></i>
+                {{ "translations" | trans }}
+              </a>
+            </li>
+
+            <!--
+
+            <li class="list-group-item">
+              <a class="active" routerLink="/settings/academic-year"><i class="fa fa-circle-o"></i>
+                الاعوام الدراسية
+              </a>
+            </li>
+
+
+            <li class="list-group-item">
+              <a class="active" routerLink="/settings/levels"><i class="fa fa-circle-o"></i>
+                 المستويات الدراسية
+              </a>
+            </li>
+            <li class="list-group-item">
+              <a class="active" routerLink="/settings/qualifications"><i class="fa fa-circle-o"></i>
+                المؤهلات الدراسية
+              </a>
+            </li>
+
+            <li class="list-group-item">
+              <a class="active" routerLink="/settings/qualification-types"><i class="fa fa-circle-o"></i>
+                انواع المؤهلات الدراسية
+              </a>
+            </li>
+            <li class="list-group-item">
+              <a class="active" routerLink="/settings/divisions"><i class="fa fa-circle-o"></i>
+                  الشعب الدراسية
+              </a>
+            </li>
+            <li class="list-group-item">
+              <a class="active" routerLink="/settings/departments"><i class="fa fa-circle-o"></i>
+                  الاقسام الدراسية
+              </a>
+            </li>
+            <li class="list-group-item">
+              <a class="active" routerLink="/settings/registration-methods"><i class="fa fa-circle-o"></i>
+                وسائل التعارف
+              </a>
+            </li>
+            <li class="list-group-item">
+              <a class="active" routerLink="/settings/required-documents"><i class="fa fa-circle-o"></i>
+                 الاوراق المطلوبة
+              </a>
+            </li>
+            <li class="list-group-item">
+              <a class="active" routerLink="/settings/registration-status"><i class="fa fa-circle-o"></i>
+                 حالات التقديم
+              </a>
+            </li>
+            <li class="list-group-item">
+              <a class="active" routerLink="/settings/case-constraints"><i class="fa fa-circle-o"></i>
+                حالات القيد
+              </a>
+            </li>
+            <li class="list-group-item">
+              <a class="active" routerLink="/settings/constraint-status"><i class="fa fa-circle-o"></i>
+              مواقف القيد
+              </a>
+            </li>
+            <li class="list-group-item">
+              <a class="active" routerLink="/settings/languages"><i class="fa fa-circle-o"></i>
+              اللغات
+              </a>
+            </li>
+            <li class="list-group-item">
+              <a class="active" routerLink="/settings/translations"><i class="fa fa-circle-o"></i>
+                الترجمة
+              </a>
+            </li>
+            <li class="list-group-item">
+              <a class="active" routerLink="/settings/parent-jobs"><i class="fa fa-circle-o"></i>
+                وظائف اولياء الامور
+              </a>
+            </li>
+            -->
+          </ul>
+        </div>
+        <!-- /.box-body -->
+      </div>
+      <!-- /.box -->
+
+
+    </div>
+    <div class="col-md-10">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+
+
+

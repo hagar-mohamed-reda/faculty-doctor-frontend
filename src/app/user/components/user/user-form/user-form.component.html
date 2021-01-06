@@ -1,0 +1,71 @@
+
+<!-- form modal -->
+<div class="modal fade" id="{{ isUpdate? 'update' : 'create' }}Modal" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">
+          <span *ngIf="isUpdate" >{{ "edit user" | trans }}</span>
+          <span *ngIf="!isUpdate" >{{ "add user" | trans }}</span>
+
+        </h4>
+      </div>
+      <div class="modal-body text-center">
+        <img src="{{ resource.image_url }}" alt="" style="width: 50px;" class="w3-round" >
+        <br>
+        <table class="table">
+          <tr>
+            <th>{{ "image" | trans }} </th>
+            <td>
+              <input type="file"
+              (change)="viewImage($event)"
+              class="form-control input-sm"  [(ngModel)]="resource.image" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "name" | trans }} *</th>
+            <td>
+              <input type="text" class="form-control input-sm"  [(ngModel)]="resource.name" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "email" | trans }} *</th>
+            <td>
+              <input type="text" class="form-control input-sm"  [(ngModel)]="resource.email" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "password" | trans }} *</th>
+            <td>
+              <input type="password" class="form-control input-sm"  [(ngModel)]="resource.password" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "username" | trans }} *</th>
+            <td>
+              <input type="text" class="form-control input-sm"  [(ngModel)]="resource.username" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "phone" | trans }} </th>
+            <td>
+              <input type="text" class="form-control input-sm"  [(ngModel)]="resource.phone" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "role" | trans }} </th>
+            <td>
+              <select class="form-control input-sm"  [(ngModel)]="resource.role_id"  >
+                <option *ngFor="let item of roles" value="{{ item.id }}">{{ item.name }}</option>
+              </select>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="modal-footer text-center">
+          <button type="button" class="btn btn-default" (click)="closeModal()" >{{ "close" | trans }}</button>
+          <button class="btn btn-primary" [disabled]="isSubmitted" (click)="send()" >{{ "add" | trans }}</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

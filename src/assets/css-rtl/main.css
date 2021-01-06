@@ -1,0 +1,24 @@
+table{
+    margin: auto !important;
+    width: calc(100% - 40px)!important;
+}
+
+.footer a{
+    color: white;
+}
+.footer a:hover {
+    cursor: pointer;
+    color: blue !important;
+}
+.header-navbar.navbar-shadow {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)  !important;
+}
+.btn-group > .btn:not(:first-child){
+    background-image: linear-gradient(-30deg, #7367F0, rgba(115, 103, 240, 0.5));
+}
+.btn-group > .btn:not(:last-child):not(.dropdown-toggle){
+    background-image: linear-gradient(-30deg, #7367F0, rgba(115, 103, 240, 0.5));
+}
+.dropright .dropdown-toggle::after {
+    content: '\e843' !important;
+}

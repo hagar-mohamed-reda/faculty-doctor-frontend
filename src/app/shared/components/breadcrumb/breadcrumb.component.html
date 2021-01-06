@@ -1,0 +1,8 @@
+<nav aria-label="breadcrumb" role="navigation">
+  <ol class="breadcrumb breadcrumb-custom  w3-white material-shadow" style="border-radius: 0px!important;margin-bottom: 3px!important" >
+    <li *ngFor="let item of breadcrumbList; let last = last;" class="breadcrumb-item">
+      <a *ngIf="!last" routerLink="{{item.url}}">{{item['name'] | trans}}</a>
+      <span *ngIf="last">{{item['name'] | trans}}</span>
+    </li>
+  </ol>
+</nav>

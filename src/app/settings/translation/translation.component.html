@@ -1,0 +1,108 @@
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="w3-block">
+  <div class="w3-white material-shadow safe-box">
+    <div class="safe-box-header w3-large" style="padding: 5px!important">
+      {{ "translations" | trans }}
+    </div>
+    <div class="border-bottom-dashed"></div>
+    <br>
+
+    <div class="row">
+
+      <div class="col-lg-12  col-md-12 col-sm-12">
+        <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+          <div class="custom-panel-body table-responsive w3-padding w3-center  "
+          style="height: 400px;" >
+          <table class="text-center" id="tableTrans" style="width: 100%;"  >
+            <thead>
+              <tr class="w3-border-bottom" >
+                <th>#</th>
+                <th>{{ "key" | trans }}</th>
+                <th>{{ "name_en" | trans }}</th>
+                <th>{{ "name_ar" | trans }}</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let item of response.data index as i" >
+                <td>{{ i + 1 }}</td>
+                <td>
+                  <input type="text" class="form-control input-sm"
+                  readonly
+                  [(ngModel)]="item.key" >
+                  <span class="hidden">{{ item.key }}</span>
+                </td>
+                <td   >
+                  <input
+                  type="text"
+                  (change)="item.changed = 1"
+                  class=" form-control input-sm"
+                  [(ngModel)]="item.name_en" >
+                  <span class="hidden">{{ item.name_en }}</span>
+                </td>
+                <td >
+                  <input
+                  type="text"
+                  (change)="item.changed = 1"
+                  class=" form-control input-sm"
+                  [(ngModel)]="item.name_ar" >
+                  <span class="hidden">{{ item.name_ar }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-12  col-md-12 col-sm-12">
+        <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+          <div class="custom-panel-body table-responsive w3-padding w3-center  "   >
+
+            <div class="text-center w3-center">
+              <nav aria-label="Page navigation">
+                <ul class="pagination">
+                  <li>
+                    <a class="btn" [ngClass]="{'disabled': !response.prev_page}" (click)="loadPage(response.prev_page)"
+                      aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+                  <li *ngFor="let item of response.pages_arr">
+                    <a class="btn" [ngClass]="{'active w3-indigo': response.current_page == item}"
+                      (click)="loadPage(item)">{{ item }}</a>
+                  </li>
+                  <li>
+                    <a class="btn" [ngClass]="{'disabled': !response.next_page}" (click)="loadPage(response.next_page)"
+                      aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+            <button class="btn btn-primary" [disabled]="isUpdate" (click)="updateTranslation()" >{{ "save changes" | trans }}</button>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+
+
+  </div>
+</div>

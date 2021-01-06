@@ -1,0 +1,42 @@
+<div class="modal show light-gray login-modal">
+  <div class="login-header" >
+
+  </div>
+  <div class="login-box">
+    <!-- /.login-logo -->
+    <div class="login-box-body material-shadow w3-animate-zoom theme-light" style="padding: 40px" >
+      <div class="login-logo w3-animate-top">
+        <img src="/assets/img/logo.png" alt="" style="width: 100px" >
+        <br>
+        <a href="#" class="w3-text-white w3-large" ><b> نظام ادارة المحتوى  </b></a>
+      </div>
+
+      <p class="login-box-msg hidden"><b>{{ 'login with account' || trans }}</b></p>
+
+        <div class="form-group has-feedback">
+          <span class="fa fa-user form-control-feedback w3-text-white" style="padding-top: 3px" ></span>
+          <input type="email" class="app-form app-button theme-semi-dark w3-border-0" [(ngModel)]="userAuth.email" placeholder="{{ 'email' | trans }}">
+        </div>
+        <div class="form-group has-feedback">
+          <input type="password" class="app-form app-button theme-semi-dark w3-border-0" [(ngModel)]="userAuth.password" placeholder="{{ 'password' | trans }}">
+          <span class="fa fa-key form-control-feedback w3-text-white" style="padding-top: 3px" ></span>
+        </div>
+        <div class="text-right w3-text-white" >
+          <a  ><b>{{ "forget password" }}</b></a>
+        </div>
+        <br>
+        <div class="w3-block">
+          <button type="button" (click)="login()" [disabled]="isSubmitted" class="w3-block btn app-button material-shadow w3-white">{{ 'Sign In' | trans }}</button>
+        </div>
+
+
+      <!-- /.social-auth-links
+
+      <a href="#">I forgot my password</a><br>
+      <a href="register.html" class="text-center">Register a new membership</a>
+  -->
+    </div>
+    <!-- /.login-box-body -->
+  </div>
+
+</div>

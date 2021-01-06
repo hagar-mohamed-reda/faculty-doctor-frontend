@@ -1,0 +1,89 @@
+<header>
+  <nav style="height: 50px;" >
+      <div class="fixed-nav" style="height: 50px;" >
+          <input type="checkbox" id="mobile-nav-check" class="invisible-checkbox" tab-index="-1" />
+          <!-- Fix tabbing on desktop -->
+          <label for="mobile-nav-check" class="burger"></label>
+          <div class="bottom">
+              <div class="">
+                  <ul class="navigation" style="float: none;" >
+
+                      <li class="waves-effect waves-white text-right	w3-righ w3-margin-right" >
+                        <img src="/assets/img/logo.png" width="40px" >
+                        <b class="w3-large w3-margin-left w3-margin-right" >{{ "ادارة المحتوى التعليمى" }}</b>
+                      </li>
+                      <li class="pointer"></li>
+
+                      <!--
+                      <li class="waves-effect waves-white">
+                        <a routerLink="/users" class="dropdown-toggle" data-toggle="dropdown">{{ "users" | trans }}  </a>
+                      </li>
+                      -->
+                    <li
+                    style="float: left!important"
+                    (click)="logout()"
+                    class="waves-effect waves-white w3-dropdown-hover">
+                      <!-- Menu toggle button -->
+                      <a   class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-sign-out"></i>
+                      </a>
+                    </li>
+                    <li
+                    style="float: left!important"
+                    class="dropdown notifications-menu waves-effect waves-white w3-dropdown-hover">
+                      <!-- Menu toggle button -->
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-bell-o"></i>
+                        <span class="label label-warning">{{ notifications.length > 0? notifications.length : '' }}</span>
+                      </a>
+                      <div
+                      class="w3-ul w3-dropdown-content w3-bar-block w3-border w3-text-black w3-card"
+                      style="position: fixed;left: 10%;width: 300px">
+                          <!-- Inner Menu: contains the notifications -->
+                          <ul class="menu w3-ul w3-block">
+                            <li class="w3-bar-item w3-text-black text-center w3-border-bottom w3-border-light-gray" style="text-align: center!important;" >{{ message }}</li>
+                            <li class="w3-bar-item w3-text-black text-center w3-border-bottom w3-border-light-gray" style="text-align: center!important;height: 200px;overflow: auto;" >
+                              <ul class="w3-ul">
+                                <li
+                                style="padding: 0px!important"
+                                class="w3-bar-item w3-text-black w3-border-bottom w3-border-light-gray"
+                                *ngFor="let item of notifications index as i" ><!-- start notification -->
+
+                                  <div class="media">
+                                      <div class="media-left">
+                                        <a href="#">
+                                            <i
+                                            style="padding: 0px!important;"
+                                            class="w3-text-black text-right {{ item.icon? item.icon : 'fa fa-bell-o' }}"></i>
+                                        </a>
+                                      </div>
+                                      <div class="media-body"
+                                      style="text-align: right!important;line-height: 14px!important;padding-top:10px" >
+                                        {{ item.body }}
+                                      </div>
+                                    </div>
+                                </li>
+                              </ul>
+                            </li>
+                            <li
+                            class="w3-bar-item w3-button w3-text-black text-center w3-border-bottom w3-border-light-gray"
+                            style="text-align: center!important;padding: 0px!important">{{ "View all" | trans }}</li>
+                            <!-- end notification -->
+                          </ul>
+                      </div>
+                    </li>
+                    <!-- profile item -->
+                    <li
+                    style="float: left!important"
+                    class="dropdown notifications-menu waves-effect waves-white w3-dropdown-hover">
+                      <!-- Menu toggle button -->
+                      <a routerLink="/profile"  class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-user-circle"></i>
+                      </a>
+                    </li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+  </nav>
+</header>

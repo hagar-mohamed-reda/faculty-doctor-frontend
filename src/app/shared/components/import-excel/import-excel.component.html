@@ -1,0 +1,71 @@
+<div class="modal fade" id="importExcelModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content " style="background-color: #E6F5E6;" >
+      <div class="modal-header w3-border-0" >
+        <button type="button" class="close w3-text-red" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-center">{{ title | trans }}</h4>
+      </div>
+      <div class="modal-body">
+
+        <div *ngIf="step == 1" >
+          <div class="text-center">
+            <a role="button" target="_blank" [href]="templateUrl" mat-raised-button
+            class="w3-large btn material-shadow w3-round circle" >
+              <span class="fa fa-download" ></span> {{ "download template file" | trans }}
+            </a>
+          </div>
+          <br>
+          <br>
+          <ul>
+            <li>
+              قم بحميل القالب أولا
+            </li>
+            <li>
+              بعد ذلك قم بملى القالب
+            </li>
+            <li>
+              و من ثم قم برفعه
+            </li>
+          </ul>
+          <br>
+          <div class="modal-footer w3-center">
+            <button mat-raised-button class="w3-" (click)="goto(2)" >{{ "next" | trans }}</button>
+          </div>
+        </div>
+
+        <div *ngIf="step == 2" >
+          <div class="text-center">
+            <button role="button"  mat-raised-button
+            (click)="changeFileInput()"
+            class="w3-large btn material-shadow w3-round circle" >
+              <span class="fa fa-upload" ></span> {{ "upload your file" | trans }}
+            </button>
+            <br>
+            <b>{{ resource.file? resource.file.name : '' }}</b>
+            <input type="file" (change)="changeFile($event)"  id="importExcelFileInput" class="hidden" accept=".xlsx, .xls, .csv" >
+          </div>
+          <br>
+          <br>
+          <ul>
+            <li>
+              تاكد من ملفك ان يكون نفس التنسيق الخاص بالقالب
+            </li>
+          </ul>
+          <br>
+          <div class="modal-footer w3-center">
+            <button
+            mat-raised-button
+            [disabled]="isSubmitted"
+            class="w3-indigo" (click)="uploadFile()" style="margin: 3px" >
+              <span *ngIf="!isSubmitted" >{{ "submit" | trans }}</span>
+              <span *ngIf="isSubmitted" class="fa fa-spinner fa-spin" ></span>
+            </button>
+            <button mat-raised-button class="w3-" (click)="goto(1)" style="margin: 3px" >{{ "back" | trans }}</button>
+          </div>
+        </div>
+
+
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

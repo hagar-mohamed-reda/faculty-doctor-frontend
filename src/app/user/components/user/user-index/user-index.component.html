@@ -1,0 +1,95 @@
+<app-breadcrumb [breadcrumbList]="breadcrumbList"></app-breadcrumb>
+
+<div class="box box-primary material-shadow w3-white table-responsive" >
+  <div class="box-header">
+    <button class="btn btn-primary" (click)="doc.jquery('#createModal').modal('show');" style="margin: 5px"  >
+      <span class="fa fa-plus" ></span> {{ "add" | trans }}
+    </button>
+  </div>
+  <br>
+
+</div>
+
+<div class="mat-elevation-z8 w3-white" style="padding: 7px" >
+  <input  class="form-control"
+  (keyup)="search($event.target.value)" placeholder="{{ 'search' | trans }}">
+  <br>
+  <table mat-table [dataSource]="dataSource" matSort  class="">
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="image">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ "image" | trans }}</th>
+        <td mat-cell *matCellDef="let element">
+          <img src="{{ element.image_url }}" alt="" height="20px" class="w3-round" >
+        </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="name" sticky>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ "name" | trans }}</th>
+        <td mat-cell *matCellDef="let element">
+          <span class="w3-margin-right">
+              {{element.name}}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ "email" | trans }}</th>
+        <td mat-cell *matCellDef="let element"> {{element.email  }} </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="password">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ "password" | trans }}</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-button color="info"  style="margin-left: 5px;margin-right: 5px" (click)="doc.jquery('.row-'+element.id).toggle(600)"  >
+            <i class="fa fa-eye"></i>
+          </button>
+          <span style="display: none" class="row-{{ element.id }}" >{{element.password  }}</span>
+        </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="username">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ "username" | trans }}</th>
+        <td mat-cell *matCellDef="let element"> {{element.username  }} </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="phone">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ "phone" | trans }}</th>
+        <td mat-cell *matCellDef="let element"> {{element.phone  }} </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ "role" | trans }}</th>
+        <td mat-cell *matCellDef="let element"> {{ element.role? element.role.name : ''  }} </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
+          <td mat-cell *matCellDef="let element">
+              <button mat-button color="info"  (click)="edit(element)" >
+                <i class="fa fa-edit"></i>
+              </button>
+              <button mat-button color="warn"  (click)="destroy(element.id)" >
+                <i class="fa fa-trash"></i>
+              </button>
+          </td>
+     </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>
+
+
+
+  <app-user-form [updateResources]="updateResources" [resource]="updateItem" [isUpdate]="true" ></app-user-form>
+  <app-user-form [updateResources]="updateResources" [resource]="{}" [isUpdate]="false" ></app-user-form>

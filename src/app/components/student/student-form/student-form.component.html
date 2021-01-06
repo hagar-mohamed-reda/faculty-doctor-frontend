@@ -1,0 +1,105 @@
+<div class="modal fade" id="{{ editable? 'studentEditModal' : 'studentAddModal' }}" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content light-gray">
+      <div class="modal-header w3-border-0" >
+        <button type="button" class="close w3-text-red" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-center">{{ title | trans }}</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table" >
+          <tr class="hidden" >
+            <td  colspan="2">
+              <img
+              [src]="resource.url" alt=""
+              (click)="$('.image-fileinput').click()"
+              class="w3-round" height="100px" style="cursor: pointer;" >
+              <input type="file" class="app-form hidden image-fileinput" (change)="loadFile($event)" [(ngModel)]="resource.image" >
+              <br>
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "name" | trans }} *</th>
+            <td>
+              <input type="text" class="app-form" [(ngModel)]="resource.name" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "code" | trans }} *</th>
+            <td>
+              <input type="text" class="app-form" [(ngModel)]="resource.code" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "phone" | trans }} *</th>
+            <td>
+              <input type="text" class="app-form" [(ngModel)]="resource.phone" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "national_id" | trans }} *</th>
+            <td>
+              <input type="text" class="app-form" [(ngModel)]="resource.national_id" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "username" | trans }} *</th>
+            <td>
+              <input type="text" class="app-form" [(ngModel)]="resource.username" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "password" | trans }} *</th>
+            <td>
+              <input type="password" class="app-form" [(ngModel)]="resource.password" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "email" | trans }}</th>
+            <td>
+              <input type="email" class="app-form" [(ngModel)]="resource.email" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "level" | trans }} *</th>
+            <td>
+              <select class="app-form" [(ngModel)]="resource.level_id">
+                <option *ngFor="let level of levels" value="{{ level.id }}" >{{ level.name }}</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "department" | trans }} *</th>
+            <td>
+              <select class="app-form" [(ngModel)]="resource.department_id">
+                <ng-container *ngFor="let depart of departments">
+                  <option *ngIf="depart.level_id == resource.level_id" value="{{ depart.id }}" >{{ depart.name }}</option>
+                </ng-container>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "type" | trans }}</th>
+            <td>
+              <select class="app-form" [(ngModel)]="resource.type">
+                <option *ngFor="let type of types" value="{{ type }}" >{{ type | trans }}</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "active" | trans }}</th>
+            <td>
+              <mat-slide-toggle [(ngModel)]="resource.active" [checked]="resource.active">
+              </mat-slide-toggle>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="modal-footer w3-center">
+        <button mat-raised-button class="w3-indigo" [disabled]="isSubmitted" (click)="send()" >
+          <span *ngIf="!isSubmitted" >{{ "submit" | trans }}</span>
+          <span *ngIf="isSubmitted" class="fa fa-spin fa-spinner" ></span>
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
