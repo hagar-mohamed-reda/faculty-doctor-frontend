@@ -266,3 +266,8 @@ table, tr {
 .theme-text-light {
   color: #6264A6!important;
 }
+
+
+.w3-col {
+  float: right!important;
+}

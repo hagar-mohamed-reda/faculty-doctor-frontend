@@ -1,0 +1,122 @@
+<div class="modal fade" id="{{ editable? 'courseEditModal' : 'courseAddModal' }}" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content light-gray">
+      <div class="modal-header w3-border-0" >
+        <button type="button" class="close w3-text-red" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-center">{{ title | trans }}</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table" >
+          <tr class="hidden" >
+            <td  colspan="2">
+              <img [src]="resource.url" alt="">
+              <input type="file" class="app-form" (change)="loadFile()" [(ngModel)]="resource.image" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "text" | trans }} *</th>
+            <td>
+              <input type="text" class="app-form" [(ngModel)]="resource.name" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "code" | trans }} *</th>
+            <td>
+              <input type="text" class="app-form" [(ngModel)]="resource.code" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "credit_hour" | trans }} *</th>
+            <td>
+              <input type="number" class="app-form" [(ngModel)]="resource.credit_hour" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "final_degree" | trans }} *</th>
+            <td>
+              <input type="number" class="app-form" [(ngModel)]="resource.final_degree" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "question_type" | trans }} *</th>
+            <td>
+              <select class="app-form" [(ngModel)]="resource.question_type_id">
+                <option *ngFor="let type of types" value="{{ type.id }}" >{{ type.name }}</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "question_level" | trans }} *</th>
+            <td>
+              <select class="app-form" [(ngModel)]="resource.question_level_id">
+                <option *ngFor="let item of levels" value="{{ item.id }}" >{{ item.name }}</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "question_category" | trans }} *</th>
+            <td>
+              <select class="app-form" [(ngModel)]="resource.question_category_id">
+                <option *ngFor="let item of categories" value="{{ item.id }}" >{{ item.name }}</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "course" | trans }} *</th>
+            <td>
+              <select class="app-form" [(ngModel)]="resource.course_id">
+                <option *ngFor="let item of courses" value="{{ item.id }}" >{{ item.name }}</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "notes" | trans }}</th>
+            <td>
+              <textarea class="app-form" [(ngModel)]="resource.notes" ></textarea>
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "active" | trans }}</th>
+            <td>
+              <mat-slide-toggle [(ngModel)]="resource.active" [checked]="resource.active">
+              </mat-slide-toggle>
+            </td>
+          </tr>
+        </table>
+        <br>
+        <table class="table table-bordered" >
+          <tr class="text-right" >
+              <th class="text-right" >{{ 'text' | trans }}</th>
+              <th class="text-right" >
+                  {{  'is answer' | trans }}
+              </th>
+          </tr>
+
+          <tr class="text-right" *ngIf="resource.type == 1" >
+              <td>
+                  <input type="text" readonly="" name="choice[]" value="{{  'true' | trans }}" class="choice form-control" >
+              </td>
+              <td>
+                  <div class="material-switch pull-right w3-margin-top">
+                      <input
+                          id="choice_1_true"
+                          name="is_answer[]"
+                          checked=""
+                          value="1"
+                          onchange="this.checked? this.value = 1 : this.value = 0"
+                          type="radio"/>
+                      <label for="choice_1_true" class="label-primary"></label>
+                  </div>
+              </td>
+          </tr>
+      </table>
+      </div>
+      <div class="modal-footer w3-center">
+        <button mat-raised-button class="w3-indigo" [disabled]="isSubmitted" (click)="send()" >
+          <span *ngIf="!isSubmitted" >{{ "submit" | trans }}</span>
+          <span *ngIf="isSubmitted" class="fa fa-spin fa-spinner" ></span>
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

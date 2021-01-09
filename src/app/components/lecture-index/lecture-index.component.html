@@ -21,7 +21,7 @@
             </li>
           </ul>
 
-          <button mat-raised-button class="btn w3-indigo app-button btn-block" (click)="addLecture()" >
+          <button mat-raised-button class="btn w3-indigo app-button btn-block" routerLink="/create-lecture"   >
             <b class="w3-right" >{{"add new lecture" | trans}}</b>
             <b class="w3-left fa fa-plus-circle" style="padding-top: 9px" ></b>
           </button>
@@ -96,30 +96,3 @@
 
 
 
-<!--- choice category form -->
-<div class="modal fade" tabindex="-1" role="dialog" id="choiceCategoryModal" >
-  <div class="modal-dialog" role="document">
-    <div class="modal-content light-gray">
-      <div class="modal-header w3-border-0">
-        <button type="button" class="close w3-text-red" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title text-center">{{ "choice course category do you want to register in it" | trans }}</h4>
-      </div>
-      <div class="modal-body">
-        <div class="w3-row">
-          <div class="col-lg-2" *ngFor="let category of categories" style="padding: 4px" >
-            <div class="w3-round material-shadow w3-padding theme-light text-center" >
-              <b>{{ category.name }}</b>
-              <br>
-              <mat-slide-toggle [(ngModel)]="importData.selected_category_id"  >
-              </mat-slide-toggle>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" style="margin: 3px" mat-raised-button data-dismiss="modal">{{ "close" | trans }}</button>
-        <button type="button" mat-raised-button class="theme-dark" style="margin: 3px" (click)="registerStudentFromExcel(2)" >{{ "next" | trans }}</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->

@@ -1,0 +1,126 @@
+<app-breadcrumb [breadcrumbList]="breadcrumbData"  ></app-breadcrumb>
+
+<div class="w3-light-gray w3-block w3-padding filter-section">
+  <div class="row">
+
+    <div class="col-lg-3 col-md-3 col-sm-6 w3-padding">
+      <input type="text"   class="app-select material-shadow w3-white" style="border-radius: 5em;" placeholder="{{ 'search with name' | trans }}"   [(ngModel)]="filter.search"   >
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-6 w3-padding">
+      <select class="app-select material-shadow w3-white" style="border-radius: 5em;" [(ngModel)]="filter.question_id" >
+        <option value="">{{ "select question" | trans }}</option>
+        <option *ngFor="let item of questions" value="{{ item.id }}">{{ item.name }}</option>
+      </select>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-6 w3-padding">
+      <select class="app-select material-shadow w3-white" style="border-radius: 5em;" [(ngModel)]="filter.question_level_id" >
+        <option value="">{{ "select type" | trans }}</option>
+        <option *ngFor="let item of types" value="{{ item.id }}">{{ item.name }}</option>
+      </select>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-6 w3-padding">
+      <select class="app-select material-shadow w3-white" style="border-radius: 5em;" [(ngModel)]="filter.question_category_id" >
+        <option value="">{{ "select type" | trans }}</option>
+        <option *ngFor="let item of categories" value="{{ item.id }}">{{ item.name }}</option>
+      </select>
+    </div>
+  </div>
+  <br>
+</div>
+<div class="w3-row">
+
+  <div class="col-lg-2 col-md-2 w3-padding">
+    <div class="w3-light-gray w3-round-large w3-padding">
+
+      <button mat-raised-button [disabled]="reload" class="w3-block w3-dark-gray w3-row app-button" (click)="get()" >
+        <b class="w3-right" >{{ "reload" | trans }}</b>
+        <i class="fa fa-refresh w3-left" style="padding-top: 10px;" *ngIf="!reload" ></i>
+        <i class="fa fa-refresh fa-spin w3-left" style="padding-top: 10px;" *ngIf="reload" ></i>
+      </button>
+
+      <button mat-raised-button  class="w3-block w3-indigo w3-row app-button" (click)="create()" >
+        <b class="w3-right" >{{ "add question" | trans }}</b>
+        <i class="fa fa-plus-circle w3-left" style="padding-top: 10px;"   ></i>
+      </button>
+
+      <button mat-raised-button  class="w3-block w3-teal w3-row app-button" (click)="get()" >
+        <b class="w3-right" >{{ "question_categories" | trans }}</b>
+        <i class="fa fa-desktop w3-left" style="padding-top: 10px;"   ></i>
+      </button>
+
+    </div>
+  </div>
+
+  <div class="col-lg-10 col-md-10 data-" style="overflow: auto;" >
+
+    <div class="w3-padding">
+      <table class="table table-bordered material-shadow w3-white">
+        <tr>
+          <th>{{ "text" | trans }}</th>
+          <th>{{ "question_level" | trans }}</th>
+          <th>{{ "type" | trans }}</th>
+          <th>{{ "question_category" | trans }}</th>
+          <th>{{ "active" | trans }}</th>
+          <th>{{ "image" | trans }}</th>
+          <th>{{ "" | trans }}</th>
+        </tr>
+        <tr>
+          <td colspan="7" class="w3-padding text-center w3-xlarge theme-text-dark" *ngIf="reload" ><span class="fa fa-spin fa-spinner" ></span></td>
+        </tr>
+        <tr>
+          <td colspan="7" class="w3-padding text-center w3-xlarge theme-text-dark" *ngIf="!reload && questions.length <= 0"  >
+            <span class="" >{{ "there is no data" | trans }}</span>
+          </td>
+        </tr>
+          <ng-container  *ngFor="let item of questions index as i">
+            <tr>
+              <td>{{ item.text }}</td>
+              <td>{{ item.level? item.question.name : '' }}</td>
+              <td>{{ item.type? item.type.name: '' }}</td>
+              <td>{{ item.category? item.category.name: '' }}</td>
+              <td>
+                <span class="fa fa-check-square w3-text-green" *ngIf="item.active" ></span>
+                <span class="fa fa-close w3-text-red" *ngIf="!item.active" ></span>
+              </td>
+              <td>
+                <img [src]="item.url" class="w3-round" width="40px" >
+              </td>
+              <td>
+                <button mat-icon-button class="w3-text-orange" style="margin: 5px" >
+                  <i class="fa fa-edit" ></i>
+                </button>
+                <button mat-icon-button class="w3-text-red" style="margin: 5px" >
+                  <i class="fa fa-trash" ></i>
+                </button>
+              </td>
+            </tr>
+        </ng-container>
+      </table>
+
+    </div>
+  </div>
+
+  <div class="col-lg-12 col-md-12 col-sm-12 text-center w3-center"  >
+    <nav aria-label="Page navigation">
+      <ul class="pagination">
+        <li>
+          <a  class="btn" [ngClass]="{'disabled': !response.prev_page}" (click)="get({page: response.prev_page})"
+            aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li *ngFor="let item of response.pages_arr">
+          <a class="btn" [ngClass]="{'active w3-indigo': response.current_page == item}" (click)="get({page: item})">{{ item }}</a>
+        </li>
+        <li>
+          <a  class="btn" [ngClass]="{'disabled': !response.next_page}" (click)="get({page: response.next_page})"
+            aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+</div>
+

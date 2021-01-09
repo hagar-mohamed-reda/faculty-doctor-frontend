@@ -1,0 +1,175 @@
+<app-breadcrumb [breadcrumbList]="breadcrumbData"></app-breadcrumb>
+
+<div class="w3-display-bottomleft w3-padding">
+  <button mat-fab color="primary"  data-toggle="modal" data-target="#formModal">{{ "new" | trans }}</button>
+</div>
+
+<div class="w3-light-gray w3-block w3-padding filter-section w3-padding">
+  <div class="row">
+
+    <div class="w3-col" style="width: auto!important;margin: 5px">
+      <div class=" material-shadow w3-white w3-padding" style="border-radius: 5em;">
+        {{ "course name" }}
+      </div>
+    </div>
+    <div class="w3-col" style="width: auto!important;margin: 5px">
+      <div class=" material-shadow w3-white w3-padding" style="border-radius: 5em;">
+        {{ "course name" }}
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-6 w3-padding">
+      <select class="app-select material-shadow w3-white" style="border-radius: 5em;" [(ngModel)]="filter.level_id"
+        (change)="filter.department_id=null">
+        <option value="">{{ "select lecture" | trans }}</option>
+        <option *ngFor="let item of levels" value="{{ item.id }}">{{ item.name }}</option>
+      </select>
+    </div>
+  </div>
+</div>
+<div class="w3-row">
+
+
+  <div class="col-lg-12" style="overflow: auto;">
+    <div class="row w3-padding">
+
+      <div class="col-lg-12 col-md-12 col-sm-12">
+
+
+
+      </div>
+
+
+      <div class="col-lg-12 w3-padding text-center w3-xlarge theme-text-dark" *ngIf="reload">
+        <span class="fa fa-spin fa-spinner"></span>
+      </div>
+
+      <div class="col-lg-12 w3-padding text-center w3-xlarge theme-text-dark" *ngIf="!reload && courses.length <= 0">
+        <span class="">{{ "there is no data" | trans }}</span>
+      </div>
+
+      <ng-container *ngFor="let item of courses index as i">
+
+        <div class="col-lg-12 col-md-12 col-sm-12" *ngIf="!reload">
+
+          <div class="post material-shadow w3-white w3-round w3-display-container w3-block w3-padding">
+            <div class="user-block w3-text-gray">
+              <app-app-avatar [url]="item.url" [icon]="'fa fa-user-circle'" [class]="'w3-round w3-col text-center'"
+                [width]="'50px'" [height]="'50px'"></app-app-avatar>
+              <span class="username" style="padding: 5px!important">
+                <a href="#">Jonathan Burke Jr.</a>
+              </span>
+              <span class="description" style="padding: 5px!important">Shared publicly - 7:30 PM today</span>
+            </div>
+            <div class="w3-large">
+              <b>assigment title</b>
+            </div>
+            <!-- /.user-block -->
+            <p style="width: 60%">
+              Lorem ipsum represents a long-held tradition for designers,
+              typographers and the like. Some people hate it and argue for
+              its demise, but others ignore the hate as they create awesome
+              tools to help create filler text for everyone from bacon lovers
+              to Charlie Sheen fans.
+            </p>
+            <button mat-raised-button class="w3-round light-gray"
+              style="width: 100px;border-radius: 5em;padding: 0px!important;margin: 3px">
+              <i class="fa fa-cloud-download w3-large"></i>
+            </button>
+            <button mat-raised-button class="w3-round light-gray"
+              style="width: 100px;border-radius: 5em;padding: 0px!important;margin: 3px">
+              <i class="fa fa-desktop w3-large"></i>
+            </button>
+            <br>
+            <br>
+            <ul class="list-inline">
+              <li>
+                <b>12-12-2020</b> ------------- <b>12-12-2020</b>
+              </li>
+              <li><a href="#" class="link-black text-sm"><i class="fa fa-cloud-upload margin-r-5"></i> uploads (100)
+                </a></li>
+            </ul>
+
+            <div class="w3-display-topleft w3-padding">
+              <div class="w3-padding theme-semi-dark w3-text-white w3-round" style="margin-bottom: 5px;border-radius: 5em;">{{ "course name" }}</div>
+              <div class="w3-padding theme-semi-dark w3-text-white w3-round" style="border-radius: 5em;">{{ "lecture name" }}</div>
+
+            </div>
+
+            <div class="w3-display-bottomleft w3-padding">
+              <button mat-mini-fab color="primary" >
+                <i class="fa fa-edit" ></i>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+
+      </ng-container>
+
+
+    </div>
+  </div>
+
+
+</div>
+
+
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="formModal" >
+  <div class="modal-dialog modal-lg" role="document">
+
+    <div class="post material-shadow light-gray w3-round w3-display-container w3-block w3-padding">
+      <div class="user-block w3-text-gray">
+        <app-app-avatar [url]="resource.url" [icon]="'fa fa-user-circle'" [class]="'w3-round w3-col text-center'"
+          [width]="'50px'" [height]="'50px'"></app-app-avatar>
+        <span class="username" style="padding: 5px!important">
+          <a href="#">Jonathan Burke Jr.</a>
+        </span>
+        <span class="description" style="padding: 5px!important">Shared publicly - 7:30 PM today</span>
+      </div>
+      <div class="w3-"  >
+        <b>{{ "assigment name" }}</b>
+        <input type="text" class="app-form" [(ngModel)]="resource.name">
+      </div>
+      <br>
+      <!-- /.user-block -->
+      <p >
+        <b>{{ "assigment description" }}</b>
+        <textarea class="app-form" [(ngModel)]="resource.description" cols="30"></textarea>
+      </p>
+      <button mat-raised-button class="w3-round light-gray"
+        style="width: 100px;border-radius: 5em;padding: 0px!important">
+        <i class="fa fa-cloud-upload w3-large"></i> {{ "upload file" }}
+      </button>
+      <input type="file" class="hidden assigment-input-file">
+      <br>
+      <br>
+      <ul class="list-inline">
+        <li>
+          <b><input type="date" class="w3-round" [(ngModel)]="resource.date_from"></b>
+          -------------
+          <b><input type="date" class="w3-round" [(ngModel)]="resource.date_to"></b>
+        </li>
+      </ul>
+      <br>
+      <button mat-raised-button color="primary" style="border-radius: 5em;">
+        {{ "submit" }}
+      </button>
+
+      <div class="w3-display-topleft w3-padding">
+        <select class="app-select material-shadow w3-white" style="border-radius: 5em;margin-bottom: 5px" [(ngModel)]="filter.level_id"
+          (change)="filter.department_id=null">
+          <option value="">{{ "select course" | trans }}</option>
+          <option *ngFor="let item of levels" value="{{ item.id }}">{{ item.name }}</option>
+        </select>
+        <select class="app-select material-shadow w3-white" style="border-radius: 5em;" [(ngModel)]="filter.level_id"
+          (change)="filter.department_id=null">
+          <option value="">{{ "select lecture" | trans }}</option>
+          <option *ngFor="let item of levels" value="{{ item.id }}">{{ item.name }}</option>
+        </select>
+      </div>
+    </div>
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
