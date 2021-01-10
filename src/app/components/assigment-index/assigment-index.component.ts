@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Auth } from 'src/app/shared/auth';
 import { Helper } from 'src/app/shared/helper';
 import { Message } from 'src/app/shared/message';
@@ -40,7 +41,7 @@ export class AssigmentIndexComponent implements OnInit {
    * filter inputs
    *
    */
-  public courses: any = [];
+  public assignments: any = [];
 
   /**
    * filter inputs
@@ -61,10 +62,22 @@ export class AssigmentIndexComponent implements OnInit {
   public levels: any = [];
 
   /**
-   * types of course
+   * types of assignment
    *
    */
   public types: any = [];
+
+  /**
+   * courses of assignment
+   *
+   */
+  public courses: any = [];
+
+  /**
+   * assignments of assignment
+   *
+   */
+  public lectures: any = [];
 
   /**
    * select item to edit it
@@ -72,8 +85,9 @@ export class AssigmentIndexComponent implements OnInit {
    */
   public departments: any = [];
 
+
   /**
-   * fields of course table
+   * fields of assignment table
    *
    */
   public fields: any = [
@@ -93,19 +107,19 @@ export class AssigmentIndexComponent implements OnInit {
    * url of import from excel api
    *
    */
-  public importApi = "courses/import";
+  public importApi = "assignments/import";
 
   /**
    * url of excel template file
    *
    */
-  public importTemplateUrl = environment.apiUrl + "/courses/import-file?api_token="+Auth.getApiToken();
+  public importTemplateUrl = environment.apiUrl + "/assignments/import-file?api_token="+Auth.getApiToken();
 
   /**
    * url of export api
    *
    */
-  public exportApi = "courses/export";
+  public exportApi = "assignments/export";
 
   /**
    * url of export api
@@ -120,13 +134,19 @@ export class AssigmentIndexComponent implements OnInit {
   public reload = false;
 
   /**
+   * isSubmitted
+   *
+   */
+  public isSubmitted = false;
+
+  /**
    * url of export api
    *
    */
   public archiveLoad = false;
 
 
-  constructor(private globalService: GlobalService) {
+  constructor(private globalService: GlobalService, private sanitizer: DomSanitizer) {
     this.action = () => { this.get(); };
   }
 
@@ -141,16 +161,16 @@ export class AssigmentIndexComponent implements OnInit {
   }
 
   /**
-   * load all course data
+   * load all assignment data
    *
    */
   get(data=null) {
     let params = (data)? data: this.filter;
     this.reload = true;
     this.archiveLoad = false;
-    this.globalService.get("courses", params).subscribe((res) => {
+    this.globalService.get("doctor/assignments", params).subscribe((res) => {
       this.response = res;
-      this.courses = this.response.data;
+      this.assignments = this.response.data;
       this.reload = false;
       //
       this.prePagniation();
@@ -158,37 +178,54 @@ export class AssigmentIndexComponent implements OnInit {
   }
 
   /**
-   * get all deleted courses
+   * load all assignment data
    *
    */
-  getArchive() {
-    this.reload = true;
-    this.archiveLoad = true;
-    this.globalService.get("courses/archive").subscribe((res) => {
-      this.courses = res;
-      this.reload = false;
+  loadDoctorCourses(data=null) {
+    this.globalService.get("doctor/courses").subscribe((res: any) => {
+      this.courses = res.data;
     });
   }
 
   /**
-   * show add course modal
+   * load all assignment data
    *
    */
-  create() {
-    this.$('#courseAddModal').modal('show');
+  loadDoctorLectures(data=null) {
+    this.globalService.get("doctor/lectures").subscribe((res) => {
+      this.lectures = res;
+    });
   }
 
   /**
-   * show add course modal
+   * filter with course
+   *
+   */
+  filterWithCourse(course_id) {
+    this.filter.course = course_id;
+    this.get();
+  }
+
+
+  /**
+   * show add assignment modal
+   *
+   */
+  create() {
+    this.$('#assignmentAddModal').modal('show');
+  }
+
+  /**
+   * show add assignment modal
    *
    */
   edit(item) {
     this.resource = item;
-    this.$('#courseEditModal').modal('show');
+    this.$('#assignmentEditModal').modal('show');
   }
 
   /**
-   * show import courses from excel file
+   * show import assignments from excel file
    *
    */
   import() {
@@ -196,7 +233,7 @@ export class AssigmentIndexComponent implements OnInit {
   }
 
   /**
-   * show export courses from excel file
+   * show export assignments from excel file
    *
    */
   export() {
@@ -204,40 +241,13 @@ export class AssigmentIndexComponent implements OnInit {
   }
 
   /**
-   * show export courses from excel file
+   * trust url
    *
    */
-  archive(item) {
-    let _this = this;
-    Message.confirm(Helper.trans("are you sure to arhive this item"), ()=>{
-      _this.globalService.destroy("courses/delete", item.id).subscribe((r: any)=>{
-        if (r.status == 1) {
-          Message.success(r.message);
-          this.get();
-        }
-        else
-          Message.error(r.message);
-      });
-    });
+  trustUrl(url) {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url)
   }
 
-  /**
-   * restore item from archive
-   *
-   */
-  restore(item) {
-    let _this = this;
-    Message.confirm(Helper.trans("are to restore item from archive"), ()=>{
-      _this.globalService.destroy("courses/restore", item.id).subscribe((r: any)=>{
-        if (r.status == 1) {
-          Message.success(r.message);
-          _this.getArchive();
-        }
-        else
-          Message.error(r.message);
-      });
-    });
-  }
 
   /**
    * load all filter data
@@ -271,9 +281,106 @@ export class AssigmentIndexComponent implements OnInit {
     this.document.nicescroll('.data-container', {height: height});
   }
 
+  loadFile(e, key) {
+    Helper.loadImage(e, key, this.resource);
+  }
+
+  validate() {
+    let valid = true;
+    if (!this.resource.course_id) {
+      valid = false;
+      Message.error(Helper.trans("choice course name"));
+    }
+    if (!this.resource.lecture_id) {
+      valid = false;
+      Message.error(Helper.trans("choice lecture name"));
+    }
+    if (!this.resource.name) {
+      valid = false;
+      Message.error(Helper.trans("write assigment name"));
+    }
+    if (!this.resource.degree) {
+      valid = false;
+      Message.error(Helper.trans("write assigment degree"));
+    }
+    if (!this.resource.file) {
+      valid = false;
+      Message.error(Helper.trans("upload assigment file"));
+    }
+    if (!this.resource.date_from || !this.resource.date_to) {
+      valid = false;
+      Message.error(Helper.trans("choice assigment dates"));
+    }
+    if (this.resource.date_from && this.resource.date_to) {
+      let time1 = new Date(this.resource.date_from).getTime();
+      let time2 = new Date(this.resource.date_to).getTime();
+      if (time1 >= time2) {
+        valid = false;
+        Message.error(Helper.trans("date to must be larger than date from"));
+      }
+    }
+    return valid;
+  }
+
+  /**
+   * send assignment object to api
+   *
+   */
+  send() {
+    if (this.resource.id)
+      this.update();
+    else
+      this.store();
+  }
+
+  /**
+   * store new assignment
+   *
+   */
+  store() {
+    console.log(this.resource);
+    if (!this.validate()) {
+      return;
+    }
+    this.isSubmitted = true;
+    this.globalService.store("doctor/assignments/store", Helper.toFormData(this.resource)).subscribe((res: any) => {
+      if (res.status == 1) {
+        Message.success(res.message);
+        this.resource = {};
+        this.get();
+      } else {
+        Message.error(res.message);
+      }
+      this.isSubmitted = false;
+    });
+  }
+
+  /**
+   * update assignment
+   *
+   */
+  update() {
+    console.log(this.resource);
+    if (!this.validate()) {
+      return;
+    }
+    this.isSubmitted = true;
+    this.globalService.store("doctor/assignments/update/"+this.resource.id, Helper.toFormData(this.resource)).subscribe((res: any) => {
+      if (res.status == 1) {
+        Message.success(res.message);
+      } else {
+        Message.error(res.message);
+      }
+      this.isSubmitted = false;
+    });
+  }
+
+
   ngOnInit() {
     this.initBreadcrumbData();
     this.loadSettings();
+    this.loadDoctorCourses();
+    this.loadDoctorLectures();
     let _this = this;
     //
     setTimeout(()=>{

@@ -9,21 +9,21 @@
         <div class="box-body box-profile">
           <img class="profile-user-img img-responsive img-circle" src="/assets/img/application.gif" alt="User profile picture">
 
-          <h3 class="profile-username text-center">Course name</h3>
+          <h3 class="profile-username text-center">{{ course.name }}</h3>
 
 
           <ul class="list-group list-group-unbordered">
             <li class="list-group-item">
-              <b>{{ "student register" | trans }}</b> <a class="pull-left">1,322</a>
+              <b>{{ "student register" | trans }}</b> <a class="pull-left">{{ course.register_student_count }}</a>
             </li>
             <li class="list-group-item">
-              <b>{{ "departments" | trans }}</b> <a class="pull-left">4</a>
+              <b>{{ "departments" | trans }}</b> <a class="pull-left">{{ course.department_count }}</a>
             </li>
           </ul>
 
-          <button mat-raised-button class="btn w3-indigo app-button btn-block" (click)="null" >
-            <b class="w3-right" >{{"add new lecture" | trans}}</b>
-            <b class="w3-left fa fa-plus-circle" style="padding-top: 9px" ></b>
+          <button mat-raised-button class="btn w3-indigo app-button btn-block"  [routerLink]="['/lectures/', course.id]" >
+            <b class="w3-right" >{{"back" | trans}}</b>
+            <b class="w3-left fa fa-reply" style="padding-top: 9px"    ></b>
           </button>
         </div>
         <!-- /.box-body -->
@@ -40,32 +40,32 @@
           <strong><i class="fa fa-book margin-r-5"></i> {{"description" | trans}}</strong>
 
           <p class="text-muted">
-            {{ resource.description }}
+            {{ course.description }}
           </p>
 
           <hr>
 
           <strong><i class="fa fa-clock-o margin-r-5"></i> {{"credit_hour" | trans}}</strong>
 
-          <p class="text-muted">{{ resource.credit_hour }}</p>
+          <p class="text-muted">{{ course.credit_hour }}</p>
 
           <hr>
 
           <strong><i class="fa fa-level-up margin-r-5"></i> {{"level" | trans}}</strong>
 
-          <p class="text-muted">{{ resource.level }}</p>
+          <p class="text-muted">{{ course.level? course.level.name : '' }}</p>
 
           <hr>
 
           <strong><i class="fa fa-graduation-cap margin-r-5"></i> {{"large_degree" | trans}}</strong>
 
-          <p class="text-muted">{{ resource.large_degree }}</p>
+          <p class="text-muted">{{ course.large_degree }}</p>
 
           <hr>
 
           <strong><i class="fa fa-check-square margin-r-5"></i> {{"active" | trans}}</strong>
 
-          <p class="text-muted">{{ resource.active }}</p>
+          <p class="text-muted">{{ course.active }}</p>
 
         </div>
         <!-- /.box-body -->
@@ -74,98 +74,142 @@
     </div>
     <!-- /.col -->
     <div class="col-md-9 w3-padding">
-      <div class="material-shadow w3-padding w3-white w3-round text-center  w3-display-container">
+      <div class="material-shadow w3-padding w3-white w3-display-container">
 
         <ul class="timeline timeline-inverse">
           <!-- timeline time label -->
-          <li class="time-label">
+          <li class="time-label hidden">
                 <span class="bg-red">
-                  10 Feb. 2014
+                  {{ "lecture name" | trans }}
                 </span>
           </li>
           <!-- /.timeline-label -->
           <!-- timeline item -->
           <li>
-            <i class="fa fa-envelope bg-blue"></i>
+            <i class="fa fa-edit theme-semi-dark w3-text-white"></i>
 
             <div class="timeline-item">
-              <span class="time"><i class="fa fa-clock-o"></i> 12:05</span>
 
-              <h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
+              <h3 class="timeline-header"> {{ resource.name }} </h3>
 
-              <div class="timeline-body">
-                Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
-                weebly ning heekya handango imeem plugg dopplr jibjab, movity
-                jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
-                quora plaxo ideeli hulu weebly balihoo...
-              </div>
-              <div class="timeline-footer">
-                <a class="btn btn-primary btn-xs">Read more</a>
-                <a class="btn btn-danger btn-xs">Delete</a>
-              </div>
             </div>
           </li>
           <!-- END timeline item -->
+          <!-- timeline time label -->
+          <li class="time-label hidden" *ngIf="resource.file1_url || resource.file2_url" >
+                <span class="bg-red">
+                  -- {{ "files" | trans }} --
+                </span>
+          </li>
+          <!-- /.timeline-label -->
           <!-- timeline item -->
-          <li>
-            <i class="fa fa-user bg-aqua"></i>
+          <li *ngIf="resource.file1_url || resource.file2_url">
+            <i class="fa fa-file-o theme-semi-dark w3-text-white"></i>
 
             <div class="timeline-item">
-              <span class="time"><i class="fa fa-clock-o"></i> 5 mins ago</span>
 
-              <h3 class="timeline-header no-border"><a href="#">Sarah Young</a> accepted your friend request
+              <h3 class="timeline-header" >
+                {{ "files" | trans }}
+
               </h3>
+              <div class="timeline-body" *ngIf="resource.file1_url">
+                <a target="_blank"[href]="resource.file1_url" >
+                  {{ "download file1" | trans }}
+                </a>
+              </div>
+              <div class="timeline-body" *ngIf="resource.file2_url">
+                <a target="_blank"[href]="resource.file2_url" >
+                  {{ "download file2" | trans }}
+                </a>
+              </div>
+
             </div>
           </li>
           <!-- END timeline item -->
+          <!-- timeline time label -->
+          <li class="time-label hidden">
+                <span class="bg-red">
+                  -- {{ "video" | trans }} --
+                </span>
+          </li>
+          <!-- /.timeline-label -->
           <!-- timeline item -->
-          <li>
-            <i class="fa fa-comments bg-yellow"></i>
+          <li *ngIf="resource.video_url">
+            <i class="fa fa-video-camera theme-semi-dark w3-text-white"></i>
 
             <div class="timeline-item">
-              <span class="time"><i class="fa fa-clock-o"></i> 27 mins ago</span>
 
-              <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
+              <h3 class="timeline-header"> {{ "lecture video" | trans }} </h3>
 
               <div class="timeline-body">
-                Take me to your leader!
-                Switzerland is small and neutral!
-                We are more like Germany, ambitious and misunderstood!
-              </div>
-              <div class="timeline-footer">
-                <a class="btn btn-warning btn-flat btn-xs">View comment</a>
+                <div class="video-container" *ngIf="resource.video_url" >
+                  <video [src]="resource.video_url" autoplay  controls style="width: 100%;" ></video>
+                </div>
               </div>
             </div>
           </li>
           <!-- END timeline item -->
           <!-- timeline time label -->
-          <li class="time-label">
-                <span class="bg-green">
-                  3 Jan. 2014
+          <li class="time-label hidden">
+                <span class="bg-red">
+                   {{ "youtube_url" | trans }}
                 </span>
           </li>
           <!-- /.timeline-label -->
           <!-- timeline item -->
-          <li>
-            <i class="fa fa-camera bg-purple"></i>
+          <li *ngIf="resource.youtube_url">
+            <i class="fa fa-youtube-play theme-semi-dark w3-text-white"></i>
 
             <div class="timeline-item">
-              <span class="time"><i class="fa fa-clock-o"></i> 2 days ago</span>
 
-              <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
+              <h3 class="timeline-header"> {{ "youtube video" | trans }} </h3>
 
               <div class="timeline-body">
-                <img src="http://placehold.it/150x100" alt="..." class="margin">
-                <img src="http://placehold.it/150x100" alt="..." class="margin">
-                <img src="http://placehold.it/150x100" alt="..." class="margin">
-                <img src="http://placehold.it/150x100" alt="..." class="margin">
+                <iframe
+                *ngIf="resource.youtube_url"
+                style="width: 100%"
+                height="315"
+                [src]="resource.youtube_embeded_url"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
               </div>
             </div>
           </li>
           <!-- END timeline item -->
-          <li>
-            <i class="fa fa-clock-o bg-gray"></i>
+          <!-- timeline time label -->
+          <li class="time-label hidden">
+                <span class="bg-red">
+                   {{ "date" | trans }}
+                </span>
           </li>
+          <!-- /.timeline-label -->
+
+          <!-- timeline time label -->
+          <li class="time-label hidden">
+                <span class="bg-red">
+                   {{ "description" | trans }}
+                </span>
+          </li>
+          <!-- /.timeline-label -->
+          <!-- timeline item -->
+          <li *ngIf="resource.description">
+            <i class="fa fa-text-width theme-semi-dark w3-text-white"></i>
+
+            <div class="timeline-item">
+
+              <h3 class="timeline-header"> {{ "description of lecture" | trans }} </h3>
+
+              <div class="timeline-body">
+                <b>
+                  {{ resource.description }}
+                </b>
+              </div>
+            </div>
+          </li>
+          <!-- END timeline item -->
+
+
+
         </ul>
 
       </div>

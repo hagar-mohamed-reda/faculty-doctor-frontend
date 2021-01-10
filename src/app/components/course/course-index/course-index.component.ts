@@ -148,25 +148,12 @@ export class CourseIndexComponent implements OnInit {
     let params = (data)? data: this.filter;
     this.reload = true;
     this.archiveLoad = false;
-    this.globalService.get("courses", params).subscribe((res) => {
+    this.globalService.get("doctor/courses", params).subscribe((res) => {
       this.response = res;
       this.courses = this.response.data;
       this.reload = false;
       //
       this.prePagniation();
-    });
-  }
-
-  /**
-   * get all deleted courses
-   *
-   */
-  getArchive() {
-    this.reload = true;
-    this.archiveLoad = true;
-    this.globalService.get("courses/archive").subscribe((res) => {
-      this.courses = res;
-      this.reload = false;
     });
   }
 
@@ -203,41 +190,7 @@ export class CourseIndexComponent implements OnInit {
     this.$('#exportExcelModal').modal('show');
   }
 
-  /**
-   * show export courses from excel file
-   *
-   */
-  archive(item) {
-    let _this = this;
-    Message.confirm(Helper.trans("are you sure to arhive this item"), ()=>{
-      _this.globalService.destroy("courses/delete", item.id).subscribe((r: any)=>{
-        if (r.status == 1) {
-          Message.success(r.message);
-          this.get();
-        }
-        else
-          Message.error(r.message);
-      });
-    });
-  }
 
-  /**
-   * restore item from archive
-   *
-   */
-  restore(item) {
-    let _this = this;
-    Message.confirm(Helper.trans("are to restore item from archive"), ()=>{
-      _this.globalService.destroy("courses/restore", item.id).subscribe((r: any)=>{
-        if (r.status == 1) {
-          Message.success(r.message);
-          _this.getArchive();
-        }
-        else
-          Message.error(r.message);
-      });
-    });
-  }
 
   /**
    * load all filter data

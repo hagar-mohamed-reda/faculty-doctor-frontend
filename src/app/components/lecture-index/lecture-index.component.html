@@ -9,19 +9,19 @@
         <div class="box-body box-profile">
           <img class="profile-user-img img-responsive img-circle" src="/assets/img/application.gif" alt="User profile picture">
 
-          <h3 class="profile-username text-center">Course name</h3>
+          <h3 class="profile-username text-center">{{ resource.name }}</h3>
 
 
           <ul class="list-group list-group-unbordered">
             <li class="list-group-item">
-              <b>{{ "student register" | trans }}</b> <a class="pull-left">1,322</a>
+              <b>{{ "student register" | trans }}</b> <a class="pull-left">{{ resource.register_student_count | number }}</a>
             </li>
             <li class="list-group-item">
-              <b>{{ "departments" | trans }}</b> <a class="pull-left">4</a>
+              <b>{{ "departments" | trans }}</b> <a class="pull-left">{{ resource.department_count | number }}</a>
             </li>
           </ul>
 
-          <button mat-raised-button class="btn w3-indigo app-button btn-block" routerLink="/create-lecture"   >
+          <button mat-raised-button class="btn w3-indigo app-button btn-block" [routerLink]="'/create-lecture'" [queryParams]="{course_id: resource.id}"   >
             <b class="w3-right" >{{"add new lecture" | trans}}</b>
             <b class="w3-left fa fa-plus-circle" style="padding-top: 9px" ></b>
           </button>
@@ -53,7 +53,7 @@
 
           <strong><i class="fa fa-level-up margin-r-5"></i> {{"level" | trans}}</strong>
 
-          <p class="text-muted">{{ resource.level }}</p>
+          <p class="text-muted">{{ resource.level? resource.level.name : '' }}</p>
 
           <hr>
 
@@ -75,17 +75,25 @@
     <!-- /.col -->
     <div class="col-md-9 w3-padding">
       <div class="w3-row">
-        <div class="col-lg-2 col-md-3 col-sm-6">
-          <div class="material-shadow w3-padding w3-white w3-round text-center  w3-display-container">
-            <img src="/assets/img/lecture.svg" class="w3-block" alt="">
+
+        <div class="col-lg-2 col-md-3 col-sm-6" style="padding: 5px;cursor: pointer"
+        *ngFor="let item of lectures" >
+          <div routerLink="/show-lecture" [queryParams]="{lecture_id: item.id, course_id: resource.id}" class="material-shadow w3-padding w3-white w3-round text-center  w3-display-container">
             <br>
-            <b>{{ "lecture name" }}</b>
+            <img src="/assets/img/lecture.png" class="w3-block" alt="">
+            <br>
+            <b>{{ item.name }}</b>
+
+            <div class="w3-padding w3-display-topleft">
+              <button mat-mini-fab color="warn"  [routerLink]="'/create-lecture'" [queryParams]="{course_id: resource.id, lecture_id: item.id}" ><i class="fa fa-edit"></i></button>
+             </div>
 
             <div class="w3-padding w3-display-topleft hidden">
               <span class="fa fa-check-square w3-text-green w3-large" ></span>
             </div>
           </div>
         </div>
+
       </div>
       <!-- /.nav-tabs-custom -->
     </div>

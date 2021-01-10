@@ -9,21 +9,22 @@
         <div class="box-body box-profile">
           <img class="profile-user-img img-responsive img-circle" src="/assets/img/application.gif" alt="User profile picture">
 
-          <h3 class="profile-username text-center">Course name</h3>
+          <h3 class="profile-username text-center">{{ course.name }}</h3>
 
 
           <ul class="list-group list-group-unbordered">
             <li class="list-group-item">
-              <b>{{ "student register" | trans }}</b> <a class="pull-left">1,322</a>
+              <b>{{ "student register" | trans }}</b> <a class="pull-left">{{ course.register_student_count }}</a>
             </li>
             <li class="list-group-item">
-              <b>{{ "departments" | trans }}</b> <a class="pull-left">4</a>
+              <b>{{ "departments" | trans }}</b> <a class="pull-left">{{ course.department_count }}</a>
             </li>
           </ul>
 
-          <button mat-raised-button class="btn w3-indigo app-button btn-block" (click)="null" >
+          <button mat-raised-button class="btn w3-indigo app-button btn-block" [disabled]="isSubmitted" (click)="send()" >
             <b class="w3-right" >{{"submit" | trans}}</b>
-            <b class="w3-left fa fa-send-o" style="padding-top: 9px" ></b>
+            <b class="w3-left fa fa-send-o" style="padding-top: 9px" *ngIf="!isSubmitted" ></b>
+            <b class="w3-left fa fa-spin fa-spinner" style="padding-top: 9px" *ngIf="isSubmitted" ></b>
           </button>
         </div>
         <!-- /.box-body -->
@@ -40,32 +41,32 @@
           <strong><i class="fa fa-book margin-r-5"></i> {{"description" | trans}}</strong>
 
           <p class="text-muted">
-            {{ resource.description }}
+            {{ course.description }}
           </p>
 
           <hr>
 
           <strong><i class="fa fa-clock-o margin-r-5"></i> {{"credit_hour" | trans}}</strong>
 
-          <p class="text-muted">{{ resource.credit_hour }}</p>
+          <p class="text-muted">{{ course.credit_hour }}</p>
 
           <hr>
 
           <strong><i class="fa fa-level-up margin-r-5"></i> {{"level" | trans}}</strong>
 
-          <p class="text-muted">{{ resource.level }}</p>
+          <p class="text-muted">{{ course.level? course.level.name : '' }}</p>
 
           <hr>
 
           <strong><i class="fa fa-graduation-cap margin-r-5"></i> {{"large_degree" | trans}}</strong>
 
-          <p class="text-muted">{{ resource.large_degree }}</p>
+          <p class="text-muted">{{ course.large_degree }}</p>
 
           <hr>
 
           <strong><i class="fa fa-check-square margin-r-5"></i> {{"active" | trans}}</strong>
 
-          <p class="text-muted">{{ resource.active }}</p>
+          <p class="text-muted">{{ course.active }}</p>
 
         </div>
         <!-- /.box-body -->
@@ -115,12 +116,20 @@
 
               <div class="timeline-body">
                 <input type="file" class="app-form" (change)="loadFile($event, 'file1')" >
+                <br>
+                <a target="_blank" *ngIf="resource.file1" [href]="resource.file1_url" >
+                  {{ resource.file1.name }}
+                </a>
               </div>
               <h3 class="timeline-header"> {{ "upload file 2" | trans }} </h3>
 
               <div class="timeline-body">
                 <input type="file" class="app-form" (change)="loadFile($event, 'file2')" >
               </div>
+              <br>
+              <a target="_blank" *ngIf="resource.file2" [href]="resource.file2_url" >
+                {{ resource.file2.name }}
+              </a>
             </div>
           </li>
           <!-- END timeline item -->
@@ -141,6 +150,10 @@
 
               <div class="timeline-body">
                 <input type="file" class="app-form" (change)="loadFile($event, 'video')" >
+                <br>
+                <div class="video-container" *ngIf="resource.video_url" >
+                  <video [src]="resource.video_url" autoplay  controls style="width: 100%;" ></video>
+                </div>
               </div>
             </div>
           </li>
@@ -161,7 +174,15 @@
               <h3 class="timeline-header"> {{ "past youtube url" | trans }} </h3>
 
               <div class="timeline-body">
-                <input type="url" class="app-form" [(ngModel)]="resource.youtube_url" >
+                <input type="url" class="app-form" (change)="getYouTubeEmbededUrl()" [(ngModel)]="resource.youtube_url" >
+                <br>
+                <iframe
+                *ngIf="resource.youtube_url"
+                style="width: 100%"
+                height="315"
+                [src]="resource.youtube_embeded_url"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
               </div>
             </div>
           </li>

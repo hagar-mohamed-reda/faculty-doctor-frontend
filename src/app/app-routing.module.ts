@@ -28,6 +28,10 @@ const routes: Routes = [
         component: LectureIndexComponent
       },
       {
+        path: 'show-lecture',
+        component: LectureShowComponent
+      },
+      {
         path: 'create-lecture',
         component: LectureCreateComponent
       },

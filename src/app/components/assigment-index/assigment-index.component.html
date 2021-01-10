@@ -1,27 +1,28 @@
 <app-breadcrumb [breadcrumbList]="breadcrumbData"></app-breadcrumb>
 
-<div class="w3-display-bottomleft w3-padding">
+<div class="w3-display-bottomleft w3-padding" style="position: fixed;z-index: 9999" >
   <button mat-fab color="primary"  data-toggle="modal" data-target="#formModal">{{ "new" | trans }}</button>
 </div>
 
 <div class="w3-light-gray w3-block w3-padding filter-section w3-padding">
   <div class="row">
 
-    <div class="w3-col" style="width: auto!important;margin: 5px">
-      <div class=" material-shadow w3-white w3-padding" style="border-radius: 5em;">
-        {{ "course name" }}
-      </div>
-    </div>
-    <div class="w3-col" style="width: auto!important;margin: 5px">
-      <div class=" material-shadow w3-white w3-padding" style="border-radius: 5em;">
-        {{ "course name" }}
-      </div>
+    <div class="col-lg-2 col-md-2 col-sm-6 w3-padding">
+      <select class="app-select material-shadow w3-white"
+      (change)="filter.lecture_id=null"
+      style="border-radius: 5em;" [(ngModel)]="filter.course_id"  >
+        <option value="">{{ "select course" | trans }}</option>
+        <ng-container  *ngFor="let item of courses">
+          <option  value="{{ item.id }}">{{ item.name }}</option>
+        </ng-container>
+      </select>
     </div>
     <div class="col-lg-2 col-md-2 col-sm-6 w3-padding">
-      <select class="app-select material-shadow w3-white" style="border-radius: 5em;" [(ngModel)]="filter.level_id"
-        (change)="filter.department_id=null">
+      <select class="app-select material-shadow w3-white" style="border-radius: 5em;" [(ngModel)]="filter.lecture_id"  >
         <option value="">{{ "select lecture" | trans }}</option>
-        <option *ngFor="let item of levels" value="{{ item.id }}">{{ item.name }}</option>
+        <ng-container  *ngFor="let item of lectures">
+          <option *ngIf="item.course_id == filter.course_id" value="{{ item.id }}">{{ item.name }}</option>
+        </ng-container>
       </select>
     </div>
   </div>
@@ -47,51 +48,53 @@
         <span class="">{{ "there is no data" | trans }}</span>
       </div>
 
-      <ng-container *ngFor="let item of courses index as i">
+      <ng-container *ngFor="let item of assignments index as i">
 
         <div class="col-lg-12 col-md-12 col-sm-12" *ngIf="!reload">
 
           <div class="post material-shadow w3-white w3-round w3-display-container w3-block w3-padding">
             <div class="user-block w3-text-gray">
-              <app-app-avatar [url]="item.url" [icon]="'fa fa-user-circle'" [class]="'w3-round w3-col text-center'"
+              <app-app-avatar
+              [url]="item.doctor? item.doctor.url : null"
+              [icon]="'fa fa-user-circle'" [class]="'w3-round w3-col text-center'"
                 [width]="'50px'" [height]="'50px'"></app-app-avatar>
               <span class="username" style="padding: 5px!important">
-                <a href="#">Jonathan Burke Jr.</a>
+                <a href="#">{{ item.doctor? item.doctor.name : '' }}</a>
               </span>
-              <span class="description" style="padding: 5px!important">Shared publicly - 7:30 PM today</span>
+              <span class="description" style="padding: 5px!important">{{ item.created_at | date:'Y-m-d h:i:s' }}</span>
             </div>
-            <div class="w3-large">
-              <b>assigment title</b>
+            <div class="w3-large" *ngIf="item.name">
+              <b>{{ item.name }}</b>
             </div>
             <!-- /.user-block -->
-            <p style="width: 60%">
-              Lorem ipsum represents a long-held tradition for designers,
-              typographers and the like. Some people hate it and argue for
-              its demise, but others ignore the hate as they create awesome
-              tools to help create filler text for everyone from bacon lovers
-              to Charlie Sheen fans.
+            <p style="width: 60%" *ngIf="item.description" >
+              {{ item.description }}
             </p>
-            <button mat-raised-button class="w3-round light-gray"
+            <a mat-raised-button class="w3-round light-gray"
+              [href]="trustUrl(item.file_url)"
+              target="_blank"
               style="width: 100px;border-radius: 5em;padding: 0px!important;margin: 3px">
               <i class="fa fa-cloud-download w3-large"></i>
-            </button>
-            <button mat-raised-button class="w3-round light-gray"
+            </a>
+            <a mat-raised-button class="w3-round light-gray"
+              [href]="trustUrl(item.file_url)"
+              target="_blank"
               style="width: 100px;border-radius: 5em;padding: 0px!important;margin: 3px">
               <i class="fa fa-desktop w3-large"></i>
-            </button>
+            </a>
             <br>
             <br>
             <ul class="list-inline">
               <li>
-                <b>12-12-2020</b> ------------- <b>12-12-2020</b>
+                <b>{{ item.date_from | date }}</b> ------------- <b>{{ item.date_to | date }}</b>
               </li>
-              <li><a href="#" class="link-black text-sm"><i class="fa fa-cloud-upload margin-r-5"></i> uploads (100)
+              <li><a class="link-black text-sm"><i class="fa fa-cloud-upload margin-r-5"></i> uploads ({{ item.uploads }})
                 </a></li>
             </ul>
 
             <div class="w3-display-topleft w3-padding">
-              <div class="w3-padding theme-semi-dark w3-text-white w3-round" style="margin-bottom: 5px;border-radius: 5em;">{{ "course name" }}</div>
-              <div class="w3-padding theme-semi-dark w3-text-white w3-round" style="border-radius: 5em;">{{ "lecture name" }}</div>
+              <div class="w3-padding theme-semi-dark w3-text-white w3-round text-center" style="margin-bottom: 5px;border-radius: 5em;">{{ item.course? item.course.name : '' }}</div>
+              <div class="w3-padding theme-semi-dark w3-text-white w3-round text-center" style="border-radius: 5em;">{{ item.lecture? item.lecture.name : '' }}</div>
 
             </div>
 
@@ -127,11 +130,17 @@
         <span class="username" style="padding: 5px!important">
           <a href="#">Jonathan Burke Jr.</a>
         </span>
-        <span class="description" style="padding: 5px!important">Shared publicly - 7:30 PM today</span>
       </div>
+      <br>
+      <br>
       <div class="w3-"  >
         <b>{{ "assigment name" }}</b>
         <input type="text" class="app-form" [(ngModel)]="resource.name">
+      </div>
+      <br>
+      <div class="w3-"  >
+        <b>{{ "assigment degree" }}</b>
+        <input type="number" class="app-form" [(ngModel)]="resource.degree">
       </div>
       <br>
       <!-- /.user-block -->
@@ -140,10 +149,13 @@
         <textarea class="app-form" [(ngModel)]="resource.description" cols="30"></textarea>
       </p>
       <button mat-raised-button class="w3-round light-gray"
+        (click)="$('.assigment-input-file').click()"
         style="width: 100px;border-radius: 5em;padding: 0px!important">
         <i class="fa fa-cloud-upload w3-large"></i> {{ "upload file" }}
       </button>
-      <input type="file" class="hidden assigment-input-file">
+      <input type="file" class="hidden assigment-input-file" (change)="loadFile($event, 'file')" >
+      <br>
+      <b *ngIf="resource.file" >{{ resource.file.name }}</b>
       <br>
       <br>
       <ul class="list-inline">
@@ -154,20 +166,30 @@
         </li>
       </ul>
       <br>
-      <button mat-raised-button color="primary" style="border-radius: 5em;">
-        {{ "submit" }}
+      <button mat-raised-button
+      [disabled]="isSubmitted"
+      (click)="send()"
+      color="primary" style="border-radius: 5em;">
+        <i *ngIf="!isSubmitted" >{{ "submit" }}</i>
+        <i class="fa fa-spin fa-spinner" *ngIf="isSubmitted" ></i>
       </button>
 
       <div class="w3-display-topleft w3-padding">
-        <select class="app-select material-shadow w3-white" style="border-radius: 5em;margin-bottom: 5px" [(ngModel)]="filter.level_id"
-          (change)="filter.department_id=null">
+        <b>{{ "select course" | trans }}</b>
+        <select class="app-select material-shadow w3-white"
+        (change)="filter.lecture_id=null"
+        style="border-radius: 5em;" [(ngModel)]="resource.course_id"  >
           <option value="">{{ "select course" | trans }}</option>
-          <option *ngFor="let item of levels" value="{{ item.id }}">{{ item.name }}</option>
+          <ng-container  *ngFor="let item of courses">
+            <option  value="{{ item.id }}">{{ item.name }}</option>
+          </ng-container>
         </select>
-        <select class="app-select material-shadow w3-white" style="border-radius: 5em;" [(ngModel)]="filter.level_id"
-          (change)="filter.department_id=null">
+        <b>{{ "select lecture" | trans }}</b>
+        <select class="app-select material-shadow w3-white" style="border-radius: 5em;" [(ngModel)]="resource.lecture_id"  >
           <option value="">{{ "select lecture" | trans }}</option>
-          <option *ngFor="let item of levels" value="{{ item.id }}">{{ item.name }}</option>
+          <ng-container  *ngFor="let item of lectures">
+            <option *ngIf="item.course_id == resource.course_id" value="{{ item.id }}">{{ item.name }}</option>
+          </ng-container>
         </select>
       </div>
     </div>

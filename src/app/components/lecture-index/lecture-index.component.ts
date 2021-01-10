@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, ActivatedRouteSnapshot, RouterLinkActive } from '@angular/router';
+import { GlobalService } from 'src/app/shared/services/global.service';
 
 @Component({
   selector: 'app-lecture-index',
@@ -38,15 +40,18 @@ export class LectureIndexComponent implements OnInit {
    * import data will be sent
    *
    */
-  categories: any = [
-    {"name": 'مج 1'},
-    {"name": 'مج 2'}
-  ];
+  lectures: any = [];
 
 
-  constructor() {
-    this.resource.name = "course name";
+  constructor(private router: ActivatedRoute, private globalService: GlobalService) {
+    this.resource.name = "lecture name";
 
+    this.router.paramMap.subscribe((res) => {
+      console.log(res.get('id'));
+      if (res.has('id'))  {
+        this.loadCourse(res.get('id'));
+      }
+    });
   }
 
   /**
@@ -55,7 +60,7 @@ export class LectureIndexComponent implements OnInit {
    */
   initBreadcrumbData() {
     this.breadcrumbData = [
-      {name: "courses", url: "/courses"},
+      {name: "lectures", url: "/lectures"},
       {name: this.resource.name, url: '#', active: 1}
     ];
   }
@@ -68,21 +73,13 @@ export class LectureIndexComponent implements OnInit {
       this.$('#choiceCategoryModal').modal('show');
   }
 
-  /**
-   * show modal of register doctor
-   *
-   */
-  registerDoctorModal() {
-    this.$('#registerCourseToDoctor').modal('show');
+  loadCourse(id) {
+    this.globalService.get('doctor/courses/'+id).subscribe((res) => {
+      this.resource = res;
+      this.lectures = this.resource.lectures;
+    });
   }
 
-  /**
-   * show modal of register students
-   *
-   */
-  registerStudentModal() {
-    this.$('#registerCourseToStudent').modal('show');
-  }
 
   ngOnInit() {
     this.initBreadcrumbData();
