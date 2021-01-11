@@ -212,7 +212,8 @@ export class AssigmentIndexComponent implements OnInit {
    *
    */
   create() {
-    this.$('#assignmentAddModal').modal('show');
+    this.resource = {};
+    this.$('#formModal').modal('show');
   }
 
   /**
@@ -221,7 +222,8 @@ export class AssigmentIndexComponent implements OnInit {
    */
   edit(item) {
     this.resource = item;
-    this.$('#assignmentEditModal').modal('show');
+    this.resource.file = null;
+    this.$('#formModal').modal('show');
   }
 
   /**
@@ -303,7 +305,7 @@ export class AssigmentIndexComponent implements OnInit {
       valid = false;
       Message.error(Helper.trans("write assigment degree"));
     }
-    if (!this.resource.file) {
+    if (!this.resource.file && !this.resource.id) {
       valid = false;
       Message.error(Helper.trans("upload assigment file"));
     }
@@ -368,6 +370,7 @@ export class AssigmentIndexComponent implements OnInit {
     this.globalService.store("doctor/assignments/update/"+this.resource.id, Helper.toFormData(this.resource)).subscribe((res: any) => {
       if (res.status == 1) {
         Message.success(res.message);
+        this.get();
       } else {
         Message.error(res.message);
       }
@@ -375,6 +378,23 @@ export class AssigmentIndexComponent implements OnInit {
     });
   }
 
+  /**
+   * show export questions from excel file
+   *
+   */
+  archive(item) {
+    let _this = this;
+    Message.confirm(Helper.trans("are you sure"), ()=>{
+      _this.globalService.destroy("doctor/assignments/delete", item.id).subscribe((r: any)=>{
+        if (r.status == 1) {
+          Message.success(r.message);
+          this.get();
+        }
+        else
+          Message.error(r.message);
+      });
+    });
+  }
 
   ngOnInit() {
     this.initBreadcrumbData();

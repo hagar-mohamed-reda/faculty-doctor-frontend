@@ -1,4 +1,4 @@
-<div class="modal fade" id="{{ editable? 'courseEditModal' : 'courseAddModal' }}" tabindex="-1" role="dialog">
+<div class="modal fade" id="{{ editable? 'questionEditModal' : 'questionAddModal' }}" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content light-gray">
       <div class="modal-header w3-border-0" >
@@ -7,40 +7,42 @@
       </div>
       <div class="modal-body">
         <table class="table" >
-          <tr class="hidden" >
-            <td  colspan="2">
-              <img [src]="resource.url" alt="">
-              <input type="file" class="app-form" (change)="loadFile()" [(ngModel)]="resource.image" >
+          <tr class="" >
+            <td  colspan="2" class="text-center w3-padding" >
+              <img [src]="resource.image_url" class="w3-block" *ngIf="resource.image_url" >
+              <button mat-raised-button style="border-radius: 5em;" (click)="$(editable? '.image-input' : '.edit-image-input').click()" >
+                <i class="fa fa-cloud-upload " ></i> {{ "upload image" | trans }}
+              </button>
+              <br>
+              <input type="file" class="app-form hidden {{ editable? 'image-input' : 'edit-image-input' }}" (change)="loadFile($event, 'image')" [(ngModel)]="resource.image" >
             </td>
           </tr>
           <tr>
             <th>{{ "text" | trans }} *</th>
             <td>
-              <input type="text" class="app-form" [(ngModel)]="resource.name" >
+              <input type="text" class="app-form" [(ngModel)]="resource.text" >
             </td>
           </tr>
           <tr>
-            <th>{{ "code" | trans }} *</th>
+            <th>{{ "course" | trans }} *</th>
             <td>
-              <input type="text" class="app-form" [(ngModel)]="resource.code" >
+              <select class="app-form" [(ngModel)]="resource.course_id">
+                <option *ngFor="let item of courses" value="{{ item.id }}" >{{ item.name }}</option>
+              </select>
             </td>
           </tr>
           <tr>
-            <th>{{ "credit_hour" | trans }} *</th>
+            <th>{{ "question_category" | trans }} *</th>
             <td>
-              <input type="number" class="app-form" [(ngModel)]="resource.credit_hour" >
-            </td>
-          </tr>
-          <tr>
-            <th>{{ "final_degree" | trans }} *</th>
-            <td>
-              <input type="number" class="app-form" [(ngModel)]="resource.final_degree" >
+              <select class="app-form" [(ngModel)]="resource.question_category_id">
+                <option *ngFor="let item of categories" value="{{ item.id }}" >{{ item.name }}</option>
+              </select>
             </td>
           </tr>
           <tr>
             <th>{{ "question_type" | trans }} *</th>
             <td>
-              <select class="app-form" [(ngModel)]="resource.question_type_id">
+              <select class="app-form" [(ngModel)]="resource.question_type_id" (change)="initQuestionChoices()" >
                 <option *ngFor="let type of types" value="{{ type.id }}" >{{ type.name }}</option>
               </select>
             </td>
@@ -54,22 +56,6 @@
             </td>
           </tr>
           <tr>
-            <th>{{ "question_category" | trans }} *</th>
-            <td>
-              <select class="app-form" [(ngModel)]="resource.question_category_id">
-                <option *ngFor="let item of categories" value="{{ item.id }}" >{{ item.name }}</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <th>{{ "course" | trans }} *</th>
-            <td>
-              <select class="app-form" [(ngModel)]="resource.course_id">
-                <option *ngFor="let item of courses" value="{{ item.id }}" >{{ item.name }}</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
             <th>{{ "notes" | trans }}</th>
             <td>
               <textarea class="app-form" [(ngModel)]="resource.notes" ></textarea>
@@ -78,7 +64,9 @@
           <tr>
             <th>{{ "active" | trans }}</th>
             <td>
-              <mat-slide-toggle [(ngModel)]="resource.active" [checked]="resource.active">
+              <mat-slide-toggle
+              [(ngModel)]="resource.active"
+              [checked]="resource.active">
               </mat-slide-toggle>
             </td>
           </tr>
@@ -91,24 +79,18 @@
                   {{  'is answer' | trans }}
               </th>
           </tr>
-
-          <tr class="text-right" *ngIf="resource.type == 1" >
-              <td>
-                  <input type="text" readonly="" name="choice[]" value="{{  'true' | trans }}" class="choice form-control" >
-              </td>
-              <td>
-                  <div class="material-switch pull-right w3-margin-top">
-                      <input
-                          id="choice_1_true"
-                          name="is_answer[]"
-                          checked=""
-                          value="1"
-                          onchange="this.checked? this.value = 1 : this.value = 0"
-                          type="radio"/>
-                      <label for="choice_1_true" class="label-primary"></label>
-                  </div>
-              </td>
+          <tr *ngFor="let item of resource.choices index as i" >
+            <th>
+              <input type="text" class="app-form"  [(ngModel)]="item.text" [readOnly]="item.readonly || resource.question_type_id == 1 || resource.question_type_id == 3" >
+            </th>
+            <th>
+              <mat-slide-toggle
+              #choiceToggle
+              (change)="toggleIsAnswer(item, choiceToggle.checked)"
+              [(ngModel)]="item.is_answer" ></mat-slide-toggle>
+            </th>
           </tr>
+
       </table>
       </div>
       <div class="modal-footer w3-center">

@@ -1,0 +1,48 @@
+<div class="modal fade" id="{{ editable? 'questionCategoryEditModal' : 'questionCategoryAddModal' }}" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content light-gray">
+      <div class="modal-header w3-border-0" >
+        <button type="button" class="close w3-text-red" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-center">{{ title | trans }}</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table" >
+          <tr class="hidden" >
+            <td  colspan="2">
+              <img [src]="resource.image_url" alt="" >
+              <button mat-raised-button class="fa fa-cloud-upload w3-round" (click)="$('.upload-image-input').click()" ></button>
+              <input type="file" class="app-form upload-image-input" (change)="loadFile($event, 'image')" [(ngModel)]="resource.image" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "name" | trans }} *</th>
+            <td>
+              <input type="text" class="app-form" [(ngModel)]="resource.name" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "course" | trans }} *</th>
+            <td>
+              <select class="app-form" [(ngModel)]="resource.course_id">
+                <option *ngFor="let item of courses" value="{{ item.id }}" >{{ item.name }}</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "details" | trans }} *</th>
+            <td>
+              <textarea class="app-form" [(ngModel)]="resource.notes" ></textarea>
+            </td>
+          </tr>
+        </table>
+        <br>
+      </div>
+      <div class="modal-footer w3-center">
+        <button mat-raised-button class="w3-indigo" [disabled]="isSubmitted" (click)="send()" >
+          <span *ngIf="!isSubmitted" >{{ "submit" | trans }}</span>
+          <span *ngIf="isSubmitted" class="fa fa-spin fa-spinner" ></span>
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

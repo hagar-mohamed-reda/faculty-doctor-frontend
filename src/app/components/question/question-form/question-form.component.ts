@@ -31,17 +31,37 @@ export class QuestionFormComponent implements OnInit {
    * required fields of course
    */
   required = [
-    'name',
-    'level_id',
-    'code',
-    'credit_hour',
-    'final_degree'
+    'text',
+    'question_type_id',
+    'question_level_id',
+    'question_category_id',
+    'course_id'
   ];
 
   constructor(private globalService: GlobalService) {
     //
     if (!this.editable)
       this.reset();
+  }
+
+  initQuestionChoices() {
+    this.resource.choices = [];
+    if (this.resource.question_type_id == 1) {
+      this.resource.choices = [
+        {"text": Helper.trans('true'), is_answer: true, readonly: true},
+        {"text": Helper.trans('false'), is_answer: false, readonly: true},
+      ];
+    } else if (this.resource.question_type_id == 2) {
+      this.choicesNumber = prompt(Helper.trans('enter choice number'));
+      if (this.choicesNumber < 2) {
+        Message.error(Helper.trans('choice number must be larger than 2 choice'));
+        this.resource.question_type_id = null;
+        return;
+      }
+      for(let index = 0; index < this.choicesNumber; index ++) {
+        this.resource.choices.push({text: '', is_answer: index == 0? true : false, readonly: false});
+      }
+    }
   }
 
   /**
@@ -57,13 +77,46 @@ export class QuestionFormComponent implements OnInit {
   }
 
   /**
+   * toggle is answer of choices
+   *
+   */
+  toggleIsAnswer(item, checked) {
+    this.resource.choices.forEach(element => {
+      if (element.text == item.text && checked) {
+        element.is_answer = true;
+      }
+      else
+        element.is_answer = false;
+    });
+  }
+
+  validate() {
+    let valid = Helper.validator(this.resource, this.required);
+    let isAnswer = false;
+
+    this.resource.choices.forEach(element => {
+      if (!element.text)
+        valid = false;
+
+      if (element.is_answer)
+        isAnswer = true;
+    });
+
+    if (!isAnswer)
+      valid = false;
+
+    console.log(this.resource.choices);
+    return valid;
+  }
+
+  /**
    * send data to the server
    * check if edit mode call update
    * else call store
    *
    */
   send() {
-    this.resource.divisions = this.getSelectedDivisions();
+    this.resource.question_choices = JSON.stringify(this.resource.choices);
     //
     if (this.editable) {
       this.update();
@@ -77,11 +130,11 @@ export class QuestionFormComponent implements OnInit {
    *
    */
   store() {
-    if (!Helper.validator(this.resource, this.required))
+    if (!this.validate())
       return Message.error("fill all required data");
 
     this.isSubmitted = true;
-    this.globalService.store("courses/store", Helper.toFormData(this.resource)).subscribe((res: any)=>{
+    this.globalService.store("doctor/questions/store", Helper.toFormData(this.resource)).subscribe((res: any)=>{
       if (res.status == 1) {
         Message.success(res.message);
         this.reset();
@@ -100,11 +153,11 @@ export class QuestionFormComponent implements OnInit {
    *
    */
   update() {
-    if (!Helper.validator(this.resource, this.required))
+    if (!this.validate())
       return Message.error("fill all required data");
 
     this.isSubmitted = true;
-    this.globalService.update("courses/update/"+this.resource.id, Helper.toFormData(this.resource)).subscribe((res: any)=>{
+    this.globalService.update("doctor/questions/update/"+this.resource.id, Helper.toFormData(this.resource)).subscribe((res: any)=>{
       if (res.status == 1) {
         Message.success(res.message);
         if (this.action)
@@ -120,39 +173,29 @@ export class QuestionFormComponent implements OnInit {
   /**
    * load file object in resource
    */
-  loadFile(event) {
-      Helper.loadImage(event, 'photo', this.resource);
+  loadFile(event, key) {
+      Helper.loadImage(event, key, this.resource);
   }
 
   /**
-   * get selected divisions
-   *
-   */
-  getSelectedDivisions() {
-    let arr = [];
-    this.divisions.forEach(element => {
-      if (element.selected) {
-        arr.push(element.id);
-      }
-    });
-    return arr;
-  }
-
-  /**
-   * load all filter data
    * load levels
    * load types
-   * load departments
-   * load faculties
+   * load categories
    */
   loadSettings() {
-    this.globalService.get("levels").subscribe((r) => {
+    this.globalService.get("doctor/courses").subscribe((r: any) => {
+      this.courses = r.data;
+      console.log(this.courses);
+    });
+    this.globalService.get("doctor/question-levels").subscribe((r) => {
       this.levels = r;
     });
-    this.globalService.get("divisions").subscribe((r) => {
-      this.divisions = r;
+    this.globalService.get("doctor/question-types").subscribe((r) => {
+      this.types = r;
     });
-    this.types = ['normal', 'graduation'];
+    this.globalService.get("doctor/question-categorys").subscribe((r: any) => {
+      this.categories = r.data;
+    });
   }
   ngOnInit() {
     this.loadSettings();

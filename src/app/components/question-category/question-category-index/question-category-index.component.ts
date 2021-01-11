@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import { Auth } from 'src/app/shared/auth';
 import { Helper } from 'src/app/shared/helper';
 import { Message } from 'src/app/shared/message';
@@ -7,11 +6,11 @@ import { GlobalService } from 'src/app/shared/services/global.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-question-index',
-  templateUrl: './question-index.component.html',
-  styleUrls: ['./question-index.component.scss']
+  selector: 'app-question-category-index',
+  templateUrl: './question-category-index.component.html',
+  styleUrls: ['./question-category-index.component.scss']
 })
-export class QuestionIndexComponent implements OnInit {
+export class QuestionCategoryIndexComponent implements OnInit {
 
   /**
    * init jquery
@@ -59,25 +58,14 @@ export class QuestionIndexComponent implements OnInit {
    * select item to edit it
    *
    */
-  public levels: any = [];
+  public courses: any = [];
 
-  /**
-   * types of question
-   *
-   */
-  public types: any = [];
 
   /**
    * select item to edit it
    *
    */
   public categories: any = [];
-
-  /**
-   * select item to edit it
-   *
-   */
-  public courses: any = [];
 
   /**
    * fields of question table
@@ -133,7 +121,7 @@ export class QuestionIndexComponent implements OnInit {
   public archiveLoad = false;
 
 
-  constructor(private globalService: GlobalService, private sanitizer: DomSanitizer) {
+  constructor(private globalService: GlobalService) {
     this.action = () => { this.get(); };
   }
 
@@ -143,7 +131,7 @@ export class QuestionIndexComponent implements OnInit {
    */
   initBreadcrumbData() {
     this.breadcrumbData = [
-      {name: 'questions page', url: '#'}
+      {name: 'question category page', url: '#'}
     ];
   }
 
@@ -155,7 +143,7 @@ export class QuestionIndexComponent implements OnInit {
     let params = (data)? data: this.filter;
     this.reload = true;
     this.archiveLoad = false;
-    this.globalService.get("doctor/questions", params).subscribe((res) => {
+    this.globalService.get("doctor/question-categorys", params).subscribe((res) => {
       this.response = res;
       this.questions = this.response.data;
       this.reload = false;
@@ -164,25 +152,13 @@ export class QuestionIndexComponent implements OnInit {
     });
   }
 
-  /**
-   * get all deleted questions
-   *
-   */
-  getArchive() {
-    this.reload = true;
-    this.archiveLoad = true;
-    this.globalService.get("doctor/questions/archive").subscribe((res) => {
-      this.questions = res;
-      this.reload = false;
-    });
-  }
 
   /**
    * show add question modal
    *
    */
   create() {
-    this.$('#questionAddModal').modal('show');
+    this.$('#questionCategoryAddModal').modal('show');
   }
 
   /**
@@ -191,18 +167,33 @@ export class QuestionIndexComponent implements OnInit {
    */
   edit(item) {
     this.resource = item;
-    this.resource.image = null;
-    this.$('#questionEditModal').modal('show');
+    this.$('#questionCategoryEditModal').modal('show');
+  }
+
+  /**
+   * show import questions from excel file
+   *
+   */
+  import() {
+    this.$('#importExcelModal').modal('show');
   }
 
   /**
    * show export questions from excel file
    *
    */
-  archive(item, index) {
+  export() {
+    this.$('#exportExcelModal').modal('show');
+  }
+
+  /**
+   * show export questions from excel file
+   *
+   */
+  archive(item) {
     let _this = this;
     Message.confirm(Helper.trans("are you sure"), ()=>{
-      _this.globalService.destroy("doctor/questions/delete", item.id).subscribe((r: any)=>{
+      _this.globalService.destroy("doctor/question-categorys/delete", item.id).subscribe((r: any)=>{
         if (r.status == 1) {
           Message.success(r.message);
           this.get();
@@ -222,20 +213,11 @@ export class QuestionIndexComponent implements OnInit {
    * load faculties
    */
   loadSettings() {
-    this.get();
-    //
     this.globalService.get("doctor/courses").subscribe((r: any) => {
       this.courses = r.data;
+      console.log(this.courses);
     });
-    this.globalService.get("doctor/question-levels").subscribe((r) => {
-      this.levels = r;
-    });
-    this.globalService.get("doctor/question-types").subscribe((r) => {
-      this.types = r;
-    });
-    this.globalService.get("doctor/question-categorys").subscribe((r: any) => {
-      this.categories = r.data;
-    });
+    this.get();
   }
 
   /**
@@ -249,10 +231,6 @@ export class QuestionIndexComponent implements OnInit {
   setDataContainerStyle() {
     let height = (window.innerHeight - 250) + "px";
     this.document.nicescroll('.data-container', {height: height});
-  }
-
-  trustUrl(url) {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
   ngOnInit() {

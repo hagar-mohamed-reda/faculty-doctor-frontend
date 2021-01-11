@@ -11,6 +11,7 @@ import { LectureShowComponent } from './components/lecture-show/lecture-show.com
 import { LectureCreateComponent } from './components/lecture-create/lecture-create.component';
 import { AssigmentIndexComponent } from './components/assigment-index/assigment-index.component';
 import { QuestionIndexComponent } from './components/question/question-index/question-index.component';
+import { QuestionCategoryIndexComponent } from './components/question-category/question-category-index/question-category-index.component';
 
 const routes: Routes = [
 
@@ -38,6 +39,10 @@ const routes: Routes = [
       {
         path: 'assigments',
         component: AssigmentIndexComponent
+      },
+      {
+        path: 'question-categorys',
+        component: QuestionCategoryIndexComponent
       },
       {
         path: 'questions',
