@@ -4,6 +4,7 @@ import {AuthService} from '../../../shared/services/auth.service';
 import { Cache } from '../../../shared/cache';
 import { Message } from '../../../shared/message';
 import { AppModule } from '../../../app.module';
+import { Helper } from 'src/app/shared/helper';
 
 @Component({
   selector: 'app-login',
@@ -32,6 +33,9 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+    if (!Helper.validator(this.userAuth, ['email', 'password']))
+      return Message.error(Helper.trans('fill all data'));
+
     this.isSubmitted = true;
 
     this.authService.login(this.userAuth).subscribe((result) => {

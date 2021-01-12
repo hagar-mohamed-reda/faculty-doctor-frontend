@@ -12,6 +12,8 @@ import { LectureCreateComponent } from './components/lecture-create/lecture-crea
 import { AssigmentIndexComponent } from './components/assigment-index/assigment-index.component';
 import { QuestionIndexComponent } from './components/question/question-index/question-index.component';
 import { QuestionCategoryIndexComponent } from './components/question-category/question-category-index/question-category-index.component';
+import { ExamIndexComponent } from './components/exam/exam-index/exam-index.component';
+import { ExamFormComponent } from './components/exam/exam-form/exam-form.component';
 
 const routes: Routes = [
 
@@ -47,6 +49,14 @@ const routes: Routes = [
       {
         path: 'questions',
         component: QuestionIndexComponent
+      },
+      {
+        path: 'exams',
+        component: ExamIndexComponent
+      },
+      {
+        path: 'create-exam',
+        component: ExamFormComponent
       },
       {
         path: 'main',

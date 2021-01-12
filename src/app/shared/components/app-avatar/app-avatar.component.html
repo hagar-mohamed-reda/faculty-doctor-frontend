@@ -1,24 +1,22 @@
 <div
 *ngIf="url"
-style="background-size: cover;"
-[style]="style"
+style="background-size: 100% 100%;"
 [style.width]="width"
 [style.height]="height"
 [style.backgroundImage]="'url('+ url + ')'"
-class="w3-padding text-center {{ class }}"
+class="w3-padding text-center {{ class }}  {{ color }}"
 >
 
 </div>
 
 <div
 *ngIf="!url && icon"
-style="background-size: cover;"
 [style]="style"
 [style.width]="width"
 [style.height]="height"
 class="w3-padding text-center {{ class }} {{ color }}"
 >
-  <i class="w3-xlarge fa {{ icon }} {{ class }}" style="padding-top: 20%;font-size: 3vw;"  ></i>
+  <i class="fa {{ icon }} {{ class }}" style="padding-top: 20%;"  ></i>
 </div>
 
 <div

@@ -13,8 +13,8 @@ export class SystemSettingService {
   getSystemSetting() {
     return this.http.get('system-setting?api_token='+Auth.getApiToken());
   }
-  
+
   getNotifications() {
-    return this.http.get('notifications?api_token='+Auth.getApiToken());
+    return this.http.get('doctor/notifications?api_token='+Auth.getApiToken());
   }
 }

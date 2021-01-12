@@ -25,6 +25,12 @@
             <b class="w3-right" >{{"back" | trans}}</b>
             <b class="w3-left fa fa-reply" style="padding-top: 9px"    ></b>
           </button>
+
+          <button mat-raised-button class="btn app-button btn-block w3-red" *ngIf="resource.can_delete" (click)="remove()"   >
+            <b class="w3-right" >{{"remove lecture" | trans}}</b>
+            <b class="w3-left fa fa-trash" style="padding-top: 9px"   ></b>
+          </button>
+
         </div>
         <!-- /.box-body -->
       </div>
@@ -33,10 +39,10 @@
       <!-- About Me Box -->
       <div class="box box-primary">
         <div class="box-header with-border">
-          <h3 class="box-title">{{ "course info" | trans }}</h3>
+          <h3 class="box-title">{{ "lectures" | trans }}</h3>
         </div>
         <!-- /.box-header -->
-        <div class="box-body">
+        <div class="box-body hidden">
           <strong><i class="fa fa-book margin-r-5"></i> {{"description" | trans}}</strong>
 
           <p class="text-muted">
@@ -70,6 +76,24 @@
         </div>
         <!-- /.box-body -->
       </div>
+      <ul class="w3-ul">
+        <ng-container *ngFor="let item of lectures" >
+          <li
+        class="material-shadow w3-white w3-round w3-row"
+        routerLink="/show-lecture" [queryParams]="{lecture_id: item.id, course_id: course.id}"
+        style="margin-bottom: 5px;cursor: pointer;"
+        *ngIf="resource.id != item.id" >
+        <app-app-avatar
+          [url]="'/assets/img/lecture.png'"
+          [class]="'w3-round w3-col'"
+          [style]="'background-size: 100% 100%'"
+          [width]="'40px'"
+          [height]="'40px'"
+        ></app-app-avatar>
+          <b class="w3-padding" style="float: right" >{{ item.name }}</b>
+        </li>
+        </ng-container>
+      </ul>
       <!-- /.box -->
     </div>
     <!-- /.col -->

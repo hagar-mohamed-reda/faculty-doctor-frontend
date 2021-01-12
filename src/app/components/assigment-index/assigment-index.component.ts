@@ -145,6 +145,12 @@ export class AssigmentIndexComponent implements OnInit {
    */
   public archiveLoad = false;
 
+  /**
+   * auth of user
+   *
+   */
+  public auth = Auth.user();
+
 
   constructor(private globalService: GlobalService, private sanitizer: DomSanitizer) {
     this.action = () => { this.get(); };

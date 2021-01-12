@@ -26,6 +26,11 @@
             <b class="w3-left fa fa-send-o" style="padding-top: 9px" *ngIf="!isSubmitted" ></b>
             <b class="w3-left fa fa-spin fa-spinner" style="padding-top: 9px" *ngIf="isSubmitted" ></b>
           </button>
+
+          <button mat-raised-button class="btn app-button btn-block light-gray" [disabled]="isSubmitted" [routerLink]="['/lectures', course.id]"   >
+            <b class="w3-right" >{{"back" | trans}}</b>
+            <b class="w3-left fa fa-reply" style="padding-top: 9px"   ></b>
+          </button>
         </div>
         <!-- /.box-body -->
       </div>

@@ -61,6 +61,10 @@ export class QuestionFormComponent implements OnInit {
       for(let index = 0; index < this.choicesNumber; index ++) {
         this.resource.choices.push({text: '', is_answer: index == 0? true : false, readonly: false});
       }
+    } else if (this.resource.question_type_id == 3) {
+      this.resource.choices = [
+        {"text": '', is_answer: true, readonly: false}
+      ];
     }
   }
 
@@ -80,9 +84,10 @@ export class QuestionFormComponent implements OnInit {
    * toggle is answer of choices
    *
    */
-  toggleIsAnswer(item, checked) {
-    this.resource.choices.forEach(element => {
-      if (element.text == item.text && checked) {
+  toggleIsAnswer(item, checked, index) {
+    this.resource.choices.forEach((element, i) => {
+      console.log(i);
+      if (i == index && checked) {
         element.is_answer = true;
       }
       else

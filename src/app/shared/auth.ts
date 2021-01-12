@@ -12,7 +12,6 @@ export class Auth {
    *
    */
   public static getApiToken() {
-    return "12345";
     return Cache.get(AuthService.API_TOKEN_PRFIX);
   }
 

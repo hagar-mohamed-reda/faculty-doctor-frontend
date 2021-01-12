@@ -1,23 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Helper } from 'src/app/shared/helper';
 import { Message } from 'src/app/shared/message';
 import { GlobalService } from 'src/app/shared/services/global.service';
 
 @Component({
-  selector: 'app-lecture-show',
-  templateUrl: './lecture-show.component.html',
-  styleUrls: ['./lecture-show.component.scss']
+  selector: 'app-exam-form',
+  templateUrl: './exam-form.component.html',
+  styleUrls: ['./exam-form.component.scss']
 })
-export class LectureShowComponent implements OnInit {
+export class ExamFormComponent implements OnInit {
 
 
   resource: any = {};
 
   course: any = {};
-
-  lectures: any = [];
 
   /**
    * breadcrumbs items
@@ -60,23 +58,18 @@ export class LectureShowComponent implements OnInit {
   ];
 
 
-  constructor(private router: ActivatedRoute,
-    private globalService: GlobalService,
-    private sanitizer: DomSanitizer,
-    private route: Router) {
+  constructor(private router: ActivatedRoute, private globalService: GlobalService, private sanitizer: DomSanitizer) {
       console.log(this.router.snapshot.queryParamMap.get('course_id'));
       if (this.router.snapshot.queryParamMap.has('course_id'))  {
         this.loadCourse(this.router.snapshot.queryParamMap.get('course_id'));
       }
 
-      this.router.queryParamMap.subscribe((params) => {
-        if (params.has("lecture_id")) {
-          this.editMode = true;
-          this.loadLecture(params.get('lecture_id'));
-        } else {
-          this.reset();
-        }
-      });
+      if (this.router.snapshot.queryParamMap.has("lecture_id")) {
+        this.editMode = true;
+        this.loadLecture(this.router.snapshot.queryParamMap.get('lecture_id'));
+      } else {
+        this.reset();
+      }
   }
 
   reset() {
@@ -92,9 +85,8 @@ export class LectureShowComponent implements OnInit {
    */
   initBreadcrumbData() {
     this.breadcrumbData = [
-      {name: "courses", url: "/courses"},
-      {name: "lectures", url: "/lectures/"+this.course.id},
-      {name: "add lecture", url: '#', active: 1}
+      {name: "exams page", url: "/exams"},
+      {name: "add exam", url: '#', active: 1}
     ];
   }
 
@@ -109,7 +101,6 @@ export class LectureShowComponent implements OnInit {
   loadCourse(id) {
     this.globalService.get('doctor/courses/'+id).subscribe((res) => {
       this.course = res;
-      this.lectures = this.course.lectures;
       this.initBreadcrumbData();
     });
   }
@@ -244,28 +235,14 @@ export class LectureShowComponent implements OnInit {
   }
 
   /**
-   * show export questions from excel file
-   *
-   */
-  remove() {
-    let _this = this;
-    Message.confirm(Helper.trans("are you sure"), ()=>{
-      _this.globalService.destroy("doctor/lectures/delete", this.resource.id).subscribe((r: any)=>{
-        if (r.status == 1) {
-          Helper.refreshComponent(this.route, '/lectures/'+this.course.id);
-        }
-        else
-          Message.error(r.message);
-      });
-    });
-  }
-  /**
    * convert normal url to embeded url
    *
    */
   getYouTubeEmbededUrl() {
     //var url = "https://www.youtube.com/embed/{id}";
     var id = null;
+
+    console.log(this.resource.youtube_url.split("v=")[1]);
     if (!this.resource.youtube_url)
       return;
     if (this.resource.youtube_url.split("v=").length >= 2)

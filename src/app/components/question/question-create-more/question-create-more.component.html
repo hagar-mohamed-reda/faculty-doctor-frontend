@@ -1,3 +1,110 @@
-<p>
-  question-create-more works!
-</p>
+<div class="create-more" style="display: none" >
+  <div class="row">
+    <div class="col-lg-2 col-md-2 col-sm-6 w3-padding">
+      <b>{{ "select course" | trans }}</b>
+      <select class="app-select material-shadow w3-white" style="border-radius: 5em;" [(ngModel)]="resource.course_id" >
+        <option value="">{{ "select course" | trans }}</option>
+        <option *ngFor="let item of courses" value="{{ item.id }}">{{ item.name }}</option>
+      </select>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-6 w3-padding">
+      <b>{{ "select question category" | trans }}</b>
+      <select class="app-select material-shadow w3-white" style="border-radius: 5em;" [(ngModel)]="resource.question_category_id" >
+        <option value="">{{ "select question category" | trans }}</option>
+        <ng-container *ngFor="let item of categories">
+        <option *ngIf="resource.course_id == item.course_id" value="{{ item.id }}">{{ item.name }}</option>
+        </ng-container>
+      </select>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-6 w3-padding">
+      <b>{{ "select question type" | trans }}</b>
+      <select
+      class="app-select material-shadow w3-white"
+      [disabled]="resource.questions.length > 0"
+      style="border-radius: 5em;"
+      [(ngModel)]="resource.question_type_id" >
+        <option value="">{{ "select question type" | trans }}</option>
+        <option *ngFor="let item of types" value="{{ item.id }}">{{ item.name | trans }}</option>
+      </select>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 w3-padding" *ngIf="resource.question_type_id == 2" >
+      <b>{{ 'choices number' | trans }}</b>
+      <select
+      class="app-select material-shadow w3-white"
+      [disabled]="resource.questions.length > 0"
+      style="border-radius: 5em;"
+      [(ngModel)]="choiceNumber" >
+        <option *ngFor="let item of choices" value="{{ item }}">{{ item }}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="w3-padding w3-block material-shadow w3-white table-bordered text-center theme-text-dark w3-large" *ngIf="isSubmitted" >
+    <span class="fa fa-spin fa-spinner w3-xlarge" ></span>
+    <br>
+    <b>{{ total - resource.questions.length }}</b> : <b>{{ total }}</b>
+  </div>
+
+  <table class="table material-shadow w3-white table-bordered" *ngIf="!isSubmitted" >
+    <tr>
+      <th>{{ "text" | trans }}</th>
+      <th>{{ "image" | trans }}</th>
+      <th>{{ "question_level" | trans }}</th>
+      <th [colSpan]="choiceNumber" >{{ "choices" | trans }}</th>
+      <th></th>
+    </tr>
+
+    <tr *ngFor="let item of resource.questions index as i" >
+      <td>
+        <input type="text" class="app-form w3-border-0" [(ngModel)]="item.text"  >
+      </td>
+      <td>
+        <input
+        type="file"
+        class="app-form w3-border-0"
+         (change)="loadFile($event, 'image', item)"
+         accept="image/*"
+         [(ngModel)]="item.image"  >
+      </td>
+      <td>
+        <select class="app-form w3-border-0"  [(ngModel)]="item.question_level_id">
+          <option *ngFor="let item of levels" value="{{ item.id }}">{{ item.name | trans }}</option>
+        </select>
+      </td>
+      <td *ngFor="let choice of item.choices index as i2" class="w3-display-container" >
+        <input
+        type="text"
+        class="app-form w3-border-0"
+        [readOnly]="item.readonly || resource.question_type_id == 1"
+        [(ngModel)]="choice.text"  >
+
+        <div class="w3-display-topleft w3-padding">
+          <mat-slide-toggle
+            #choiceToggle
+            [disabled]="item.question_type_id == 3"
+            (change)="toggleIsAnswer(item, choiceToggle.checked, i2, choiceToggle)"
+            [(ngModel)]="choice.is_answer" ></mat-slide-toggle>
+        </div>
+      </td>
+      <td style="padding: 0px!important;" >
+        <button
+        mat-icon-button
+        class="w3-text-red" style="margin: 0px!important" (click)="removeRow(i)" >
+          <i class="fa fa-trash" ></i>
+        </button>
+      </td>
+    </tr>
+  </table>
+  <button mat-raised-button class="theme-dark w3-text-white" (click)="addRow()" ><i class="fa fa-plus"></i></button>
+
+  <button
+  mat-raised-button
+  [disabled]="isSubmitted"
+  style="margin: 5px"
+  class="w3-indigo" (click)="store()" >
+    <span *ngIf="!isSubmitted">{{ "send" | trans }}</span>
+    <i *ngIf="isSubmitted" class="fa fa-spin fa-spinner">
+    </i></button>
+</div>
+<br>
+

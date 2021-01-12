@@ -35,6 +35,9 @@ import { QuestionFormComponent } from './components/question/question-form/quest
 import { QuestionCreateMoreComponent } from './components/question/question-create-more/question-create-more.component';
 import { QuestionCategoryIndexComponent } from './components/question-category/question-category-index/question-category-index.component';
 import { QuestionCategoryFormComponent } from './components/question-category/question-category-form/question-category-form.component';
+import { AssigmentReportComponent } from './components/report/assigment-report/assigment-report.component';
+import { ExamFormComponent } from './components/exam/exam-form/exam-form.component';
+import { ExamIndexComponent } from './components/exam/exam-index/exam-index.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +57,9 @@ import { QuestionCategoryFormComponent } from './components/question-category/qu
     QuestionCreateMoreComponent,
     QuestionCategoryIndexComponent,
     QuestionCategoryFormComponent,
+    AssigmentReportComponent,
+    ExamFormComponent,
+    ExamIndexComponent,
   ],
   imports: [
     BrowserModule,

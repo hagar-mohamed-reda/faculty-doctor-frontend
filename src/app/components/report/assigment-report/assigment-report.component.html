@@ -7,19 +7,29 @@
       <b>{{ 'search with name' | trans }}</b>
       <input type="text"   class="app-select material-shadow w3-white" style="border-radius: 5em;" placeholder="{{ 'search with name' | trans }}"   [(ngModel)]="filter.search"   >
     </div>
+
+    <div class="col-lg-2 col-md-2 col-sm-6 w3-padding">
+      <b>{{ "search with name or description" | trans }}</b>
+      <input type="text" class="app-select material-shadow w3-white"
+      style="border-radius: 5em;" [(ngModel)]="filter.search" >
+    </div>
     <div class="col-lg-2 col-md-2 col-sm-6 w3-padding">
       <b>{{ "select course" | trans }}</b>
-      <select class="app-select material-shadow w3-white" style="border-radius: 5em;" [(ngModel)]="filter.course_id" >
+      <select class="app-select material-shadow w3-white"
+      (change)="filter.lecture_id=null"
+      style="border-radius: 5em;" [(ngModel)]="filter.course_id"  >
         <option value="">{{ "select course" | trans }}</option>
-        <option *ngFor="let item of courses" value="{{ item.id }}">{{ item.name }}</option>
+        <ng-container  *ngFor="let item of courses">
+          <option  value="{{ item.id }}">{{ item.name }}</option>
+        </ng-container>
       </select>
     </div>
     <div class="col-lg-2 col-md-2 col-sm-6 w3-padding">
-      <b>{{ "select question category" | trans }}</b>
-      <select class="app-select material-shadow w3-white" style="border-radius: 5em;" [(ngModel)]="filter.question_category_id" >
-        <option value="">{{ "select question category" | trans }}</option>
-        <ng-container *ngFor="let item of categories">
-        <option *ngIf="filter.course_id == item.course_id" value="{{ item.id }}">{{ item.name }}</option>
+      <b>{{ "select lecture" | trans }}</b>
+      <select class="app-select material-shadow w3-white" style="border-radius: 5em;" [(ngModel)]="filter.lecture_id"  >
+        <option value="">{{ "select lecture" | trans }}</option>
+        <ng-container  *ngFor="let item of lectures">
+          <option *ngIf="item.course_id == filter.course_id" value="{{ item.id }}">{{ item.name }}</option>
         </ng-container>
       </select>
     </div>
@@ -28,13 +38,6 @@
       <select class="app-select material-shadow w3-white" style="border-radius: 5em;" [(ngModel)]="filter.question_level_id" >
         <option value="">{{ "select question level" | trans }}</option>
         <option *ngFor="let item of levels" value="{{ item.id }}">{{ item.name | trans }}</option>
-      </select>
-    </div>
-    <div class="col-lg-2 col-md-2 col-sm-6 w3-padding">
-      <b>{{ "select question type" | trans }}</b>
-      <select class="app-select material-shadow w3-white" style="border-radius: 5em;" [(ngModel)]="filter.question_type_id" >
-        <option value="">{{ "select question type" | trans }}</option>
-        <option *ngFor="let item of types" value="{{ item.id }}">{{ item.name | trans }}</option>
       </select>
     </div>
   </div>
@@ -93,7 +96,7 @@
           </td>
         </tr>
           <ng-container  *ngFor="let item of questions index as i">
-            <tr *ngIf="!reload" class="w3-hover-light-gray" style="cursor: pointer;" >
+            <tr *ngIf="!reload" (click)="edit(item)" class="w3-hover-light-gray" style="cursor: pointer;" >
               <td>{{ item.text }}</td>
               <td>{{ item.course? item.course.name : '' }}</td>
               <td>{{ item.question_level? item.question_level.name : '' | trans }}</td>

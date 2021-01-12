@@ -14,7 +14,7 @@
                 <i class="fa fa-cloud-upload " ></i> {{ "upload image" | trans }}
               </button>
               <br>
-              <input type="file" class="app-form hidden {{ editable? 'image-input' : 'edit-image-input' }}" (change)="loadFile($event, 'image')" [(ngModel)]="resource.image" >
+              <input type="file" class="app-form hidden {{ editable? 'image-input' : 'edit-image-input' }}" (change)="loadFile($event, 'image')" [(ngModel)]="resource.image" accept="image/*" >
             </td>
           </tr>
           <tr>
@@ -43,7 +43,7 @@
             <th>{{ "question_type" | trans }} *</th>
             <td>
               <select class="app-form" [(ngModel)]="resource.question_type_id" (change)="initQuestionChoices()" >
-                <option *ngFor="let type of types" value="{{ type.id }}" >{{ type.name }}</option>
+                <option *ngFor="let type of types" value="{{ type.id }}" >{{ type.name | trans }}</option>
               </select>
             </td>
           </tr>
@@ -51,7 +51,7 @@
             <th>{{ "question_level" | trans }} *</th>
             <td>
               <select class="app-form" [(ngModel)]="resource.question_level_id">
-                <option *ngFor="let item of levels" value="{{ item.id }}" >{{ item.name }}</option>
+                <option *ngFor="let item of levels" value="{{ item.id }}" >{{ item.name | trans }}</option>
               </select>
             </td>
           </tr>
@@ -81,12 +81,13 @@
           </tr>
           <tr *ngFor="let item of resource.choices index as i" >
             <th>
-              <input type="text" class="app-form"  [(ngModel)]="item.text" [readOnly]="item.readonly || resource.question_type_id == 1 || resource.question_type_id == 3" >
+              <input type="text" class="app-form"  [(ngModel)]="item.text" [readOnly]="item.readonly || resource.question_type_id == 1" >
             </th>
             <th>
               <mat-slide-toggle
               #choiceToggle
-              (change)="toggleIsAnswer(item, choiceToggle.checked)"
+              [disabled]="resource.question_type_id == 3"
+              (change)="toggleIsAnswer(item, choiceToggle.checked, i)"
               [(ngModel)]="item.is_answer" ></mat-slide-toggle>
             </th>
           </tr>

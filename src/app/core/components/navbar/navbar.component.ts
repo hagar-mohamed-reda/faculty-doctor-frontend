@@ -56,10 +56,8 @@ export class NavBarComponent implements OnInit {
 
   loadNotifications() {
     this.systemSettingService.getNotifications().subscribe((res: any[]) => {
-      res.forEach(element => {
-        this.notifications.push(element);
-      });
-      this.notifications.reverse();
+
+      this.notifications = res;
       //
       if (res.length > 0) {
         this.initMessage(res);

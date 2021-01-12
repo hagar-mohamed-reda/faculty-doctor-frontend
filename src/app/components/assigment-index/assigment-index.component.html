@@ -76,7 +76,7 @@
               <span class="username" style="padding: 5px!important">
                 <a href="#">{{ item.doctor? item.doctor.name : '' }}</a>
               </span>
-              <span class="description" style="padding: 5px!important">{{ item.created_at | date:'Y-m-d h:i:s' }}</span>
+              <span class="description" style="padding: 5px!important">{{ item.created_at | date }}</span>
             </div>
             <div class="w3-large" *ngIf="item.name">
               <b>{{ item.name }}</b>
@@ -130,6 +130,12 @@
 
 
     </div>
+
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
   </div>
 
 
@@ -146,7 +152,7 @@
         <app-app-avatar [url]="resource.url" [icon]="'fa fa-user-circle'" [class]="'w3-round w3-col text-center'"
           [width]="'50px'" [height]="'50px'"></app-app-avatar>
         <span class="username" style="padding: 5px!important">
-          <a href="#">"auth name".</a>
+          <a href="#">{{ auth.name }}</a>
         </span>
       </div>
       <br>

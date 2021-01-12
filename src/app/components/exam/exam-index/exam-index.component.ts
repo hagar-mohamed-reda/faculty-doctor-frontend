@@ -7,11 +7,11 @@ import { GlobalService } from 'src/app/shared/services/global.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-question-index',
-  templateUrl: './question-index.component.html',
-  styleUrls: ['./question-index.component.scss']
+  selector: 'app-exam-index',
+  templateUrl: './exam-index.component.html',
+  styleUrls: ['./exam-index.component.scss']
 })
-export class QuestionIndexComponent implements OnInit {
+export class ExamIndexComponent implements OnInit {
 
   /**
    * init jquery
@@ -41,7 +41,7 @@ export class QuestionIndexComponent implements OnInit {
    * filter inputs
    *
    */
-  public questions: any = [];
+  public exams: any = [];
 
   /**
    * filter inputs
@@ -62,7 +62,7 @@ export class QuestionIndexComponent implements OnInit {
   public levels: any = [];
 
   /**
-   * types of question
+   * types of exam
    *
    */
   public types: any = [];
@@ -80,7 +80,7 @@ export class QuestionIndexComponent implements OnInit {
   public courses: any = [];
 
   /**
-   * fields of question table
+   * fields of exam table
    *
    */
   public fields: any = [
@@ -97,24 +97,6 @@ export class QuestionIndexComponent implements OnInit {
   ];
 
   /**
-   * url of import from excel api
-   *
-   */
-  public importApi = "doctor/questions/import";
-
-  /**
-   * url of excel template file
-   *
-   */
-  public importTemplateUrl = environment.apiUrl + "/doctor/questions/import-file?api_token="+Auth.getApiToken();
-
-  /**
-   * url of export api
-   *
-   */
-  public exportApi = "doctor/questions/export";
-
-  /**
    * url of export api
    *
    */
@@ -126,19 +108,6 @@ export class QuestionIndexComponent implements OnInit {
    */
   public reload = false;
 
-  /**
-   * url of export api
-   *
-   */
-  public archiveLoad = false;
-
-  /**
-   * url of export api
-   *
-   */
-  public addMore = false;
-
-
   constructor(private globalService: GlobalService, private sanitizer: DomSanitizer) {
     this.action = () => { this.get(); };
   }
@@ -149,21 +118,21 @@ export class QuestionIndexComponent implements OnInit {
    */
   initBreadcrumbData() {
     this.breadcrumbData = [
-      {name: 'questions page', url: '#'}
+      {name: 'exams page', url: '#'}
     ];
   }
 
   /**
-   * load all question data
+   * load all exam data
    *
    */
   get(data=null) {
     let params = (data)? data: this.filter;
     this.reload = true;
     this.archiveLoad = false;
-    this.globalService.get("doctor/questions", params).subscribe((res) => {
+    this.globalService.get("doctor/exams", params).subscribe((res) => {
       this.response = res;
-      this.questions = this.response.data;
+      this.exams = this.response.data;
       this.reload = false;
       //
       this.prePagniation();
@@ -171,28 +140,28 @@ export class QuestionIndexComponent implements OnInit {
   }
 
   /**
-   * get all deleted questions
+   * get all deleted exams
    *
    */
   getArchive() {
     this.reload = true;
     this.archiveLoad = true;
-    this.globalService.get("doctor/questions/archive").subscribe((res) => {
-      this.questions = res;
+    this.globalService.get("doctor/exams/archive").subscribe((res) => {
+      this.exams = res;
       this.reload = false;
     });
   }
 
   /**
-   * show add question modal
+   * show add exam modal
    *
    */
   create() {
-    this.$('#questionAddModal').modal('show');
+    this.$('#examAddModal').modal('show');
   }
 
   /**
-   * show add question modal
+   * show add exam modal
    *
    */
   createMore() {
@@ -200,23 +169,23 @@ export class QuestionIndexComponent implements OnInit {
   }
 
   /**
-   * show add question modal
+   * show add exam modal
    *
    */
   edit(item) {
     this.resource = item;
     this.resource.image = null;
-    this.$('#questionEditModal').modal('show');
+    this.$('#examEditModal').modal('show');
   }
 
   /**
-   * show export questions from excel file
+   * show export exams from excel file
    *
    */
   archive(item, index) {
     let _this = this;
     Message.confirm(Helper.trans("are you sure"), ()=>{
-      _this.globalService.destroy("doctor/questions/delete", item.id).subscribe((r: any)=>{
+      _this.globalService.destroy("doctor/exams/delete", item.id).subscribe((r: any)=>{
         if (r.status == 1) {
           Message.success(r.message);
           this.get();
@@ -241,13 +210,13 @@ export class QuestionIndexComponent implements OnInit {
     this.globalService.get("doctor/courses").subscribe((r: any) => {
       this.courses = r.data;
     });
-    this.globalService.get("doctor/question-levels").subscribe((r) => {
+    this.globalService.get("doctor/exam-levels").subscribe((r) => {
       this.levels = r;
     });
-    this.globalService.get("doctor/question-types").subscribe((r) => {
+    this.globalService.get("doctor/exam-types").subscribe((r) => {
       this.types = r;
     });
-    this.globalService.get("doctor/question-categorys").subscribe((r: any) => {
+    this.globalService.get("doctor/exam-categorys").subscribe((r: any) => {
       this.categories = r.data;
     });
   }

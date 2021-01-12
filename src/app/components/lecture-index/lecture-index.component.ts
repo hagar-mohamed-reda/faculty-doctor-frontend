@@ -44,7 +44,7 @@ export class LectureIndexComponent implements OnInit {
 
 
   constructor(private router: ActivatedRoute, private globalService: GlobalService) {
-    this.resource.name = "lecture name";
+
 
     this.router.paramMap.subscribe((res) => {
       console.log(res.get('id'));
@@ -60,7 +60,7 @@ export class LectureIndexComponent implements OnInit {
    */
   initBreadcrumbData() {
     this.breadcrumbData = [
-      {name: "lectures", url: "/lectures"},
+      {name: "courses", url: "/courses"},
       {name: this.resource.name, url: '#', active: 1}
     ];
   }
@@ -77,6 +77,7 @@ export class LectureIndexComponent implements OnInit {
     this.globalService.get('doctor/courses/'+id).subscribe((res) => {
       this.resource = res;
       this.lectures = this.resource.lectures;
+      this.initBreadcrumbData();
     });
   }
 

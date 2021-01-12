@@ -7,11 +7,11 @@ import { GlobalService } from 'src/app/shared/services/global.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-question-index',
-  templateUrl: './question-index.component.html',
-  styleUrls: ['./question-index.component.scss']
+  selector: 'app-assigment-report',
+  templateUrl: './assigment-report.component.html',
+  styleUrls: ['./assigment-report.component.scss']
 })
-export class QuestionIndexComponent implements OnInit {
+export class AssigmentReportComponent implements OnInit {
 
   /**
    * init jquery
@@ -65,7 +65,7 @@ export class QuestionIndexComponent implements OnInit {
    * types of question
    *
    */
-  public types: any = [];
+  public lectures: any = [];
 
   /**
    * select item to edit it
@@ -85,15 +85,6 @@ export class QuestionIndexComponent implements OnInit {
    */
   public fields: any = [
     'name',
-    'level_id',
-    'faculty_id',
-    'code',
-    'credit_hour',
-    'description',
-    'final_degree',
-    'active',
-    'created_at',
-    'updated_at'
   ];
 
   /**
@@ -244,8 +235,8 @@ export class QuestionIndexComponent implements OnInit {
     this.globalService.get("doctor/question-levels").subscribe((r) => {
       this.levels = r;
     });
-    this.globalService.get("doctor/question-types").subscribe((r) => {
-      this.types = r;
+    this.globalService.get("doctor/lectures").subscribe((r) => {
+      this.lectures = r;
     });
     this.globalService.get("doctor/question-categorys").subscribe((r: any) => {
       this.categories = r.data;
