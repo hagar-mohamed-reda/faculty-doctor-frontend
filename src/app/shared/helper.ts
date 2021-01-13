@@ -123,5 +123,13 @@ export class Helper {
     for(let i = 0; i < resources.pages; i ++)
       resources.pages_arr.push(i+1);
   }
+
+  public static loader(action) {
+    //let $: any = $;
+    if (action)
+      $('.app-loader').show(500);
+    else
+      $('.app-loader').hide(500);
+  }
 }
 

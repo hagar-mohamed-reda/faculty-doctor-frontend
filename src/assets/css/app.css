@@ -142,6 +142,7 @@ body {
 
 .custom-panel-body {
   padding: 5px;
+  overflow: auto;
 }
 
 .small-shadow {

@@ -1,0 +1,156 @@
+<app-breadcrumb [breadcrumbList]="breadcrumbData"  ></app-breadcrumb>
+
+
+<div class="w3-display-bottomleft w3-padding" style="position: fixed;z-index: 9999" >
+  <button mat-fab color="primary" (click)="null" >{{ "submit" | trans }}</button>
+</div>
+
+
+<div class="w3-padding">
+  <div class="row">
+
+    <div class="col-lg-6 col-md-6 w3-padding">
+
+      <div class="custom-panel w3-display-container w3-round ">
+        <div class="custom-panel-title w3-round material-shadow" >{{ "students" | trans }}</div>
+        <div class="custom-panel-body " [style.height]="(window.innerHeight - 150) + 'px'"  >
+          <ul class="w3-ul"  >
+            <li *ngIf="isLoadStudents"
+            class="w3-display-container w3-white w3-round w3-hover-light-gray w3-text-indigo text-center" >
+              <i class="fa fa-spin fa-spinner w3-xlarge"></i>
+            </li>
+            <ng-container
+            *ngFor="let item of response.data">
+              <li
+              *ngIf="!selectedStudents.has(item.id) && !isLoadStudents"
+            (click)="toggleStudent(item)"
+            class="w3-display-container w3-white w3-round w3-hover-light-gray"
+            style="margin-bottom: 5px;cursor: pointer;"  >
+              <div class="media">
+                <div class="media-left">
+                  <a href="#">
+                    <app-app-avatar
+                      [url]="item.image_url"
+                      [icon]="'fa fa-user-circle'"
+                      [width]="'40px'"
+                      [height]="'40px'"
+                      [class]="'w3-round material-shadow'"
+                    ></app-app-avatar>
+                  </a>
+                </div>
+                <div class="media-body">
+                  <div class="media-heading">{{ item.text }}</div>
+                  <div class="w3-row">
+                    <div class="col-lg-3 col-md-3 col-sm-3 text-center w3-border-left w3-border-gray">
+                      <b>{{ helper.trans(item.helper? item.level.name : '') }}</b>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 text-center w3-border-left w3-border-gray">
+                      <b>{{ helper.trans(item.department? item.department.name : '') }}</b>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 text-center ">
+                      <b>{{ item.group? item.group.name : '' }}</b>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="w3-display-topleft w3-padding">
+                <mat-slide-toggle
+                  (change)="toggleStudent(item)"
+                  [checked]="selectedStudents.has(item.id)"
+                 ></mat-slide-toggle>
+              </div>
+            </li>
+            </ng-container>
+          </ul>
+          <br>
+          <div class="w3-center text-center">
+            <nav aria-label="Page navigation">
+              <ul class="pagination">
+                <li>
+                  <a  class="btn" [ngClass]="{'disabled': !response.prev_page}" (click)="loadStudents({page: response.prev_page})"
+                    aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+                <li *ngFor="let item of response.pages_arr">
+                  <a class="btn" [ngClass]="{'active w3-indigo': response.current_page == item}" (click)="loadStudents({page: item})">{{ item }}</a>
+                </li>
+                <li>
+                  <a  class="btn" [ngClass]="{'disabled': !response.next_page}" (click)="loadStudents({page: response.next_page})"
+                    aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+    </div>
+
+    <div class="col-lg-6 col-md-6 w3-padding">
+
+      <div class="custom-panel w3-display-container w3-round ">
+        <div class="custom-panel-title w3-round material-shadow" >{{ "selected_Students" | trans }}</div>
+        <div class="custom-panel-body " [style.height]="(window.innerHeight - 150) + 'px'"  >
+          <ul class="w3-ul">
+            <li
+            *ngFor="let item of selectedStudents.getAll()"
+            class="w3-display-container w3-white w3-round w3-hover-light-gray"
+            (click)="toggleStudent(item)"
+            style="margin-bottom: 5px;cursor: pointer;"  >
+              <div class="media">
+                <div class="media-left">
+                  <a href="#">
+                    <app-app-avatar
+                      [url]="item.image_url"
+                      [icon]="'fa fa-user-circle'"
+                      [width]="'40px'"
+                      [height]="'40px'"
+                      [class]="'w3-round material-shadow'"
+                    ></app-app-avatar>
+                  </a>
+                </div>
+                <div class="media-body">
+                  <div class="media-heading">{{ item.text }}</div>
+                  <div class="w3-row">
+                    <div class="col-lg-3 col-md-3 col-sm-3 text-center w3-border-left w3-border-gray">
+                      <b>{{ helper.trans(item.Student_type? item.Student_type.name : '') }}</b>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 text-center w3-border-left w3-border-gray">
+                      <b>{{ helper.trans(item.Student_level? item.Student_level.name : '') }}</b>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 text-center ">
+                      <b>{{ item.Student_category? item.Student_category.name : '' }}</b>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="w3-display-topleft w3-padding">
+                <mat-slide-toggle
+                  (change)="toggleStudent(item)"
+                  [checked]="selectedStudents.has(item.id)"
+                 ></mat-slide-toggle>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
+
+
+
+
+    </div>
+
+
+  </div>
+</div>
+

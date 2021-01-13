@@ -7,11 +7,11 @@ import { GlobalService } from 'src/app/shared/services/global.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-exam-index',
-  templateUrl: './exam-index.component.html',
-  styleUrls: ['./exam-index.component.scss']
+  selector: 'app-correct-blan-answer',
+  templateUrl: './correct-blan-answer.component.html',
+  styleUrls: ['./correct-blan-answer.component.scss']
 })
-export class ExamIndexComponent implements OnInit {
+export class CorrectBlanAnswerComponent implements OnInit {
 
   /**
    * init jquery
@@ -35,7 +35,9 @@ export class ExamIndexComponent implements OnInit {
    * filter inputs
    *
    */
-  public response: any = {};
+  public response: any = {
+    data: []
+  };
 
   /**
    * filter inputs
@@ -61,22 +63,6 @@ export class ExamIndexComponent implements OnInit {
    */
   public courses: any = [];
 
-  /**
-   * fields of exam table
-   *
-   */
-  public fields: any = [
-    'name',
-    'level_id',
-    'faculty_id',
-    'code',
-    'credit_hour',
-    'description',
-    'final_degree',
-    'active',
-    'created_at',
-    'updated_at'
-  ];
 
   /**
    * url of export api
@@ -120,65 +106,6 @@ export class ExamIndexComponent implements OnInit {
     });
   }
 
-  /**
-   * show add exam modal
-   *
-   */
-  create() {
-    this.$('#examAddModal').modal('show');
-  }
-
-  /**
-   * show add exam modal
-   *
-   */
-  createMore() {
-    this.$('.create-more').slideToggle(500);
-  }
-
-  /**
-   * show add exam modal
-   *
-   */
-  edit(item) {
-    this.resource = item;
-    this.resource.image = null;
-    this.$('#examEditModal').modal('show');
-  }
-
-  /**
-   * show export exams from excel file
-   *
-   */
-  archive(item, index) {
-    let _this = this;
-    Message.confirm(Helper.trans("are you sure"), ()=>{
-      _this.globalService.destroy("doctor/exams/delete", item.id).subscribe((r: any)=>{
-        if (r.status == 1) {
-          Message.success(r.message);
-          this.get();
-        }
-        else
-          Message.error(r.message);
-      });
-    });
-  }
-
-
-  /**
-   * load all filter data
-   * load levels
-   * load types
-   * load departments
-   * load faculties
-   */
-  loadSettings() {
-    this.get();
-    //
-    this.globalService.get("doctor/courses").subscribe((r: any) => {
-      this.courses = r.data;
-    });
-  }
 
   /**
    * pre panination
@@ -188,22 +115,9 @@ export class ExamIndexComponent implements OnInit {
     console.log(this.response);
   }
 
-  setDataContainerStyle() {
-    let height = (window.innerHeight - 250) + "px";
-    this.document.nicescroll('.data-container', {height: height});
-  }
-
-  trustUrl(url) {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
-  }
-
   ngOnInit() {
     this.initBreadcrumbData();
-    this.loadSettings();
     let _this = this;
     //
-    setTimeout(()=>{
-      _this.setDataContainerStyle();
-    }, 500);
   }
 }

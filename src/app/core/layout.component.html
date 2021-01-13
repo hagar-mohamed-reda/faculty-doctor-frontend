@@ -5,7 +5,14 @@
 
 
   <!-- Full Width Column -->
-  <div class="app-content nicescroll"  >
+  <div class="app-content nicescroll w3-display-container"  >
+      <div class="w3-modal app-loader" style="z-index: 999999999999999;" >
+        <div class="w3-modal-content w3-xlarge w3-text-white text-center" style="background-color: transparent!important;" >
+          <i class="fa fa-spinner fa-spin"></i>
+          <br>
+          <b class="w3-large" >{{ "please wait" | trans }}</b>
+        </div>
+      </div>
         <router-outlet></router-outlet>
     <!-- /.container -->
   </div>

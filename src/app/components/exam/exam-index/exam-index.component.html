@@ -52,7 +52,7 @@
           <th>{{ "question_number" | trans }}</th>
           <th>{{ "total" | trans }}</th>
           <th>{{ "type" | trans }}</th>
-          <th></th>
+          <th  ></th>
         </tr>
         <tr>
           <td colspan="11" class="w3-padding text-center w3-xlarge theme-text-dark" *ngIf="reload" ><span class="fa fa-spin fa-spinner" ></span></td>
@@ -63,7 +63,7 @@
           </td>
         </tr>
           <ng-container  *ngFor="let item of exams index as i">
-            <tr *ngIf="!reload" class="w3-hover-light-gray" style="cursor: pointer;" >
+            <tr *ngIf="!reload" class="w3-hover-light-gray" style="cursor: pointer;" (click)="$('.exam-setting-'+item.id).modal('show')" >
               <td>{{ item.name }}</td>
               <td>{{ item.course? item.course.name : '' }}</td>
               <td>{{ item.term? item.term.name : '' | trans }}</td>
@@ -73,16 +73,62 @@
               <td>{{ item.minutes }}</td>
               <td>{{ item.question_number }}</td>
               <td>{{ item.total }}</td>
-              <td>{{ item.type | trans }}</td>
-              <td style="padding: 0px!important" >
-                <button mat-icon-button class="w3-text-orange" (click)="edit(item)" >
-                  <i class="fa fa-edit" ></i>
-                </button>
-                <button mat-icon-button class="w3-text-red" style="margin-right: 5px" *ngIf="item.can_delete" (click)="archive(item, i)" >
-                  <i class="fa fa-trash" ></i>
-                </button>
+              <td>{{ 'exam_'+item.type | trans }}</td>
+              <td style="padding: 0px!important"  >
+
+                <div class="hidden">
+                  <button mat-icon-button class="w3-text-orange" routerLink="/create-exam" [queryParams]="{exam_id: item.id}" >
+                    <i class="fa fa-edit" ></i>
+                  </button>
+                  <button mat-icon-button class="w3-text-red" style="margin-right: 5px" *ngIf="item.can_delete" (click)="archive(item, i)" >
+                    <i class="fa fa-trash" ></i>
+                  </button>
+                </div>
               </td>
             </tr>
+            <div class="modal fade exam-setting-{{ item.id }}" tabindex="-1" role="dialog">
+              <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content material-shadow light-gray">
+                  <div class="modal-header w3-border-0">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  </div>
+                  <div class="modal-body">
+                    <ul class="w3-ul">
+                      <li
+                      style="margin-bottom: 5px;cursor: pointer;"
+                      class="w3-round w3-white w3-text-green w3-hover-light-gray"  >
+                        <span class="fa fa-desktop w3-large w3-green w3-round text-center" style="padding: 10px;width: 40px;height: 40px"></span>
+                        <b class="w3-large w3-margin-left w3-margin-right" >{{ "show exam" | trans }}</b>
+                      </li>
+                      <li
+                      style="margin-bottom: 5px;cursor: pointer;"
+                      class=" w3-round w3-white w3-text-orange w3-hover-light-gray"  >
+                        <span class="fa fa-edit w3-large w3-orange w3-round text-center" style="padding: 10px;width: 40px;height: 40px"></span>
+                        <b class="w3-large w3-margin-left w3-margin-right" >{{ "edit exam" | trans }}</b>
+                      </li>
+                      <li
+                      style="margin-bottom: 5px;cursor: pointer;"
+                      class=" w3-round w3-white w3-text-red w3-hover-light-gray"  >
+                        <span class="fa fa-trash w3-large w3-red w3-round text-center" style="padding: 10px;width: 40px;height: 40px"></span>
+                        <b class="w3-large w3-margin-left w3-margin-right" >{{ "remove exam" | trans }}</b>
+                      </li>
+                      <li
+                      style="margin-bottom: 5px;cursor: pointer;"
+                      class=" w3-round w3-white w3-text-indigo w3-hover-light-gray"  >
+                        <span class="fa fa-text-width w3-large w3-indigo w3-round text-center" style="padding: 10px;width: 40px;height: 40px"></span>
+                        <b class="w3-large w3-margin-left w3-margin-right" >{{ "correct blank" | trans }}</b>
+                      </li>
+                      <li
+                      style="margin-bottom: 5px;cursor: pointer;"
+                      class=" w3-round w3-white w3-text-pink w3-hover-light-gray"  >
+                        <span class="fa fa-line-chart w3-large w3-pink w3-round text-center" style="padding: 10px;width: 40px;height: 40px"></span>
+                        <b class="w3-large w3-margin-left w3-margin-right" >{{ "show analysis" | trans }}</b>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
         </ng-container>
       </table>
 
@@ -112,3 +158,6 @@
   </div>
 
 </div>
+
+
+

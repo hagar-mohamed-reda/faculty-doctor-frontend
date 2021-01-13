@@ -1,0 +1,75 @@
+<app-breadcrumb [breadcrumbList]="breadcrumbData"  ></app-breadcrumb>
+
+<div class="w3-row">
+
+  <div class="col-lg-2 col-md-2 w3-padding">
+    <div class="w3-light-gray w3-round-large w3-padding">
+
+      <button mat-raised-button  class="w3-block w3-indigo w3-row app-button"  >
+        <b class="w3-right" >{{ "submit" | trans }}</b>
+        <i class="fa fa-send w3-left" style="padding-top: 10px;"   ></i>
+      </button>
+
+
+    </div>
+  </div>
+
+  <div class="col-lg-10 col-md-10 w3-padding"  >
+    <table class="table table-bordered material-shadow w3-white">
+      <tr>
+        <th>#</th>
+        <th>{{ "question" | trans }}</th>
+        <th>{{ "answer" | trans }}</th>
+        <th>{{ "total" | trans }}</th>
+        <th>{{ "question_degree" | trans }}</th>
+      </tr>
+      <tr>
+        <td colspan="4" class="w3-padding text-center w3-xlarge theme-text-dark" *ngIf="reload" ><span class="fa fa-spin fa-spinner" ></span></td>
+      </tr>
+      <tr>
+        <td colspan="4" class="w3-padding text-center w3-xlarge theme-text-dark" *ngIf="!reload && response.data.length <= 0"  >
+          <span class="" >{{ "there is no data" | trans }}</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>1</td>
+        <td>
+          1- ما هي السنة المالية ؟ وبأي تاريخ تبدأ وبأي تاريخ تنتهي ؟
+        </td>
+        <td>
+          السنة المالية هي الفترة البالغ عمرها 12 شهرا والخاصة بقياس والافصاح عن اعمال الشركة المالية انطلاقا من تطبيق فرض الاستمرارية اللذي ينص ان عمر الشركة غير محدد وحيث انه لا يمكن معرفة ناتج اي نشاط الى بعد انتهائه
+         </td>
+         <td>
+           10
+         </td>
+         <td>
+           <input type="number" class="w3-border-0 form-control" max="10" >
+         </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="col-lg-12 col-md-12 col-sm-12 text-center w3-center"  >
+    <nav aria-label="Page navigation">
+      <ul class="pagination">
+        <li>
+          <a  class="btn" [ngClass]="{'disabled': !response.prev_page}" (click)="get({page: response.prev_page})"
+            aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li *ngFor="let item of response.pages_arr">
+          <a class="btn" [ngClass]="{'active w3-indigo': response.current_page == item}" (click)="get({page: item})">{{ item }}</a>
+        </li>
+        <li>
+          <a  class="btn" [ngClass]="{'disabled': !response.next_page}" (click)="get({page: response.next_page})"
+            aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+</div>

@@ -1,32 +1,302 @@
 <app-breadcrumb [breadcrumbList]="breadcrumbData"  ></app-breadcrumb>
 
-<div class="w3-light-gray w3-block w3-padding filter-section">
+
+<div class="w3-display-bottomleft w3-padding" style="position: fixed;z-index: 9999" >
+  <button mat-fab color="primary" (click)="send()" >{{ "submit" | trans }}</button>
+</div>
+
+
+<div class="w3-padding">
   <div class="row">
+    <div class="col-lg-4 col-md-4">
 
-    <div class="col-lg-3 col-md-3 col-sm-6 w3-padding">
-      <b>{{ 'search with name' | trans }}</b>
-      <input type="text"   class="app-select material-shadow w3-white" style="border-radius: 5em;" placeholder="{{ 'search with name' | trans }}"    >
+      <div class="custom-panel w3-display-container w3-round ">
+        <div class="custom-panel-title w3-round material-shadow" >{{ "exam_info" | trans }}</div>
+        <div class="custom-panel-body w3-row w3-light-gray" style="padding: 2px!important" [style.height]="(window.innerHeight - 150) + 'px'"  >
+          <div class="col-lg-12" >
+            <b>{{ "name" | trans }} *</b>
+            <input type="text"
+            class="app-select material-shadow w3-white"
+            style="border-radius: 5em;" [(ngModel)]="resource.name" >
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6" >
+            <b>{{ "course" | trans }} *</b>
+            <select
+            class="app-select material-shadow w3-white"
+            (change)="loadQuestions()"
+            style="border-radius: 5em;"   [(ngModel)]="resource.course_id" >
+              <option *ngFor="let item of courses" value="{{ item.id }}">{{ item.name }}</option>
+            </select>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6" >
+            <b>{{ "type" | trans }} *</b>
+            <select
+            class="app-select material-shadow w3-white"
+            style="border-radius: 5em;"   [(ngModel)]="resource.type" >
+              <option *ngFor="let item of types" value="{{ item }}">{{ item +'_exam' | trans }}</option>
+            </select>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6" >
+            <b>{{ "start_time" | trans }} *</b>
+            <input type="datetime-local"
+            class="app-select material-shadow w3-white"
+            style="border-radius: 5em;" [(ngModel)]="resource.start_time" >
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6" >
+            <b>{{ "end_time" | trans }} </b>
+            <input type="datetime-local"
+            class="app-select material-shadow w3-white"
+            style="border-radius: 5em;" [(ngModel)]="resource.end_time" >
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6" >
+            <b>{{ "minutes" | trans }} *</b>
+            <input type="number"
+            class="app-select material-shadow w3-white"
+            style="border-radius: 5em;" [(ngModel)]="resource.minutes" >
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6" >
+            <b>{{ "question_number" | trans }}</b>
+            <input type="number"
+            readonly
+            class="app-select material-shadow w3-white"
+            style="border-radius: 5em;" [(ngModel)]="resource.question_number" >
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6" >
+            <b>{{ "header_text" | trans }}</b>
+            <textarea
+            class="app-select material-shadow w3-white"
+            style="border-radius: 5em;resize: vertical;" [(ngModel)]="resource.header_text" ></textarea>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6" >
+            <b>{{ "footer_text" | trans }}</b>
+            <textarea
+            class="app-select material-shadow w3-white"
+            style="border-radius: 5em;resize: vertical;" [(ngModel)]="resource.footer_text" ></textarea>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6" >
+            <b>{{ "total" | trans }}</b>
+            <input type="number"
+            readonly
+            class="app-select material-shadow w3-white"
+            style="border-radius: 5em;"  [(ngModel)]="resource.total" >
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6 w3-display-container" >
+            <b>{{ "password" | trans }}</b>
+            <input type="password"
+            [readOnly]="!resource.required_password"
+            class="app-select material-shadow w3-white"
+            style="border-radius: 5em;" [(ngModel)]="resource.password" >
+
+            <div class="w3-display-topleft w3-padding">
+              <mat-slide-toggle
+                [(ngModel)]="resource.required_password"
+               ></mat-slide-toggle>
+            </div>
+          </div>
+          <div class="col-lg-12 col-md-12 col-sm-12" >
+            <b>{{ "notes" | trans }}</b>
+            <textarea
+            class="app-select material-shadow w3-white"
+            style="border-radius: 5em;resize: vertical;" [(ngModel)]="resource.notes" ></textarea>
+          </div>
+          <div class="col-lg-12 col-md-12 col-sm-12" >
+            <b>{{ "exam_details" | trans }}</b>
+            <table class="material-shadow w3-white w3-round table-bordered"  >
+                <tr>
+                  <th>{{ "question_type" }}</th>
+                  <th>{{ "question_level" }}</th>
+                  <th>{{ "number" }}</th>
+                  <th>{{ "total" }}</th>
+                  <th></th>
+                </tr>
+                <tr  *ngFor="let row of resource.details index as counter" >
+                  <td>
+                    <select
+                    class="app-form w3-border-0"
+                    (change)="filterQuestions()"
+                    [(ngModel)]="row.question_type_id" >
+                      <option *ngFor="let option of questionTypes" value="{{ option.id }}">{{ option.name | trans }}</option>
+                    </select>
+                  </td>
+                  <td>
+                    <select
+                    class="app-form w3-border-0"
+                    (change)="filterQuestions()"
+                    [(ngModel)]="row.question_level_id">
+                      <option *ngFor="let option of questionLevels" value="{{ option.id }}">{{ option.name | trans }}</option>
+                    </select>
+                  </td>
+                  <td>
+                    <input
+                    type="number"
+                    class="app-form w3-border-0"
+                     [(ngModel)]="row.number"  >
+                  </td>
+                  <td>
+                    <input
+                    type="number"
+                    class="app-form w3-border-0"
+                     [(ngModel)]="row.total"  >
+                  </td>
+                  <td style="padding: 0px!important;" >
+                    <button
+                    mat-icon-button
+                    class="w3-text-red" style="margin: 0px!important" (click)="removeRow(counter)" >
+                      <i class="fa fa-trash" ></i>
+                    </button>
+                  </td>
+                </tr>
+            </table>
+            <br>
+            <button mat-raised-button class="theme-dark w3-text-white" (click)="addRow()" ><i class="fa fa-plus"></i></button>
+
+          </div>
+        </div>
+      </div>
     </div>
+
+    <div class="col-lg-4 col-md-4 w3-padding">
+
+      <div class="custom-panel w3-display-container w3-round ">
+        <div class="custom-panel-title w3-round material-shadow" >{{ "questions" | trans }}</div>
+        <div class="custom-panel-body " [style.height]="(window.innerHeight - 150) + 'px'"  >
+          <ul class="w3-ul"  >
+            <li *ngIf="isLoadQuestions"
+            class="w3-display-container w3-white w3-round w3-hover-light-gray w3-text-indigo text-center" >
+              <i class="fa fa-spin fa-spinner w3-xlarge"></i>
+            </li>
+            <ng-container
+            *ngFor="let item of response.data">
+              <li
+              *ngIf="!selectedQuestions.has(item.id) && !isLoadQuestions"
+            (click)="toggleQuestion(item)"
+            class="w3-display-container w3-white w3-round w3-hover-light-gray"
+            style="margin-bottom: 5px;cursor: pointer;"  >
+              <div class="media">
+                <div class="media-left">
+                  <a href="#">
+                    <app-app-avatar
+                      [url]="item.image_url"
+                      [icon]="'fa fa-question'"
+                      [width]="'40px'"
+                      [height]="'40px'"
+                      [class]="'w3-round material-shadow'"
+                    ></app-app-avatar>
+                  </a>
+                </div>
+                <div class="media-body">
+                  <div class="media-heading">{{ item.text }}</div>
+                  <div class="w3-row">
+                    <div class="col-lg-3 col-md-3 col-sm-3 text-center w3-border-left w3-border-gray">
+                      <b>{{ helper.trans(item.question_type? item.question_type.name : '') }}</b>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 text-center w3-border-left w3-border-gray">
+                      <b>{{ helper.trans(item.question_level? item.question_level.name : '') }}</b>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 text-center ">
+                      <b>{{ item.question_category? item.question_category.name : '' }}</b>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="w3-display-topleft w3-padding">
+                <mat-slide-toggle
+                  (change)="toggleQuestion(item)"
+                  [checked]="selectedQuestions.has(item.id)"
+                 ></mat-slide-toggle>
+              </div>
+            </li>
+            </ng-container>
+          </ul>
+          <br>
+          <div class="w3-center text-center">
+            <nav aria-label="Page navigation">
+              <ul class="pagination">
+                <li>
+                  <a  class="btn" [ngClass]="{'disabled': !response.prev_page}" (click)="loadQuestions({page: response.prev_page})"
+                    aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+                <li *ngFor="let item of response.pages_arr">
+                  <a class="btn" [ngClass]="{'active w3-indigo': response.current_page == item}" (click)="loadQuestions({page: item})">{{ item }}</a>
+                </li>
+                <li>
+                  <a  class="btn" [ngClass]="{'disabled': !response.next_page}" (click)="loadQuestions({page: response.next_page})"
+                    aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+    </div>
+
+    <div class="col-lg-4 col-md-4 w3-padding">
+
+      <div class="custom-panel w3-display-container w3-round ">
+        <div class="custom-panel-title w3-round material-shadow" >{{ "selected_questions" | trans }}</div>
+        <div class="custom-panel-body " [style.height]="(window.innerHeight - 150) + 'px'"  >
+          <ul class="w3-ul">
+            <li
+            *ngFor="let item of selectedQuestions.getAll()"
+            class="w3-display-container w3-white w3-round w3-hover-light-gray"
+            (click)="toggleQuestion(item)"
+            style="margin-bottom: 5px;cursor: pointer;"  >
+              <div class="media">
+                <div class="media-left">
+                  <a href="#">
+                    <app-app-avatar
+                      [url]="item.image_url"
+                      [icon]="'fa fa-question'"
+                      [width]="'40px'"
+                      [height]="'40px'"
+                      [class]="'w3-round material-shadow'"
+                    ></app-app-avatar>
+                  </a>
+                </div>
+                <div class="media-body">
+                  <div class="media-heading">{{ item.text }}</div>
+                  <div class="w3-row">
+                    <div class="col-lg-3 col-md-3 col-sm-3 text-center w3-border-left w3-border-gray">
+                      <b>{{ helper.trans(item.question_type? item.question_type.name : '') }}</b>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 text-center w3-border-left w3-border-gray">
+                      <b>{{ helper.trans(item.question_level? item.question_level.name : '') }}</b>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 text-center ">
+                      <b>{{ item.question_category? item.question_category.name : '' }}</b>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="w3-display-topleft w3-padding">
+                <mat-slide-toggle
+                  (change)="toggleQuestion(item)"
+                  [checked]="selectedQuestions.has(item.id)"
+                 ></mat-slide-toggle>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
+
+
+
+
+    </div>
+
+
   </div>
-  <br>
 </div>
-<div class="w3-row">
 
-  <div class="col-lg-2 col-md-2 w3-padding">
-    <div class="w3-light-gray w3-round-large w3-padding">
-
-
-
-    </div>
-  </div>
-
-  <div class="col-lg-10 col-md-10 data-" style="overflow: auto;" >
-
-    <div class="w3-padding">
-
-
-    </div>
-  </div>
-
-
-</div>

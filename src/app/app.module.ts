@@ -38,6 +38,8 @@ import { QuestionCategoryFormComponent } from './components/question-category/qu
 import { AssigmentReportComponent } from './components/report/assigment-report/assigment-report.component';
 import { ExamFormComponent } from './components/exam/exam-form/exam-form.component';
 import { ExamIndexComponent } from './components/exam/exam-index/exam-index.component';
+import { CorrectBlanAnswerComponent } from './components/exam/correct-blan-answer/correct-blan-answer.component';
+import { AssignStudentToExamComponent } from './components/exam/assign-student-to-exam/assign-student-to-exam.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +62,8 @@ import { ExamIndexComponent } from './components/exam/exam-index/exam-index.comp
     AssigmentReportComponent,
     ExamFormComponent,
     ExamIndexComponent,
+    CorrectBlanAnswerComponent,
+    AssignStudentToExamComponent,
   ],
   imports: [
     BrowserModule,
