@@ -62,18 +62,19 @@
         <input
         type="file"
         class="app-form w3-border-0"
-         (change)="loadFile($event, 'image', item)"
+         (change)="loadFile($event, 'image', item);cacheQuestions()"
          accept="image/*"
          [(ngModel)]="item.image"  >
       </td>
       <td>
-        <select class="app-form w3-border-0"  [(ngModel)]="item.question_level_id">
+        <select class="app-form w3-border-0"  [(ngModel)]="item.question_level_id" (change)="cacheQuestions()" >
           <option *ngFor="let item of levels" value="{{ item.id }}">{{ item.name | trans }}</option>
         </select>
       </td>
       <td *ngFor="let choice of item.choices index as i2" class="w3-display-container" >
         <input
         type="text"
+        (change)="cacheQuestions()"
         class="app-form w3-border-0"
         [readOnly]="item.readonly || resource.question_type_id == 1"
         [(ngModel)]="choice.text"  >
@@ -82,7 +83,7 @@
           <mat-slide-toggle
             #choiceToggle
             [disabled]="item.question_type_id == 3"
-            (change)="toggleIsAnswer(item, choiceToggle.checked, i2, choiceToggle)"
+            (change)="toggleIsAnswer(item, choiceToggle.checked, i2, choiceToggle);cacheQuestions()"
             [(ngModel)]="choice.is_answer" ></mat-slide-toggle>
         </div>
       </td>

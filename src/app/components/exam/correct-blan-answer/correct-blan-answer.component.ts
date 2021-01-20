@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HashTable } from 'angular-hashtable';
 import { Auth } from 'src/app/shared/auth';
 import { Helper } from 'src/app/shared/helper';
 import { Message } from 'src/app/shared/message';
@@ -76,8 +78,13 @@ export class CorrectBlanAnswerComponent implements OnInit {
    */
   public reload = false;
 
-  constructor(private globalService: GlobalService, private sanitizer: DomSanitizer) {
-    this.action = () => { this.get(); };
+  constructor(private globalService: GlobalService,
+    private sanitizer: DomSanitizer,
+    private route: Router,
+    private router: ActivatedRoute) {
+    if (this.router.snapshot.queryParamMap.has("exam_id")) {
+      this.loadExam(this.router.snapshot.queryParamMap.get('exam_id'));
+    }
   }
 
   /**
@@ -86,7 +93,9 @@ export class CorrectBlanAnswerComponent implements OnInit {
    */
   initBreadcrumbData() {
     this.breadcrumbData = [
-      {name: 'exams page', url: '#'}
+      {name: 'exams page', url: '/exams'},
+      {name: 'current blank answer', url: '#'},
+      {name: this.resource.name, url: '', trans: false, active: true},
     ];
   }
 
@@ -94,15 +103,43 @@ export class CorrectBlanAnswerComponent implements OnInit {
    * load all exam data
    *
    */
-  get(data=null) {
+  loadQuestions(data=null) {
     let params = (data)? data: this.filter;
     this.reload = true;
-    this.globalService.get("doctor/exams", params).subscribe((res) => {
+    this.globalService.get("doctor/exams/blanks/"+this.resource.id, params).subscribe((res) => {
       this.response = res;
-      this.exams = this.response.data;
       this.reload = false;
       //
       this.prePagniation();
+    });
+  }
+
+  /**
+   * load all exam data
+   *
+   */
+  send() {
+
+    this.globalService.store("doctor/exams/correct/"+this.resource.id, {}).subscribe((res: any) => {
+      if (res.status == 1) {
+        Message.success(res.message);
+        Helper.refreshComponent(this.route, '/exams');
+      }else {
+        Message.error(res.message);
+      }
+      Helper.loader(false);
+    });
+  }
+
+  /**
+   * load all exam data
+   *
+   */
+  loadExam(id) {
+    this.globalService.get("doctor/exams/"+id).subscribe((res) => {
+      this.resource = res;
+      this.loadQuestions();
+      this.initBreadcrumbData();
     });
   }
 

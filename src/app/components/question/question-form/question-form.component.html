@@ -35,7 +35,9 @@
             <th>{{ "question_category" | trans }} *</th>
             <td>
               <select class="app-form" [(ngModel)]="resource.question_category_id">
-                <option *ngFor="let item of categories" value="{{ item.id }}" >{{ item.name }}</option>
+                <ng-container *ngFor="let item of categories" >
+                  <option *ngIf="item.course_id == resource.course_id" value="{{ item.id }}" >{{ item.name }}</option>
+                </ng-container>
               </select>
             </td>
           </tr>

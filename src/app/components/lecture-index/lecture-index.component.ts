@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot, RouterLinkActive } from '@angular/router';
+import { Helper } from 'src/app/shared/helper';
 import { GlobalService } from 'src/app/shared/services/global.service';
 
 @Component({
@@ -42,6 +43,12 @@ export class LectureIndexComponent implements OnInit {
    */
   lectures: any = [];
 
+  /**
+   * import data will be sent
+   *
+   */
+  helper: any = Helper;
+
 
   constructor(private router: ActivatedRoute, private globalService: GlobalService) {
 
@@ -61,7 +68,7 @@ export class LectureIndexComponent implements OnInit {
   initBreadcrumbData() {
     this.breadcrumbData = [
       {name: "courses", url: "/courses"},
-      {name: this.resource.name, url: '#', active: 1}
+      {name: this.resource.name, url: '#', active: 1, trans: false}
     ];
   }
 
@@ -74,10 +81,14 @@ export class LectureIndexComponent implements OnInit {
   }
 
   loadCourse(id) {
+    let _this = this;
     this.globalService.get('doctor/courses/'+id).subscribe((res) => {
       this.resource = res;
       this.lectures = this.resource.lectures;
       this.initBreadcrumbData();
+      setTimeout(()=>{
+        _this.$('[data-toggle="tooltip"]').tooltip();
+      }, 500);
     });
   }
 

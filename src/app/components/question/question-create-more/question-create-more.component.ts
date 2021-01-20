@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Cache } from 'src/app/shared/cache';
 import { Helper } from 'src/app/shared/helper';
 import { Message } from 'src/app/shared/message';
 import { GlobalService } from 'src/app/shared/services/global.service';
@@ -22,10 +23,16 @@ export class QuestionCreateMoreComponent implements OnInit {
   choices: any = [2, 3, 4, 5];
   isSubmitted: any = false;
   total = 0;
+  MORE_QUESTIONS_KEY = 'more_questions_create';
 
   constructor(private globalService: GlobalService)
   {
+    let cacheResource = Cache.get(this.MORE_QUESTIONS_KEY);
 
+    if (cacheResource) {
+      this.resource = cacheResource;
+      console.log(this.resource);
+    }
   }
 
   ngOnInit() {
@@ -61,6 +68,7 @@ export class QuestionCreateMoreComponent implements OnInit {
       return Message.error(Helper.trans('choice number must be larger than 2 choice'));
 
     this.resource.questions.push(this.initQuestionChoices());
+    this.cacheQuestions();
   }
 
   /**
@@ -74,7 +82,7 @@ export class QuestionCreateMoreComponent implements OnInit {
       else
         element.is_answer = false;
     });
-
+    this.cacheQuestions();
   }
 
   /**
@@ -84,6 +92,7 @@ export class QuestionCreateMoreComponent implements OnInit {
   removeRow(index) {
     Message.confirm(Helper.trans('are you sure'), () => {
       this.resource.questions.splice(index, 1);
+      this.cacheQuestions();
     });
   }
 
@@ -95,6 +104,7 @@ export class QuestionCreateMoreComponent implements OnInit {
    */
   loadFile(e, k, m) {
     Helper.loadImage(e, k, m);
+    this.cacheQuestions();
   }
 
   /**
@@ -126,11 +136,15 @@ export class QuestionCreateMoreComponent implements OnInit {
   validate() {
     let valid = true;
     this.resource.questions.forEach(element => {
-      if (!this.validateOneRow(element))
+      if (!this.validateOneRow(element) && this.resource.question_type_id != 4)
         valid = false;
     });
 
     return valid;
+  }
+
+  cacheQuestions() {
+    Cache.set(this.MORE_QUESTIONS_KEY, this.resource);
   }
 
   store() {
@@ -174,6 +188,9 @@ export class QuestionCreateMoreComponent implements OnInit {
   end() {
     Message.success(Helper.trans('done'));
     this.isSubmitted = false;
+    // remove cache
+    Cache.remove(this.MORE_QUESTIONS_KEY);
+
     if (this.action)
       this.action();
   }

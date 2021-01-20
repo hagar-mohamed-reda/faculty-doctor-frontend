@@ -88,43 +88,58 @@
             </tr>
             <div class="modal fade exam-setting-{{ item.id }}" tabindex="-1" role="dialog">
               <div class="modal-dialog modal-sm" role="document">
-                <div class="modal-content material-shadow light-gray">
+                <div class="modal-content material-shadow light-gray w3-round" style="width: 250px" >
                   <div class="modal-header w3-border-0">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                   </div>
                   <div class="modal-body">
-                    <ul class="w3-ul">
-                      <li
-                      style="margin-bottom: 5px;cursor: pointer;"
-                      class="w3-round w3-white w3-text-green w3-hover-light-gray"  >
-                        <span class="fa fa-desktop w3-large w3-green w3-round text-center" style="padding: 10px;width: 40px;height: 40px"></span>
-                        <b class="w3-large w3-margin-left w3-margin-right" >{{ "show exam" | trans }}</b>
-                      </li>
-                      <li
-                      style="margin-bottom: 5px;cursor: pointer;"
-                      class=" w3-round w3-white w3-text-orange w3-hover-light-gray"  >
-                        <span class="fa fa-edit w3-large w3-orange w3-round text-center" style="padding: 10px;width: 40px;height: 40px"></span>
-                        <b class="w3-large w3-margin-left w3-margin-right" >{{ "edit exam" | trans }}</b>
-                      </li>
-                      <li
-                      style="margin-bottom: 5px;cursor: pointer;"
-                      class=" w3-round w3-white w3-text-red w3-hover-light-gray"  >
-                        <span class="fa fa-trash w3-large w3-red w3-round text-center" style="padding: 10px;width: 40px;height: 40px"></span>
-                        <b class="w3-large w3-margin-left w3-margin-right" >{{ "remove exam" | trans }}</b>
-                      </li>
-                      <li
-                      style="margin-bottom: 5px;cursor: pointer;"
-                      class=" w3-round w3-white w3-text-indigo w3-hover-light-gray"  >
-                        <span class="fa fa-text-width w3-large w3-indigo w3-round text-center" style="padding: 10px;width: 40px;height: 40px"></span>
-                        <b class="w3-large w3-margin-left w3-margin-right" >{{ "correct blank" | trans }}</b>
-                      </li>
-                      <li
-                      style="margin-bottom: 5px;cursor: pointer;"
-                      class=" w3-round w3-white w3-text-pink w3-hover-light-gray"  >
-                        <span class="fa fa-line-chart w3-large w3-pink w3-round text-center" style="padding: 10px;width: 40px;height: 40px"></span>
-                        <b class="w3-large w3-margin-left w3-margin-right" >{{ "show analysis" | trans }}</b>
-                      </li>
-                    </ul>
+
+                    <button mat-raised-button
+                    *ngIf="!item.can_assign_student"
+                    class="w3-block w3-purple w3-row app-button"
+                    routerLink="/assign-exam"
+                    [queryParams]="{exam_id: item.id}" >
+                      <b class="w3-right" >{{ "assign exam to student" | trans }}</b>
+                      <i class="fa fa-list-ul w3-left" style="padding-top: 10px;"   ></i>
+                    </button>
+
+                    <button mat-raised-button  class="w3-block w3-green w3-row app-button"  routerLink="/edit-exam" [queryParams]="{exam_id: item.id}" >
+                      <b class="w3-right" >{{ "show exam" | trans }}</b>
+                      <i class="fa fa-desktop w3-left" style="padding-top: 10px;"   ></i>
+                    </button>
+
+                    <button mat-raised-button  class="w3-block w3-orange w3-row app-button" routerLink="/edit-exam" [queryParams]="{exam_id: item.id}" >
+                      <b class="w3-right" >{{ "edit exam" | trans }}</b>
+                      <i class="fa fa-edit w3-left" style="padding-top: 10px;"   ></i>
+                    </button>
+
+                    <button mat-raised-button
+                    *ngIf="item.can_delete"
+                    class="w3-block w3-red w3-row app-button"
+                    (click)="archive(item)" >
+                      <b class="w3-right" >{{ "remove exam" | trans }}</b>
+                      <i class="fa fa-trash w3-left" style="padding-top: 10px;"   ></i>
+                    </button>
+
+                    <button mat-raised-button
+                    *ngIf="item.has_correct"
+                    class="w3-block w3-indigo w3-row app-button"
+                    routerLink="/correct-blank"
+                    [queryParams]="{exam_id: item.id}" >
+                      <b class="w3-right" >{{ "correct blank" | trans }}</b>
+                      <i class="fa fa-text-width w3-left" style="padding-top: 10px;"   ></i>
+                    </button>
+
+                    <button mat-raised-button
+                    *ngIf="item.has_correct"
+                    class="w3-block w3-pink w3-row app-button"
+                    routerLink="/correct-blank"
+                    [queryParams]="{exam_id: item.id}" >
+                      <b class="w3-right" >{{ "show analysis" | trans }}</b>
+                      <i class="fa fa-line-chart w3-left" style="padding-top: 10px;"   ></i>
+                    </button>
+
+
                   </div>
                 </div>
               </div>

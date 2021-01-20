@@ -94,7 +94,7 @@ export class LectureShowComponent implements OnInit {
     this.breadcrumbData = [
       {name: "courses", url: "/courses"},
       {name: "lectures", url: "/lectures/"+this.course.id},
-      {name: "add lecture", url: '#', active: 1}
+      {name: this.resource.name, url: '#', active: 1, trans: false}
     ];
   }
 
@@ -133,6 +133,7 @@ export class LectureShowComponent implements OnInit {
       //
       this.getYouTubeEmbededUrl();
       console.log(this.resource);
+      this.initBreadcrumbData();
     });
   }
 

@@ -84,11 +84,13 @@
 
         <div class="col-lg-2 col-md-3 col-sm-6" style="padding: 5px;cursor: pointer"
         *ngFor="let item of lectures" >
-          <div routerLink="/show-lecture" [queryParams]="{lecture_id: item.id, course_id: resource.id}" class="material-shadow w3-padding w3-white w3-round text-center  w3-display-container">
+          <div routerLink="/show-lecture"
+          data-toggle="tooltip" data-placement="top" title="{{ item.name }}"
+          [queryParams]="{lecture_id: item.id, course_id: resource.id}" class="material-shadow w3-padding w3-white w3-round text-center  w3-display-container">
             <br>
             <img src="/assets/img/lecture.png" class="w3-block" alt="">
             <br>
-            <b>{{ item.name }}</b>
+            <b>{{ helper.getOverText(item.name, 10) }}</b>
 
             <div class="w3-padding w3-display-topleft">
               <button mat-mini-fab color="warn"  [routerLink]="'/create-lecture'" [queryParams]="{course_id: resource.id, lecture_id: item.id}" ><i class="fa fa-edit"></i></button>

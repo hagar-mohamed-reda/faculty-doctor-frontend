@@ -223,10 +223,8 @@
 
               <h3 class="timeline-header"> {{ "description of lecture" | trans }} </h3>
 
-              <div class="timeline-body">
-                <b>
-                  {{ resource.description }}
-                </b>
+              <div class="timeline-body" [innerHTML]="resource.description.replace('\n', '<br>')" >
+
               </div>
             </div>
           </li>

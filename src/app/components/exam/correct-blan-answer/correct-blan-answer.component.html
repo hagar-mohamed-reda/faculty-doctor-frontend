@@ -32,19 +32,19 @@
         </td>
       </tr>
 
-      <tr>
-        <td>1</td>
+      <tr *ngFor="let item of response.data index as i" >
+        <td>{{ i + 1 }}</td>
         <td>
-          1- ما هي السنة المالية ؟ وبأي تاريخ تبدأ وبأي تاريخ تنتهي ؟
+          {{ item.question }}
+         </td>
+        <td>
+          {{ item.answer }}
         </td>
-        <td>
-          السنة المالية هي الفترة البالغ عمرها 12 شهرا والخاصة بقياس والافصاح عن اعمال الشركة المالية انطلاقا من تطبيق فرض الاستمرارية اللذي ينص ان عمر الشركة غير محدد وحيث انه لا يمكن معرفة ناتج اي نشاط الى بعد انتهائه
+         <td>
+           {{  item.total }}
          </td>
          <td>
-           10
-         </td>
-         <td>
-           <input type="number" class="w3-border-0 form-control" max="10" >
+           <input type="number" class="w3-border-0 form-control" max="10" [(ngModel)]="item.grade" >
          </td>
       </tr>
     </table>
@@ -54,16 +54,16 @@
     <nav aria-label="Page navigation">
       <ul class="pagination">
         <li>
-          <a  class="btn" [ngClass]="{'disabled': !response.prev_page}" (click)="get({page: response.prev_page})"
+          <a  class="btn" [ngClass]="{'disabled': !response.prev_page}" (click)="loadQuestions({page: response.prev_page})"
             aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
         <li *ngFor="let item of response.pages_arr">
-          <a class="btn" [ngClass]="{'active w3-indigo': response.current_page == item}" (click)="get({page: item})">{{ item }}</a>
+          <a class="btn" [ngClass]="{'active w3-indigo': response.current_page == item}" (click)="loadQuestions({page: item})">{{ item }}</a>
         </li>
         <li>
-          <a  class="btn" [ngClass]="{'disabled': !response.next_page}" (click)="get({page: response.next_page})"
+          <a  class="btn" [ngClass]="{'disabled': !response.next_page}" (click)="loadQuestions({page: response.next_page})"
             aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
           </a>

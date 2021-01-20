@@ -42,8 +42,8 @@
 </div>
 <div class="w3-row">
 
-  <div class="col-lg-2 col-md-2 w3-padding">
-    <div class="w3-light-gray w3-round-large w3-padding">
+  <div class="col-lg-2 col-md-2 " style="padding: 5px" >
+    <div class="w3-light-gray w3-round-large">
 
       <button mat-raised-button [disabled]="reload" class="w3-block w3-dark-gray w3-row app-button" (click)="get()" >
         <b class="w3-right" >{{ "reload" | trans }}</b>
@@ -71,7 +71,7 @@
 
   <div class="col-lg-10 col-md-10 data-" style="overflow: auto;" >
 
-    <div class="w3-padding">
+    <div class="w3-">
       <app-question-create-more [action]="action" ></app-question-create-more>
       <table class="table table-bordered material-shadow w3-white">
         <tr>

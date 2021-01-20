@@ -8,7 +8,7 @@
 
 <div class="w3-padding">
   <div class="row">
-    <div class="col-lg-4 col-md-4">
+    <div class="col-lg-4 col-md-4 w3-padding">
 
       <div class="custom-panel w3-display-container w3-round ">
         <div class="custom-panel-title w3-round material-shadow" >{{ "exam_info" | trans }}</div>
@@ -103,10 +103,10 @@
             <b>{{ "exam_details" | trans }}</b>
             <table class="material-shadow w3-white w3-round table-bordered"  >
                 <tr>
-                  <th>{{ "question_type" }}</th>
-                  <th>{{ "question_level" }}</th>
-                  <th>{{ "number" }}</th>
-                  <th>{{ "total" }}</th>
+                  <th>{{ "question_type" | trans }}</th>
+                  <th>{{ "question_level" | trans }}</th>
+                  <th>{{ "number" | trans }}</th>
+                  <th>{{ "total" | trans }}</th>
                   <th></th>
                 </tr>
                 <tr  *ngFor="let row of resource.details index as counter" >
@@ -129,12 +129,14 @@
                   <td>
                     <input
                     type="number"
+                    (change)="calculateTotalAndNumberOfDegree()"
                     class="app-form w3-border-0"
                      [(ngModel)]="row.number"  >
                   </td>
                   <td>
                     <input
                     type="number"
+                    (change)="calculateTotalAndNumberOfDegree()"
                     class="app-form w3-border-0"
                      [(ngModel)]="row.total"  >
                   </td>

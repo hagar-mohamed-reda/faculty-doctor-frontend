@@ -61,6 +61,10 @@ const routes: Routes = [
         component: ExamFormComponent
       },
       {
+        path: 'edit-exam',
+        component: ExamFormComponent
+      },
+      {
         path: 'correct-blank',
         component: CorrectBlanAnswerComponent
       },

@@ -36,13 +36,24 @@ export class ExamFormComponent implements OnInit {
 
 
   constructor(private router: ActivatedRoute, private globalService: GlobalService, private sanitizer: DomSanitizer) {
-
       if (this.router.snapshot.queryParamMap.has("exam_id")) {
         this.editMode = true;
         this.loadexam(this.router.snapshot.queryParamMap.get('exam_id'));
       } else {
         this.reset();
       }
+  }
+
+  calculateTotalAndNumberOfDegree() {
+    let total = 0;
+    let number = 0;
+
+    this.resource.details.forEach(element => {
+      total += element.total;
+      number += element.number;
+    });
+    this.resource.question_number = number;
+    this.resource.total = total;
   }
 
   reset() {
@@ -93,7 +104,7 @@ export class ExamFormComponent implements OnInit {
   initBreadcrumbData() {
     this.breadcrumbData = [
       {name: "exams page", url: "/exams"},
-      {name: "add exam", url: '#', active: 1}
+      {name: this.editMode? this.resource.name : "add exam", url: '#', active: 1}
     ];
   }
 
@@ -139,24 +150,16 @@ export class ExamFormComponent implements OnInit {
   }
 
   loadexam(id) {
-    this.globalService.get('doctor/exams/'+id).subscribe((res) => {
+    this.globalService.get('doctor/exams/'+id).subscribe((res: any) => {
+      this.selectedQuestions = new HashTable();
       this.resource = res;
+      this.resource.details = res.exam_details;
       //
-      if (this.resource.file1)
-        this.resource.file1_url = this.sanitizer.bypassSecurityTrustResourceUrl(this.resource.file1_url);
-
-      if (this.resource.file2)
-        this.resource.file2_url = this.sanitizer.bypassSecurityTrustResourceUrl(this.resource.file2_url);
-
-      if (this.resource.video)
-        this.resource.video_url = this.sanitizer.bypassSecurityTrustResourceUrl(this.resource.video_url);
-      //
-      this.resource.video = null;
-      this.resource.file1 = null;
-      this.resource.file2 = null;
-      //
-      this.getYouTubeEmbededUrl();
-      console.log(this.resource);
+      this.resource.questions.forEach(element => {
+        this.selectedQuestions.put(element.id, element);
+      });
+      this.calculateTotalAndNumberOfDegree();
+      this.initBreadcrumbData();
     });
   }
 
@@ -187,6 +190,14 @@ export class ExamFormComponent implements OnInit {
 
     if (this.selectedQuestions.size() <= 0 || this.selectedQuestions.size() < this.getQuestionNumber()){
       Message.error( Helper.trans("select at least {n} questions").replace("{n}", this.getQuestionNumber())  );
+      valid = false;
+    }
+
+    let d1 = new Date(this.resource.start_time).getTime();
+    let d2 = new Date(this.resource.end_time).getTime();
+
+    if (d1 >= d2) {
+      Message.error(Helper.trans("end time must be large than start time"));
       valid = false;
     }
 
@@ -249,26 +260,6 @@ export class ExamFormComponent implements OnInit {
       this.isSubmitted = false;
       Helper.loader(false);
     });
-  }
-
-  /**
-   * convert normal url to embeded url
-   *
-   */
-  getYouTubeEmbededUrl() {
-    //var url = "https://www.youtube.com/embed/{id}";
-    var id = null;
-
-    console.log(this.resource.youtube_url.split("v=")[1]);
-    if (!this.resource.youtube_url)
-      return;
-    if (this.resource.youtube_url.split("v=").length >= 2)
-      id = this.resource.youtube_url.split("v=")[1];
-
-    this.resource.youtube_embeded_url =  this.sanitizer.bypassSecurityTrustResourceUrl("https://www.youtube.com/embed/"+ id);
-
-    return this.resource.youtube_embeded_url;
-    //this.resource.youtube_embeded_url = this.sanitizer.bypassSecurityTrustUrl(url.replace("{id}", id));
   }
 
 }

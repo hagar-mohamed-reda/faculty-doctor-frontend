@@ -131,5 +131,18 @@ export class Helper {
     else
       $('.app-loader').hide(500);
   }
+
+  /**
+   * get over text if size bigger than text length
+   */
+  public static getOverText(text: string, size) {
+    let overtext = "";
+    if (text.length <= size) {
+      overtext = text;
+    } else {
+      overtext = text.substring(0, size) + "...";
+    }
+    return overtext;
+  }
 }
 

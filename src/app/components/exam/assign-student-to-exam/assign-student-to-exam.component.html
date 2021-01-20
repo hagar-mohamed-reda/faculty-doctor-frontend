@@ -2,7 +2,7 @@
 
 
 <div class="w3-display-bottomleft w3-padding" style="position: fixed;z-index: 9999" >
-  <button mat-fab color="primary" (click)="null" >{{ "submit" | trans }}</button>
+  <button mat-fab color="primary" (click)="send()" >{{ "submit" | trans }}</button>
 </div>
 
 
@@ -12,6 +12,45 @@
     <div class="col-lg-6 col-md-6 w3-padding">
 
       <div class="custom-panel w3-display-container w3-round ">
+        <div class="row">
+
+        <div class="col-lg-3 col-md-3 col-sm-6 w3-padding">
+          <b>{{ 'search with name' | trans }}</b>
+          <input type="text"
+          (change)="loadStudents()"
+          class="app-select material-shadow w3-white" style="border-radius: 5em;"
+          placeholder="{{ 'search with name' | trans }}"   [(ngModel)]="filter.search"   >
+        </div>
+          <div class="col-lg-3 col-md-3 col-sm-12 w3-padding">
+            <b>{{ "level" | trans }}</b>
+            <select class="app-select material-shadow w3-white"
+            (change)="filter.department_id=null;loadStudents();"
+            style="border-radius: 5em;" [(ngModel)]="filter.level_id" >
+              <option value="">{{ "select level" | trans }}</option>
+              <option *ngFor="let item of levels" value="{{ item.id }}">{{ item.name }}</option>
+            </select>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-12 w3-padding">
+            <b>{{ "department" | trans }}</b>
+            <select class="app-select material-shadow w3-white"
+            (change)="loadStudents()"
+            style="border-radius: 5em;" [(ngModel)]="filter.department_id" >
+              <option value="">{{ "select department" | trans }}</option>
+              <ng-container *ngFor="let item of departments" >
+                <option *ngIf="item.level_id == filter.level_id" value="{{ item.id }}">{{ item.name }}</option>
+              </ng-container>
+            </select>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-12 w3-padding">
+            <b>{{ "course group" | trans }}</b>
+            <select class="app-select material-shadow w3-white"
+            (change)="loadStudents()"
+            style="border-radius: 5em;" [(ngModel)]="filter.group_id" >
+              <option value="">{{ "select group" | trans }}</option>
+              <option *ngFor="let item of groups" value="{{ item.id }}">{{ item.name }}</option>
+            </select>
+          </div>
+        </div>
         <div class="custom-panel-title w3-round material-shadow" >{{ "students" | trans }}</div>
         <div class="custom-panel-body " [style.height]="(window.innerHeight - 150) + 'px'"  >
           <ul class="w3-ul"  >
@@ -30,7 +69,7 @@
                 <div class="media-left">
                   <a href="#">
                     <app-app-avatar
-                      [url]="item.image_url"
+                      [url]="item.photo_url"
                       [icon]="'fa fa-user-circle'"
                       [width]="'40px'"
                       [height]="'40px'"
@@ -39,16 +78,13 @@
                   </a>
                 </div>
                 <div class="media-body">
-                  <div class="media-heading">{{ item.text }}</div>
+                  <div class="media-heading">{{ item.name }}</div>
                   <div class="w3-row">
                     <div class="col-lg-3 col-md-3 col-sm-3 text-center w3-border-left w3-border-gray">
-                      <b>{{ helper.trans(item.helper? item.level.name : '') }}</b>
+                      <b>{{ item.level? item.level.name : '' }}</b>
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-3 text-center w3-border-left w3-border-gray">
-                      <b>{{ helper.trans(item.department? item.department.name : '') }}</b>
-                    </div>
-                    <div class="col-lg-3 col-md-3 col-sm-3 text-center ">
-                      <b>{{ item.group? item.group.name : '' }}</b>
+                      <b>{{ item.department? item.department.name : '' }}</b>
                     </div>
                   </div>
                 </div>
@@ -109,7 +145,7 @@
                 <div class="media-left">
                   <a href="#">
                     <app-app-avatar
-                      [url]="item.image_url"
+                      [url]="item.photo_url"
                       [icon]="'fa fa-user-circle'"
                       [width]="'40px'"
                       [height]="'40px'"
@@ -118,16 +154,13 @@
                   </a>
                 </div>
                 <div class="media-body">
-                  <div class="media-heading">{{ item.text }}</div>
+                  <div class="media-heading">{{ item.name }}</div>
                   <div class="w3-row">
                     <div class="col-lg-3 col-md-3 col-sm-3 text-center w3-border-left w3-border-gray">
-                      <b>{{ helper.trans(item.Student_type? item.Student_type.name : '') }}</b>
+                      <b>{{ item.level? item.level.name : '' }}</b>
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-3 text-center w3-border-left w3-border-gray">
-                      <b>{{ helper.trans(item.Student_level? item.Student_level.name : '') }}</b>
-                    </div>
-                    <div class="col-lg-3 col-md-3 col-sm-3 text-center ">
-                      <b>{{ item.Student_category? item.Student_category.name : '' }}</b>
+                      <b>{{ item.department? item.department.name : '' }}</b>
                     </div>
                   </div>
                 </div>

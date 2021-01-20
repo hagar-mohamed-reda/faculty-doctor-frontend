@@ -5,7 +5,7 @@ import {Component, Input, OnInit} from '@angular/core';
   templateUrl: './breadcrumb.component.html'
 })
 export class BreadcrumbComponent implements OnInit {
-  @Input() breadcrumbList: Array<{ name: string, url: string }>;
+  @Input() breadcrumbList: any = [];
   public locale: string;
 
   constructor() {

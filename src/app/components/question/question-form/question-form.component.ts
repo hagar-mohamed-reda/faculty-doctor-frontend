@@ -107,7 +107,7 @@ export class QuestionFormComponent implements OnInit {
         isAnswer = true;
     });
 
-    if (!isAnswer)
+    if (!isAnswer && this.resource.question_type_id != 4)
       valid = false;
 
     console.log(this.resource.choices);

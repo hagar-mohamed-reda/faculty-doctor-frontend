@@ -43,23 +43,23 @@
 
       <ng-container  *ngFor="let item of courses index as i">
 
-            <div class="col-lg-2 col-md-3 col-sm-4" *ngIf="!reload"  >
+            <div class="col-lg-2 col-md-3 col-sm-4" *ngIf="!reload" style="padding: 5px!important" >
               <div
               style="cursor: pointer;"
               class="material-shadow w3-white w3-round w3-display-container w3-block text-center"
               [routerLink]="'/lectures/' + item.id">
                 <app-app-avatar
-                  [url]="item.url"
+                  [url]="item.photo_url"
                   [icon]="'fa fa-graduation-cap'"
                   [class]="'w3-round w3-xlarge'"
                   [width]="'100%'"
                   [height]="'150px'" ></app-app-avatar>
-                <div class="w3-padding text-center">
-                  <b>{{ item.name }}</b>
+                <div class="w3-padding text-center"  data-toggle="tooltip" data-placement="top" title="{{ item.name }}" >
+                  <b>{{ helper.getOverText(item.name, 15) }}</b>
                   <br>
                 </div>
                 <div *ngIf="item.deleted_at" >
-                  <button class="btn fa fa-reply w3-green material-shadow" style="padding: 5px!important;margin: 5px" (click)="restore(item)" ></button>
+                  <button class="btn fa fa-reply w3-green material-shadow" style="padding: 5px!important;margin: 5px"  ></button>
                 </div>
                 <div class="w3-display-topleft w3-padding" *ngIf="!item.deleted_at" >
                   <span class="label label-success" *ngIf="item.active" >{{ "activited" | trans }}</span>

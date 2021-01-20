@@ -125,6 +125,12 @@ export class CourseIndexComponent implements OnInit {
    */
   public archiveLoad = false;
 
+  /**
+   * helper class
+   *
+   */
+  public helper: any = Helper;
+
 
   constructor(private globalService: GlobalService) {
     this.action = () => { this.get(); };
@@ -147,6 +153,7 @@ export class CourseIndexComponent implements OnInit {
   get(data=null) {
     let params = (data)? data: this.filter;
     this.reload = true;
+    let _this = this;
     this.archiveLoad = false;
     this.globalService.get("doctor/courses", params).subscribe((res) => {
       this.response = res;
@@ -154,6 +161,9 @@ export class CourseIndexComponent implements OnInit {
       this.reload = false;
       //
       this.prePagniation();
+      setTimeout(()=>{
+        _this.$('[data-toggle="tooltip"]').tooltip();
+      }, 500);
     });
   }
 
@@ -231,6 +241,7 @@ export class CourseIndexComponent implements OnInit {
     //
     setTimeout(()=>{
       _this.setDataContainerStyle();
-    }, 500);
+      _this.$('[data-toggle="tooltip"]').tooltip();
+    }, 2000);
   }
 }
