@@ -16,6 +16,7 @@ import { ExamIndexComponent } from './components/exam/exam-index/exam-index.comp
 import { ExamFormComponent } from './components/exam/exam-form/exam-form.component';
 import { CorrectBlanAnswerComponent } from './components/exam/correct-blan-answer/correct-blan-answer.component';
 import { AssignStudentToExamComponent } from './components/exam/assign-student-to-exam/assign-student-to-exam.component';
+import { StudentAssigmentComponent } from './components/report/student-assigment/student-assigment.component';
 
 const routes: Routes = [
 
@@ -79,6 +80,10 @@ const routes: Routes = [
       {
         path: 'profile',
         component: UserProfileComponent
+      },
+      {
+        path: 'report/student-assignment',
+        component: StudentAssigmentComponent
       },
      /* {
         path: 'dashboard',

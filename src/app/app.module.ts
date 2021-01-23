@@ -35,11 +35,11 @@ import { QuestionFormComponent } from './components/question/question-form/quest
 import { QuestionCreateMoreComponent } from './components/question/question-create-more/question-create-more.component';
 import { QuestionCategoryIndexComponent } from './components/question-category/question-category-index/question-category-index.component';
 import { QuestionCategoryFormComponent } from './components/question-category/question-category-form/question-category-form.component';
-import { AssigmentReportComponent } from './components/report/assigment-report/assigment-report.component';
 import { ExamFormComponent } from './components/exam/exam-form/exam-form.component';
 import { ExamIndexComponent } from './components/exam/exam-index/exam-index.component';
 import { CorrectBlanAnswerComponent } from './components/exam/correct-blan-answer/correct-blan-answer.component';
 import { AssignStudentToExamComponent } from './components/exam/assign-student-to-exam/assign-student-to-exam.component';
+import { StudentAssigmentComponent } from './components/report/student-assigment/student-assigment.component';
 
 @NgModule({
   declarations: [
@@ -59,11 +59,11 @@ import { AssignStudentToExamComponent } from './components/exam/assign-student-t
     QuestionCreateMoreComponent,
     QuestionCategoryIndexComponent,
     QuestionCategoryFormComponent,
-    AssigmentReportComponent,
     ExamFormComponent,
     ExamIndexComponent,
     CorrectBlanAnswerComponent,
     AssignStudentToExamComponent,
+    StudentAssigmentComponent,
   ],
   imports: [
     BrowserModule,

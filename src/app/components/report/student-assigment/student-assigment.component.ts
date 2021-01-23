@@ -7,11 +7,11 @@ import { GlobalService } from 'src/app/shared/services/global.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-assigment-report',
-  templateUrl: './assigment-report.component.html',
-  styleUrls: ['./assigment-report.component.scss']
+  selector: 'app-student-assigment',
+  templateUrl: './student-assigment.component.html',
+  styleUrls: ['./student-assigment.component.scss']
 })
-export class AssigmentReportComponent implements OnInit {
+export class StudentAssigmentComponent implements OnInit {
 
   /**
    * init jquery
@@ -60,6 +60,12 @@ export class AssigmentReportComponent implements OnInit {
    *
    */
   public levels: any = [];
+
+  /**
+   * select item to edit it
+   *
+   */
+  public departments: any = [];
 
   /**
    * types of question
@@ -152,8 +158,9 @@ export class AssigmentReportComponent implements OnInit {
     let params = (data)? data: this.filter;
     this.reload = true;
     this.archiveLoad = false;
-    this.globalService.get("doctor/questions", params).subscribe((res) => {
-      this.response = res;
+    this.globalService.get("doctor/student-assignments", params).subscribe((res: any) => {
+      this.response = res.students;
+      this.response.assignments = res.assignments;
       this.questions = this.response.data;
       this.reload = false;
       //
@@ -161,24 +168,12 @@ export class AssigmentReportComponent implements OnInit {
     });
   }
 
-  /**
-   * get all deleted questions
-   *
-   */
-  getArchive() {
-    this.reload = true;
-    this.archiveLoad = true;
-    this.globalService.get("doctor/questions/archive").subscribe((res) => {
-      this.questions = res;
-      this.reload = false;
-    });
-  }
 
   /**
    * show add question modal
    *
    */
-  create() {
+  send() {
     this.$('#questionAddModal').modal('show');
   }
 
@@ -232,14 +227,14 @@ export class AssigmentReportComponent implements OnInit {
     this.globalService.get("doctor/courses").subscribe((r: any) => {
       this.courses = r.data;
     });
-    this.globalService.get("doctor/question-levels").subscribe((r) => {
+    this.globalService.get("levels").subscribe((r) => {
       this.levels = r;
     });
-    this.globalService.get("doctor/lectures").subscribe((r) => {
+    this.globalService.get("doctor/lectures").subscribe((r: any) => {
       this.lectures = r;
     });
-    this.globalService.get("doctor/question-categorys").subscribe((r: any) => {
-      this.categories = r.data;
+    this.globalService.get("departments").subscribe((r: any) => {
+      this.departments = r;
     });
   }
 
@@ -265,8 +260,5 @@ export class AssigmentReportComponent implements OnInit {
     this.loadSettings();
     let _this = this;
     //
-    setTimeout(()=>{
-      _this.setDataContainerStyle();
-    }, 500);
   }
 }
