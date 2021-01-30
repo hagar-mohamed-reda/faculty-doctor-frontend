@@ -43,6 +43,21 @@
         </ng-container>
       </select>
     </div>
+    <div class="col-lg-2 col-md-2 col-sm-6 w3-padding">
+      <b>{{ "assignments" | trans }}</b>
+      <select class="app-select material-shadow w3-white" style="border-radius: 5em;" [(ngModel)]="filter.assignment_id" >
+        <option value="">{{ "select assignment" | trans }}</option>
+        <ng-container *ngFor="let item of assignments">
+        <option *ngIf="item.course_id == filter.course_id" value="{{ item.id }}">{{ item.name | trans }}</option>
+        </ng-container>
+      </select>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-6 w3-padding">
+      <b>{{ "number per page" | trans }}</b>
+      <select class="app-select material-shadow w3-white" style="border-radius: 5em;" [(ngModel)]="filter.page_length" >
+        <option *ngFor="let item of pages" value="{{ item }}">{{ item  }}</option>
+      </select>
+    </div>
   </div>
   <br>
 </div>
@@ -103,15 +118,23 @@
                 </div>
                 <div class="media-body">
                   <h5 class="media-heading">{{ item.name }}</h5>
-                  <b style="padding: 5px" > {{ item.level? item.level.name : '' }} </b> | 
+                  <b style="padding: 5px" > {{ item.level? item.level.name : '' }} </b> |
                   <b style="padding: 5px" > {{ item.department? item.department.name : '' }} </b>
                 </div>
-              </div> 
+              </div>
               </td>
               <td *ngFor="let row of item.assignments" >
                 <a *ngIf="row.student_file" [href]="trustUrl(row.student_file_url)">{{ "view file" | trans }}</a>
                 <a *ngIf="!row.student_file"  >{{ "no file update" | trans }}</a>
-                <input type="number" data-max="{{ row.grade }}" [(ngModel)]="row.student_grade" >
+                <div style="width: 100px" >
+                  <input
+                  appSpinner
+                  type="number"
+                  max="20"
+                  min="0"
+                  [model]="row"
+                  [(ngModel)]="row.student_grade" >
+                </div>
               </td>
             </tr>
         </ng-container>

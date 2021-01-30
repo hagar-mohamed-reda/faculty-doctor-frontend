@@ -40,6 +40,7 @@ import { ExamIndexComponent } from './components/exam/exam-index/exam-index.comp
 import { CorrectBlanAnswerComponent } from './components/exam/correct-blan-answer/correct-blan-answer.component';
 import { AssignStudentToExamComponent } from './components/exam/assign-student-to-exam/assign-student-to-exam.component';
 import { StudentAssigmentComponent } from './components/report/student-assigment/student-assigment.component';
+import { SpinnerDirective } from './shared/directives/spinner.directive';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,7 @@ import { StudentAssigmentComponent } from './components/report/student-assigment
     ExamIndexComponent,
     CorrectBlanAnswerComponent,
     AssignStudentToExamComponent,
-    StudentAssigmentComponent,
+    StudentAssigmentComponent
   ],
   imports: [
     BrowserModule,

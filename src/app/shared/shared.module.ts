@@ -23,6 +23,8 @@ import { ImportExcelComponent } from './components/import-excel/import-excel.com
 import { MatButtonModule, MatCheckboxModule, MatPaginatorModule, MatSliderModule, MatSlideToggleModule, MatSortModule, MatTableModule } from '@angular/material';
 import { ExportExcelComponent } from './components/export-excel/export-excel.component';
 import { AppAvatarComponent } from './components/app-avatar/app-avatar.component';
+import { SpinnerComponent } from './components/spinner/spinner.component';
+import { SpinnerDirective } from './directives/spinner.directive';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,9 @@ import { AppAvatarComponent } from './components/app-avatar/app-avatar.component
     PermissionDirective,
     ImportExcelComponent,
     ExportExcelComponent,
-    AppAvatarComponent
+    AppAvatarComponent,
+    SpinnerComponent,
+    SpinnerDirective
   ],
   imports: [
     CommonModule,
@@ -80,7 +84,9 @@ import { AppAvatarComponent } from './components/app-avatar/app-avatar.component
     PermissionDirective,
     ImportExcelComponent,
     ExportExcelComponent,
-    AppAvatarComponent
+    AppAvatarComponent,
+    SpinnerDirective
+
   ]
 })
 export class SharedModule { }

@@ -86,6 +86,12 @@ export class StudentAssigmentComponent implements OnInit {
   public courses: any = [];
 
   /**
+   * select item to edit it
+   *
+   */
+  public assignments: any = [];
+
+  /**
    * fields of question table
    *
    */
@@ -135,8 +141,15 @@ export class StudentAssigmentComponent implements OnInit {
    */
   public addMore = false;
 
+  /**
+   * url of export api
+   *
+   */
+  public pages: any = [5, 10, 50, 100];
+
 
   constructor(private globalService: GlobalService, private sanitizer: DomSanitizer) {
+    this.filter.page_length = 5;
     this.action = () => { this.get(); };
   }
 
@@ -173,14 +186,6 @@ export class StudentAssigmentComponent implements OnInit {
    * show add question modal
    *
    */
-  send() {
-    this.$('#questionAddModal').modal('show');
-  }
-
-  /**
-   * show add question modal
-   *
-   */
   createMore() {
     this.$('.create-more').slideToggle(500);
   }
@@ -199,17 +204,26 @@ export class StudentAssigmentComponent implements OnInit {
    * show export questions from excel file
    *
    */
-  archive(item, index) {
-    let _this = this;
-    Message.confirm(Helper.trans("are you sure"), ()=>{
-      _this.globalService.destroy("doctor/questions/delete", item.id).subscribe((r: any)=>{
-        if (r.status == 1) {
-          Message.success(r.message);
-          this.get();
-        }
-        else
-          Message.error(r.message);
+  send() {
+    let data = [];
+    this.response.data.forEach(element => {
+      element.assignments.forEach(e => {
+        data.push({
+          assignment_id: e.id,
+          student_assignment_id: e.student_assignment_id,
+          student_grade: e.student_grade,
+          student_id: element.id
+        });
       });
+    });
+
+    this.globalService.store("doctor/update-assignments", {data: data}).subscribe((r: any)=>{
+      if (r.status == 1) {
+        Message.success(r.message);
+        this.get();
+      }
+      else
+        Message.error(r.message);
     });
   }
 
@@ -226,6 +240,9 @@ export class StudentAssigmentComponent implements OnInit {
     //
     this.globalService.get("doctor/courses").subscribe((r: any) => {
       this.courses = r.data;
+    });
+    this.globalService.get("doctor/assignments").subscribe((r: any) => {
+      this.assignments = r.data;
     });
     this.globalService.get("levels").subscribe((r) => {
       this.levels = r;
